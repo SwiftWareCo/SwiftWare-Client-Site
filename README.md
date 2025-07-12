@@ -80,9 +80,10 @@ For the landing page to display properly, add these images to `public/images/`:
 
 ### Brand Colors
 Update the color scheme in `src/app/globals.css` and component files:
-- Primary: Blue (#2563eb) - Technology and trust
-- Secondary: Gray shades - Professional and modern
-- Accent: Various colors for different software features
+Primary: Electric Blue (#0066FF)
+Secondary: Deep Navy (#1A237E)
+Accent: Bright Cyan (#00E5FF)
+Neutrals: White + Light Gray (#F5F7FA)
 
 ### Content
 Update content in the component files:
