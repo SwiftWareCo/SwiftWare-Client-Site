@@ -1,6 +1,7 @@
 'use client';
 
 export default function Hero() {
+  const text = "SwiftWare's comprehensive software solutions. From automation to analytics, we help companies achieve digital transformation and operational excellence.";
   return (
     <section className="hero">
       <div className="container">
@@ -10,9 +11,7 @@ export default function Hero() {
             <span className="highlight">Business Operations</span>
           </h1>
           <p>
-            Streamline your business with SwiftWare's comprehensive software 
-            solutions. From automation to analytics, we help companies achieve digital 
-            transformation and operational excellence.
+            {text}
           </p>
           <button className="btn btn-primary">
             <span>Get Started →</span>
