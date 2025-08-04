@@ -3,61 +3,61 @@
 import { useState } from 'react';
 
 export default function ClientShowcase() {
+  const [activeClient, setActiveClient] = useState(0);
+
   const clients = [
-    { 
-      name: 'TechCorp', 
-      category: 'Technology', 
-      initials: 'TE', 
+    { name: 'TechCorp', category: 'Technology', avatar: 'TC', 
       color: '#6366F1',
-      description: 'Cloud infrastructure modernization and advanced analytics platform',
-      results: '40% faster deployment, 60% cost reduction'
+      content: {
+        title: 'Digital Transformation Success',
+        description: 'Streamlined operations and increased efficiency by 40% through our comprehensive automation platform.',
+        image: 'Project Alpha Dashboard'
+      }
     },
-    { 
-      name: 'GlobalFinance', 
-      category: 'Finance', 
-      initials: 'GF', 
-      color: '#1E293B',
-      description: 'Secure trading platform with real-time market data integration',
-      results: '99.9% uptime, $2M+ transactions daily'
+    { name: 'InnovateLabs', category: 'Innovation', avatar: 'IL', 
+      color: '#8B5CF6',
+      content: {
+        title: 'Innovation Platform',
+        description: 'Accelerated product development cycles and enhanced collaboration across distributed teams.',
+        image: 'Innovation Hub Interface'
+      }
     },
-    { 
-      name: 'HealthPlus', 
-      category: 'Healthcare', 
-      initials: 'HP', 
+    { name: 'GreenTech', category: 'Sustainability', avatar: 'GT', 
       color: '#10B981',
-      description: 'Patient management system with telehealth capabilities',
-      results: '50K+ patients managed, 30% efficiency gain'
+      content: {
+        title: 'Sustainable Operations',
+        description: 'Reduced carbon footprint by 30% while optimizing resource allocation and operational efficiency.',
+        image: 'Sustainability Dashboard'
+      }
     },
-    { 
-      name: 'RetailMax', 
-      category: 'Retail', 
-      initials: 'RM', 
+    { name: 'DataDriven', category: 'Analytics', avatar: 'DD', 
+      color: '#A855F7',
+      content: {
+        title: 'Advanced Analytics',
+        description: 'Transformed raw data into actionable insights, driving strategic decision-making.',
+        image: 'Analytics Platform'
+      }
+    },
+    { name: 'ScaleUp', category: 'Growth', avatar: 'SU', 
       color: '#6366F1',
-      description: 'E-commerce platform with inventory management and analytics',
-      results: '200% sales increase, 45% faster checkout'
+      content: {
+        title: 'Rapid Scaling Solution',
+        description: 'Enabled 300% growth while maintaining operational excellence and customer satisfaction.',
+        image: 'Growth Management System'
+      }
     },
-    { 
-      name: 'EduTech', 
-      category: 'Education', 
-      initials: 'ET', 
-      color: '#1E293B',
-      description: 'Learning management system with interactive course builder',
-      results: '1M+ students, 95% completion rate'
-    },
-    { 
-      name: 'ManufacturingPro', 
-      category: 'Manufacturing', 
-      initials: 'MP', 
+    { name: 'SecureFlow', category: 'Security', avatar: 'SF', 
       color: '#10B981',
-      description: 'IoT-enabled production monitoring and quality control system',
-      results: '25% efficiency boost, 90% defect reduction'
+      content: {
+        title: 'Enterprise Security',
+        description: 'Implemented comprehensive security framework with zero breaches in 2+ years.',
+        image: 'Security Operations Center'
+      }
     },
   ];
 
-  const [selectedClient, setSelectedClient] = useState(0);
-
   const handleClientHover = (index: number) => {
-    setSelectedClient(index);
+    setActiveClient(index);
   };
 
   return (
@@ -74,14 +74,14 @@ export default function ClientShowcase() {
           {clients.map((client, index) => (
             <div 
               key={index} 
-              className={`client-item ${selectedClient === index ? 'client-item-active' : ''}`}
+              className={`client-item ${activeClient === index ? 'client-item-active' : ''}`}
               onMouseEnter={() => handleClientHover(index)}
             >
               <div 
                 className="client-avatar" 
                 style={{ backgroundColor: client.color }}
               >
-                {client.initials}
+                {client.avatar}
               </div>
               <div className="client-name">{client.name}</div>
               <div className="client-category">{client.category}</div>
@@ -90,19 +90,19 @@ export default function ClientShowcase() {
         </div>
 
         <div className="showcase">
-          <div className="showcase-image" style={{ background: `linear-gradient(135deg, ${clients[selectedClient].color} 0%, ${clients[selectedClient].color}CC 100%)` }}>
+          <div className="showcase-image" style={{ background: `linear-gradient(135deg, ${clients[activeClient].color} 0%, ${clients[activeClient].color}CC 100%)` }}>
             <div>
-              <h3 style={{ color: 'white', margin: 0 }}>{clients[selectedClient].name}</h3>
-              <p style={{ color: 'white', opacity: 0.9, margin: '0.5rem 0 0 0' }}>{clients[selectedClient].category} Platform</p>
+              <h3 style={{ color: 'white', margin: 0 }}>{clients[activeClient].name}</h3>
+              <p style={{ color: 'white', opacity: 0.9, margin: '0.5rem 0 0 0' }}>{clients[activeClient].category} Platform</p>
             </div>
           </div>
           <div className="showcase-content">
-            <h3>{clients[selectedClient].name}</h3>
-            <p style={{ color: clients[selectedClient].color, fontWeight: '600', marginBottom: '1rem' }}>{clients[selectedClient].category}</p>
-            <p>{clients[selectedClient].description}</p>
+            <h3>{clients[activeClient].name}</h3>
+            <p style={{ color: clients[activeClient].color, fontWeight: '600', marginBottom: '1rem' }}>{clients[activeClient].category}</p>
+            <p>{clients[activeClient].content.description}</p>
             <div style={{ marginTop: '1.5rem' }}>
               <h4 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0.5rem' }}>Key Results</h4>
-              <p style={{ fontSize: '0.9rem', color: '#64748B' }}>{clients[selectedClient].results}</p>
+              <p style={{ fontSize: '0.9rem', color: '#64748B' }}>{clients[activeClient].content.title}</p>
             </div>
           </div>
         </div>

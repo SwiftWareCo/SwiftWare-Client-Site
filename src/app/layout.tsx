@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,6 +21,26 @@ export const metadata: Metadata = {
   authors: [{ name: "SwiftWare" }],
   creator: "SwiftWare",
   publisher: "SwiftWare",
+  icons: {
+    icon: [
+      { url: "/images/swiftware-logo.png", sizes: "16x16", type: "image/png" },
+      { url: "/images/swiftware-logo.png", sizes: "32x32", type: "image/png" },
+      { url: "/images/swiftware-logo.png", sizes: "48x48", type: "image/png" },
+      { url: "/images/swiftware-logo.png", sizes: "64x64", type: "image/png" },
+    ],
+    shortcut: "/images/swiftware-logo.png",
+    apple: [
+      { url: "/images/swiftware-logo.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "32x32",
+        url: "/images/swiftware-logo.png",
+      },
+    ],
+  },
   openGraph: {
     title: "SwiftWare | Enterprise Software Solutions for Modern Businesses",
     description: "Streamline your business operations with SwiftWare's comprehensive software solutions. From automation to analytics, we help companies achieve digital transformation.",
@@ -64,7 +86,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Navbar />
+        <main>
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

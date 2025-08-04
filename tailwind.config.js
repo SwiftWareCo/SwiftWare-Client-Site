@@ -8,10 +8,24 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'tech-purple': '#6366F1',
-        'deep-blue': '#1E293B',
-        'bright-green': '#10B981',
-        'cool-gray': '#F8FAFC',
+        // Primary gradient colors for modern look
+        'primary': '#6366F1',
+        'primary-light': '#8B5CF6', 
+        'primary-dark': '#A855F7',
+        
+        // Simplified green accent
+        'accent-green': '#10B981',
+        'accent-green-dark': '#059669',
+        
+        // Streamlined grays
+        'text-primary': '#1E293B',
+        'text-secondary': '#64748B',
+        'text-muted': '#94A3B8',
+        
+        // Clean backgrounds
+        'bg-primary': '#FFFFFF',
+        'bg-secondary': '#F8FAFC',
+        'bg-subtle': '#E2E8F0',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],

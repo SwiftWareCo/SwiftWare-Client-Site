@@ -4,7 +4,7 @@ export default function Features() {
   const stats = [
     { number: '500+', label: 'Happy Clients', color: '#10B981' },
     { number: '1000+', label: 'Projects Completed', color: '#6366F1' },
-    { number: '99.9%', label: 'Uptime Guarantee', color: '#6366F1' },
+    { number: '99.9%', label: 'Uptime Guarantee', color: '#8B5CF6' },
     { number: '24/7', label: 'Support Available', color: '#1E293B' },
   ];
 
@@ -30,7 +30,7 @@ export default function Features() {
     {
       title: 'Expert Support',
       description: 'Dedicated technical support team available around the clock to ensure seamless operations.',
-      color: '#1E293B',
+      color: '#A855F7',
       icon: '👥'
     },
   ];
