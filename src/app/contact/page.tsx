@@ -51,7 +51,7 @@ export default function ContactPage() {
           <div className="hero-content">
             <h1 className="hero-title">Contact Us</h1>
             <p className="hero-subtitle">
-              Ready to transform your business? Let's start a conversation about your needs.
+              Ready to transform your business? Let&apos;s start a conversation about your needs.
             </p>
           </div>
         </div>

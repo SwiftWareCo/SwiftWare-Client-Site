@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
@@ -6,13 +7,13 @@ export default function Footer() {
       <div className="container">
         <div className="footer-content">
           <div className="footer-brand">
-            <img 
+            <Image 
               src="/images/swiftware-logo.png" 
               alt="SwiftWare" 
+              width={70}
+              height={70}
               className="footer-logo"
               style={{ 
-                height: '70px', 
-                width: 'auto',
                 filter: 'brightness(1.2) contrast(1.1)',
                 backgroundColor: 'rgba(255, 255, 255, 0.1)',
                 padding: '12px 16px',
