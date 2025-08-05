@@ -62,7 +62,7 @@ export default function ContactPage() {
         <div className="container">
           <div className="contact-form-container">
             <h2>Get in Touch</h2>
-            <p>Fill out the form below and we'll get back to you within 24 hours.</p>
+            <p>Fill out the form below and we&apos;ll get back to you within 24 hours.</p>
             
             <form onSubmit={handleSubmit} className="contact-form">
               <div className="form-row">
@@ -155,7 +155,7 @@ export default function ContactPage() {
 
               {submitStatus === 'success' && (
                 <div className="success-message">
-                  Thank you! Your message has been sent successfully. We'll get back to you soon.
+                  Thank you! Your message has been sent successfully. We&apos;ll get back to you soon.
                 </div>
               )}
 
