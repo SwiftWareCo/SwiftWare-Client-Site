@@ -14,7 +14,7 @@ export default function ServicesPage() {
           <div className="hero-content">
             <h1 className="hero-title">Our Services</h1>
             <p className="hero-subtitle">
-              Comprehensive software solutions designed to transform your business operations
+            Discover how we&apos;ve helped businesses transform their operations with custom software solutions
             </p>
           </div>
         </div>
@@ -143,21 +143,6 @@ export default function ServicesPage() {
                 <li>Training programs</li>
               </ul>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="cta-section">
-        <div className="container">
-          <div className="cta-content">
-            <h2>Ready to Transform Your Business?</h2>
-            <p>
-              Let&apos;s discuss how SwiftWare can help you achieve your digital transformation goals.
-            </p>
-            <a href="/contact" className="cta-button">
-              Get Started Today
-            </a>
           </div>
         </div>
       </section>

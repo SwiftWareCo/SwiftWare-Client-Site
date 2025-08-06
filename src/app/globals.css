@@ -224,6 +224,11 @@ p {
   font-size: 5rem;
   margin-bottom: 2rem;
   animation: swift-fade 0.8s ease-out;
+  line-height: 1.1;
+}
+
+.hero-content h1 span {
+  display: inline-block;
 }
 
 .hero-content .highlight {
@@ -236,14 +241,42 @@ p {
 
 .hero-content p {
   font-size: 1.3rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
   color: #64748B;
   line-height: 1.8;
   animation: swift-fade 0.8s ease-out 0.2s both;
 }
 
+.hero-content p:first-of-type {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1E293B;
+  margin-bottom: 1rem;
+}
+
 .hero-content .btn {
   animation: swift-fade 0.8s ease-out 0.4s both;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  animation: swift-fade 0.8s ease-out 0.4s both;
+}
+
+.btn-secondary {
+  background: white;
+  color: #6366F1;
+  border: 2px solid #6366F1;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.1);
+}
+
+.btn-secondary:hover {
+  background: #6366F1;
+  color: white;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(99, 102, 241, 0.3);
 }
 
 .hero-features {
@@ -281,83 +314,86 @@ p {
 .hero-right {
   position: relative;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: swift-fade 0.8s ease-out 0.3s both;
+  height: 100%;
+}
+
+.stats-container {
+  display: flex;
   flex-direction: column;
   gap: 2rem;
-  animation: swift-fade 0.8s ease-out 0.3s both;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 300px;
 }
 
 .stats-card {
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 2rem;
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  position: absolute;
-  right: 2rem;
-  top: 2rem;
-  min-width: 180px;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  text-align: center;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   animation: float 6s ease-in-out infinite;
 }
 
 .stats-card:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
-  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  background: white;
 }
 
 .stats-card .stat-number {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.stats-card .stat-number.purple-text {
+  color: #6366F1;
+}
+
+.stats-card .stat-number.green-text {
+  color: #10B981;
 }
 
 .stats-card .stat-label {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #64748B;
   font-weight: 600;
 }
 
 .enterprise-card {
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: white;
   padding: 2.5rem;
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  position: absolute;
-  right: -1rem;
-  bottom: 2rem;
-  min-width: 200px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  text-align: center;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   animation: float-delayed 6s ease-in-out infinite;
 }
 
 .enterprise-card:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);
-  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  background: white;
 }
 
 .enterprise-card .stat-number {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  display: block;
 }
 
 .enterprise-card .stat-label {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #64748B;
   font-weight: 600;
 }
@@ -400,9 +436,12 @@ section:not(:last-child)::after {
 
 .client-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   margin-bottom: 4rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .client-item {
@@ -651,10 +690,12 @@ section:not(:last-child)::after {
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 2.5rem;
   position: relative;
   z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .feature-card {
@@ -834,17 +875,19 @@ section:not(:last-child)::after {
   .hero-right {
     position: relative;
     display: flex;
-    flex-direction: row;
+    align-items: center;
     justify-content: center;
-    gap: 1.5rem;
     margin-top: 2rem;
   }
 
+  .stats-container {
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 100%;
+  }
+
   .stats-card, .enterprise-card {
-    position: relative;
-    right: auto;
-    top: auto;
-    bottom: auto;
+    flex: 1;
     min-width: 140px;
     padding: 1.5rem;
     animation: none;

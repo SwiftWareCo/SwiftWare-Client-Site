@@ -6,52 +6,34 @@ export default function ClientShowcase() {
   const [activeClient, setActiveClient] = useState(0);
 
   const clients = [
-    { name: 'TechCorp', category: 'Technology', avatar: 'TC', 
+    { 
+      name: 'EduLink', 
+      category: 'Education Technology', 
+      avatar: 'EL', 
       color: '#6366F1',
       content: {
-        title: 'Digital Transformation Success',
-        description: 'Streamlined operations and increased efficiency by 40% through our comprehensive automation platform.',
-        image: 'Project Alpha Dashboard'
+        title: 'AI-powered platform connecting teachers and students with intelligent features for private schools. Enhanced learning experiences through seamless communication.',
+        description: 'AI-powered platform connecting teachers and students with intelligent features for private schools. Enhanced learning experiences through seamless communication.'
       }
     },
-    { name: 'InnovateLabs', category: 'Innovation', avatar: 'IL', 
+    { 
+      name: 'Vancouver Hood Doctors', 
+      category: 'Service Management', 
+      avatar: 'VH', 
       color: '#8B5CF6',
       content: {
-        title: 'Innovation Platform',
-        description: 'Accelerated product development cycles and enhanced collaboration across distributed teams.',
-        image: 'Innovation Hub Interface'
+        title: 'Complete CRM solution with client portal, invoice management, payroll systems, and estimate management. Streamlined operations for service-based business.',
+        description: 'Complete CRM solution with client portal, invoice management, payroll systems, and estimate management. Streamlined operations for service-based business.'
       }
     },
-    { name: 'GreenTech', category: 'Sustainability', avatar: 'GT', 
+    { 
+      name: 'CJS Golf Academy', 
+      category: 'Sports & Recreation', 
+      avatar: 'CG', 
       color: '#10B981',
       content: {
-        title: 'Sustainable Operations',
-        description: 'Reduced carbon footprint by 30% while optimizing resource allocation and operational efficiency.',
-        image: 'Sustainability Dashboard'
-      }
-    },
-    { name: 'DataDriven', category: 'Analytics', avatar: 'DD', 
-      color: '#A855F7',
-      content: {
-        title: 'Advanced Analytics',
-        description: 'Transformed raw data into actionable insights, driving strategic decision-making.',
-        image: 'Analytics Platform'
-      }
-    },
-    { name: 'ScaleUp', category: 'Growth', avatar: 'SU', 
-      color: '#6366F1',
-      content: {
-        title: 'Rapid Scaling Solution',
-        description: 'Enabled 300% growth while maintaining operational excellence and customer satisfaction.',
-        image: 'Growth Management System'
-      }
-    },
-    { name: 'SecureFlow', category: 'Security', avatar: 'SF', 
-      color: '#10B981',
-      content: {
-        title: 'Enterprise Security',
-        description: 'Implemented comprehensive security framework with zero breaches in 2+ years.',
-        image: 'Security Operations Center'
+        title: 'Modern, responsive website showcasing golf instruction services with booking integration and student progress tracking systems.',
+        description: 'Modern, responsive website showcasing golf instruction services with booking integration and student progress tracking systems.'
       }
     },
   ];
@@ -63,11 +45,9 @@ export default function ClientShowcase() {
   return (
     <section className="client-section">
       <div className="container">
-        <h2>Powering Success</h2>
-        <p className="subtitle">Across Industries</p>
-        <p style={{ textAlign: 'center', marginBottom: '3rem', color: '#64748B' }}>
-          Join thousands of companies worldwide who trust SwiftWare to streamline their 
-          operations, boost productivity, and drive digital transformation.
+        <h2>Trusted by Growing Businesses</h2>
+        <p style={{ textAlign: 'center', marginBottom: '3rem', color: '#64748B', fontSize: '1.2rem' }}>
+          We&apos;ve helped companies across industries streamline their operations with custom software solutions
         </p>
 
         <div className="client-grid">
@@ -93,7 +73,7 @@ export default function ClientShowcase() {
           <div className="showcase-image" style={{ background: `linear-gradient(135deg, ${clients[activeClient].color} 0%, ${clients[activeClient].color}CC 100%)` }}>
             <div>
               <h3 style={{ color: 'white', margin: 0 }}>{clients[activeClient].name}</h3>
-              <p style={{ color: 'white', opacity: 0.9, margin: '0.5rem 0 0 0' }}>{clients[activeClient].category} Platform</p>
+              <p style={{ color: 'white', opacity: 0.9, margin: '0.5rem 0 0 0' }}>{clients[activeClient].category}</p>
             </div>
           </div>
           <div className="showcase-content">
@@ -101,8 +81,16 @@ export default function ClientShowcase() {
             <p style={{ color: clients[activeClient].color, fontWeight: '600', marginBottom: '1rem' }}>{clients[activeClient].category}</p>
             <p>{clients[activeClient].content.description}</p>
             <div style={{ marginTop: '1.5rem' }}>
-              <h4 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0.5rem' }}>Key Results</h4>
-              <p style={{ fontSize: '0.9rem', color: '#64748B' }}>{clients[activeClient].content.title}</p>
+              <button 
+                className="btn btn-secondary"
+                style={{ 
+                  padding: '0.75rem 1.5rem', 
+                  fontSize: '0.9rem',
+                  marginTop: '1rem'
+                }}
+              >
+                See More
+              </button>
             </div>
           </div>
         </div>
