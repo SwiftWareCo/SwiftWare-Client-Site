@@ -1,37 +1,123 @@
-import Link from 'next/link';
-import Image from 'next/image';
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "motion/react";
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 text-white py-6 border-t border-purple-500/20">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
-          <div className="flex flex-col items-center md:items-start">
-            <Image 
-              src="/images/swiftware-logo.png" 
-              alt="SwiftWare" 
-              width={70}
-              height={70}
-              className="brightness-110 contrast-110 bg-white/10 p-3 rounded-lg mb-2"
-            />
-            <h3 className="text-purple-400 text-xl font-semibold mb-2">SwiftWare</h3>
-            <p className="text-gray-400 text-sm">Transforming business operations with intelligent software solutions</p>
+    <footer className="relative mt-32">
+      {/* Gradient separator */}
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="relative h-px w-full">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-zinc-700 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/20 to-transparent blur-sm" />
+        </div>
+      </div>
+
+      {/* Footer content */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="mx-auto max-w-7xl px-6 py-16"
+      >
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+          {/* Brand section */}
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="relative">
+                <div className="size-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-brand-glow flex items-center justify-center p-1.5">
+                  <Image
+                    src="/images/swiftware-logo.png"
+                    alt="SwiftWare Logo"
+                    width={32}
+                    height={32}
+                    className="mix-blend-screen"
+                  />
+                </div>
+              </div>
+              <h3 className="text-xl font-bold bg-gradient-to-r from-white to-zinc-300 bg-clip-text text-transparent">
+                Swiftware
+              </h3>
+            </div>
+            <p className="text-zinc-400 max-w-md leading-relaxed mb-6">
+              Building tomorrow&apos;s software today. We craft bespoke solutions that scale with your vision and exceed your expectations.
+            </p>
+            
+            {/* Social links */}
+            <div className="flex items-center gap-4">
+              <a href="#" className="btn-ghost px-3 py-2 hover:text-blue-400 transition-colors">
+                Twitter
+              </a>
+              <a href="#" className="btn-ghost px-3 py-2 hover:text-blue-400 transition-colors">
+                LinkedIn
+              </a>
+              <a href="#" className="btn-ghost px-3 py-2 hover:text-blue-400 transition-colors">
+                GitHub
+              </a>
+            </div>
           </div>
-          
-          <div className="flex gap-6">
-            <Link href="/services" className="text-gray-400 hover:text-purple-400 transition-colors px-4 py-2 rounded-lg hover:bg-white/10">
-              Services
-            </Link>
-            <Link href="/contact" className="text-gray-400 hover:text-purple-400 transition-colors px-4 py-2 rounded-lg hover:bg-white/10">
-              Contact
-            </Link>
+
+          {/* Quick links */}
+          <div>
+            <h4 className="text-sm font-semibold text-zinc-300 mb-4 uppercase tracking-wider">Services</h4>
+            <nav className="space-y-3">
+              <Link href="/#work" className="block text-zinc-400 hover:text-white transition-colors">
+                Our Work
+              </Link>
+              <Link href="/#process" className="block text-zinc-400 hover:text-white transition-colors">
+                Process
+              </Link>
+              <Link href="/?contact=open" className="block text-blue-400 hover:text-blue-300 transition-colors">
+                Start Project
+              </Link>
+            </nav>
+          </div>
+
+          {/* Contact info */}
+          <div>
+            <h4 className="text-sm font-semibold text-zinc-300 mb-4 uppercase tracking-wider">Contact</h4>
+            <div className="space-y-3 text-zinc-400">
+              <p className="hover:text-white transition-colors cursor-pointer">
+                swiftwareco@gmail.com
+              </p>
+              <p className="hover:text-white transition-colors cursor-pointer">
+                +1 (604) 862-5038
+              </p>
+              <p className="text-sm">
+                Richmond, BC, Canada
+              </p>
+            </div>
           </div>
         </div>
-        
-        <div className="border-t border-gray-700 pt-4 text-center text-gray-400 text-sm">
-          © 2024 SwiftWare. All rights reserved.
+
+        {/* Bottom bar */}
+        <div className="mt-12 pt-8 border-t border-zinc-800/60">
+          <div className="flex flex-col gap-4 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
+            <p>© {new Date().getFullYear()} Swiftware. All rights reserved.</p>
+            
+            <div className="flex items-center gap-6">
+              <Link href="/privacy" className="hover:text-zinc-300 transition-colors">
+                Privacy
+              </Link>
+              <Link href="/terms" className="hover:text-zinc-300 transition-colors">
+                Terms
+              </Link>
+              <Link href="/?contact=open" className="btn-primary px-4 py-2 text-xs">
+                Let&apos;s build something amazing
+              </Link>
+            </div>
+          </div>
         </div>
+      </motion.div>
+
+      {/* Footer ambient glow */}
+      <div className="absolute inset-0 -z-10 pointer-events-none">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 size-96 
+                      bg-gradient-to-t from-blue-500/5 to-transparent rounded-full blur-3xl" />
       </div>
     </footer>
   );
-} 
+}
