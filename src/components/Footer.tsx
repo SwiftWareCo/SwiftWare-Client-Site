@@ -3,35 +3,32 @@ import Image from 'next/image';
 
 export default function Footer() {
   return (
-    <footer className="footer">
-      <div className="container">
-        <div className="footer-content">
-          <div className="footer-brand">
+    <footer className="bg-slate-900 text-white py-6 border-t border-purple-500/20">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+          <div className="flex flex-col items-center md:items-start">
             <Image 
               src="/images/swiftware-logo.png" 
               alt="SwiftWare" 
               width={70}
               height={70}
-              className="footer-logo"
-              style={{ 
-                filter: 'brightness(1.2) contrast(1.1)',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                padding: '12px 16px',
-                borderRadius: '8px',
-                marginBottom: '8px'
-              }}
+              className="brightness-110 contrast-110 bg-white/10 p-3 rounded-lg mb-2"
             />
-            <h3 style={{ color: '#6366F1', marginBottom: '0.5rem', fontSize: '1.2rem' }}>SwiftWare</h3>
-            <p>Transforming business operations with intelligent software solutions</p>
+            <h3 className="text-purple-400 text-xl font-semibold mb-2">SwiftWare</h3>
+            <p className="text-gray-400 text-sm">Transforming business operations with intelligent software solutions</p>
           </div>
           
-          <div className="footer-nav">
-            <Link href="/services">Services</Link>
-            <Link href="/contact">Contact</Link>
+          <div className="flex gap-6">
+            <Link href="/services" className="text-gray-400 hover:text-purple-400 transition-colors px-4 py-2 rounded-lg hover:bg-white/10">
+              Services
+            </Link>
+            <Link href="/contact" className="text-gray-400 hover:text-purple-400 transition-colors px-4 py-2 rounded-lg hover:bg-white/10">
+              Contact
+            </Link>
           </div>
         </div>
         
-        <div className="footer-bottom">
+        <div className="border-t border-gray-700 pt-4 text-center text-gray-400 text-sm">
           © 2024 SwiftWare. All rights reserved.
         </div>
       </div>
