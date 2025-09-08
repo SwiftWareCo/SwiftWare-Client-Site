@@ -109,12 +109,13 @@ export default function ContactDialog() {
           {/* Backdrop */}
           <motion.button
             aria-hidden
-            className="fixed inset-0 bg-black/70 backdrop-blur-md"
+            className="fixed inset-0 bg-black/70"
             onClick={close}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(12px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            style={{ backdropFilter: "blur(12px)" }}
           />
 
           {/* Ambient brand glow */}

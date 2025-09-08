@@ -1,416 +1,147 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useRef } from 'react';
-import { motion, useInView } from 'motion/react';
-import Link from 'next/link';
+import { useMemo } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import Link from "next/link";
+import { ArrowRight, Play } from "lucide-react";
 
-// Particle System Component
-const ParticleSystem = () => {
-  const [mounted, setMounted] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Array<{
-    x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    size: number;
-    opacity: number;
-  }>>([]);
-  const animationRef = useRef<number | undefined>(undefined);
+import TypingHeadline from "@/components/hero/TypingHeadline";
+import DesktopBridgeShowcase from "@/components/hero/DesktopBridgeShowcase";
+import LaptopSyncTile from "@/components/hero/LaptopSyncTile";
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-    
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    // Create particles
-    const createParticles = () => {
-      particlesRef.current = [];
-      const particleCount = Math.min(50, Math.floor((canvas.width * canvas.height) / 15000));
-      
-      for (let i = 0; i < particleCount; i++) {
-        particlesRef.current.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          size: Math.random() * 2 + 1,
-          opacity: Math.random() * 0.5 + 0.2,
-        });
-      }
-    };
-
-    createParticles();
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      particlesRef.current.forEach((particle) => {
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-
-        // Wrap around edges
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-        if (particle.y > canvas.height) particle.y = 0;
-
-        // Draw particle
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(99, 102, 241, ${particle.opacity})`;
-        ctx.fill();
-      });
-
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [mounted]);
-
-  // Always render the same structure - just don't draw anything until mounted
-  return (
-    <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 pointer-events-none"
-        style={{ opacity: mounted ? 1 : 0 }}
-      />
-      {!mounted && (
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-pink-900/20" />
-      )}
-    </div>
-  );
-};
-
-// Animated Code Editor Component
-const AnimatedCodeEditor = () => {
-  const [mounted, setMounted] = useState(false);
-  const [currentLine, setCurrentLine] = useState(0);
-  const [displayedCode, setDisplayedCode] = useState('');
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
-    const codeLines = [
-      'const swiftware = {',
-      '  expertise: "Full-Stack Development",',
-      '  speed: "Rapid Delivery",',
-      '  quality: "Enterprise Grade",',
-      '  clients: 127,',
-      '  satisfaction: "94%",',
-      '  responseTime: "< 24hrs"',
-      '};',
-      '',
-      '// Ready to build your future?',
-      'swiftware.startProject();'
-    ];
-
-    const interval = setInterval(() => {
-      if (currentLine < codeLines.length) {
-        setDisplayedCode(prev => prev + codeLines[currentLine] + '\n');
-        setCurrentLine(prev => prev + 1);
-      } else {
-        // Reset after a delay
-        setTimeout(() => {
-          setCurrentLine(0);
-          setDisplayedCode('');
-        }, 3000);
-      }
-    }, 800);
-
-    return () => clearInterval(interval);
-  }, [mounted, currentLine]);
-
-  // Static code display during SSR
-  if (!mounted) {
-    const staticCode = `const swiftware = {
-  expertise: "Full-Stack Development",
-  speed: "Rapid Delivery", 
-  quality: "Enterprise Grade",
-  clients: 127,
-  satisfaction: "94%",
-  responseTime: "< 24hrs"
-};
-
-// Ready to build your future?
-swiftware.startProject();`;
-
-    return (
-      <div className="relative bg-gray-900 rounded-2xl p-6 shadow-2xl border border-gray-700">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-          <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-          <span className="text-gray-400 text-sm ml-4">swiftware.js</span>
-        </div>
-        <pre className="text-green-400 font-mono text-sm leading-relaxed">
-          {staticCode}
-        </pre>
-      </div>
-    );
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.8, delay: 0.5 }}
-      className="relative bg-gray-900 rounded-2xl p-6 shadow-2xl border border-gray-700"
-    >
-      <div className="flex items-center gap-2 mb-4">
-        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-        <span className="text-gray-400 text-sm ml-4">swiftware.js</span>
-      </div>
-      <pre className="text-green-400 font-mono text-sm leading-relaxed">
-        {displayedCode}
-        <motion.span
-          animate={{ opacity: [1, 0, 1] }}
-          transition={{ duration: 1, repeat: Infinity }}
-          className="text-white"
-        >
-          |
-        </motion.span>
-      </pre>
-    </motion.div>
-  );
-};
-
-// Animated Counter Component
-const AnimatedCounter = ({ end, duration = 2000 }: { end: number; duration?: number }) => {
-  const [mounted, setMounted] = useState(false);
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted || !isInView) return;
-
-    let startTime: number;
-    const animate = (currentTime: number) => {
-      if (!startTime) startTime = currentTime;
-      const progress = Math.min((currentTime - startTime) / duration, 1);
-      
-      setCount(Math.floor(progress * end));
-      
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
-
-    requestAnimationFrame(animate);
-  }, [mounted, isInView, end, duration]);
-
-  // Show final value during SSR
-  if (!mounted) {
-    return <span ref={ref}>{end}</span>;
-  }
-
-  return <span ref={ref}>{count}</span>;
-};
-
-// Status Indicator Component
-const StatusIndicator = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Static version for SSR
-  if (!mounted) {
-    return (
-      <div className="flex items-center gap-2 text-green-400">
-        <div className="w-2 h-2 bg-green-400 rounded-full" />
-        <span className="text-sm font-medium">All Systems Operational</span>
-      </div>
-    );
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.6, delay: 1.2 }}
-      className="flex items-center gap-2 text-green-400"
-    >
-      <motion.div
-        animate={{ scale: [1, 1.2, 1] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        className="w-2 h-2 bg-green-400 rounded-full"
-      />
-      <span className="text-sm font-medium">All Systems Operational</span>
-    </motion.div>
-  );
-};
+const HEADLINE = "Software. Made to fit.";
 
 export default function Hero() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const reduce = useReducedMotion();
+  const stripes = useMemo(() => [4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92], []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        <ParticleSystem />
+    <section
+      id="hero"
+      aria-labelledby="hero-heading"
+      className="relative mx-auto max-w-[92rem] px-4 sm:px-6 pt-40 sm:pt-48 pb-14 sm:pb-16"
+    >
+      {/* backdrop lines */}
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[100vw] h-full -z-10 overflow-hidden">
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(900px 420px at 50% -10%, rgba(59,130,246,.14), transparent 60%)",
+            opacity: 0.7,
+          }}
+        />
+        {!reduce &&
+          stripes.map((left, i) => (
+            <div key={left}>
+              <motion.span
+                className="absolute top-[-130%] h-[240%] w-px"
+                style={{
+                  left: `${left}%`,
+                  background:
+                    "linear-gradient(180deg, transparent, rgba(59,130,246,.22), rgba(168,85,247,.22), transparent)",
+                  opacity: 0.22,
+                }}
+                initial={{ y: 0 }}
+                animate={{ y: "18%" }}
+                transition={{
+                  duration: 12 + i * 0.5,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  ease: "easeInOut",
+                  delay: i * 0.15,
+                }}
+              />
+              <motion.span
+                className="absolute h-1.5 w-1.5 rounded-full"
+                style={{
+                  left: `calc(${left}% - 3px)`,
+                  background:
+                    "radial-gradient(circle, rgba(255,255,255,.85) 0%, rgba(59,130,246,.8) 40%, rgba(168,85,247,.0) 70%)",
+                  filter: "drop-shadow(0 0 8px rgba(99,102,241,.8))",
+                }}
+                initial={{ top: "-10%", opacity: 0.6 }}
+                animate={{ top: "110%", opacity: [0.6, 1, 0.6] }}
+                transition={{
+                  duration: 5.5 + i * 0.25,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: i * 0.2,
+                }}
+              />
+            </div>
+          ))}
       </div>
 
-      {/* Main Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-screen py-20">
-          {/* Left Content */}
+      <div
+        className="
+          grid gap-6 lg:gap-8
+          place-items-center
+          md:place-items-stretch
+          md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]
+          xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]
+          xl:min-h-[560px]
+        "
+      >
+        {/* LEFT — center on phone; vertically center on xl+ */}
+        <div className="relative justify-self-center md:justify-self-auto text-center md:text-left xl:flex xl:flex-col xl:justify-center">
+          <p className="inline-flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-[0.18em] text-zinc-400">
+            Swiftware
+            <span className="inline-block h-1 w-1 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
+            Digital craftsmanship
+          </p>
+
+          <h1 id="hero-heading" className="mt-2">
+            <TypingHeadline
+              text={HEADLINE}
+              className="text-[1.35rem] sm:text-[1.65rem] lg:text-[2.1rem] font-bold leading-tight"
+              step={0.065}
+              blinkPeriod={2}
+            />
+          </h1>
+
           <motion.div
-            initial={mounted ? { opacity: 0, x: -50 } : { opacity: 1, x: 0 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-white"
+            initial={reduce ? { opacity: 1 } : { y: 8, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.75, duration: 0.45 }}
+            className="mt-4 flex flex-wrap items-center gap-3 justify-center md:justify-start"
           >
-            {/* Logo */}
-            <motion.div
-              initial={mounted ? { opacity: 0, scale: 0.8 } : { opacity: 1, scale: 1 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="mb-8"
+            <Link
+              href="/?contact=open"
+              className="relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-5 py-3 text-sm font-medium text-white ring-1 ring-zinc-800"
+              style={{ background: "linear-gradient(90deg, rgb(59 130 246), rgb(168 85 247))" }}
+              aria-label="Start your project"
             >
-              <h1 className="text-6xl lg:text-8xl font-black bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent leading-none">
-                SWIFTWARE
-              </h1>
-            </motion.div>
+              <motion.span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-purple-600/0 via-purple-600/30 to-blue-500/0"
+                whileHover={{ x: "100%" }}
+                transition={{ duration: 0.7, ease: "easeInOut" }}
+              />
+              Start your project
+              <ArrowRight className="size-4" />
+            </Link>
 
-            {/* Tagline */}
-            <motion.div
-              initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="mb-6"
+            <Link
+              href="/#work"
+              className="group inline-flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/60 px-5 py-3 text-sm text-zinc-200 hover:bg-zinc-900"
             >
-              <p className="text-2xl lg:text-3xl font-light text-gray-300 leading-relaxed">
-                We don&apos;t just write code.
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 font-semibold">
-                  We architect digital futures.
-                </span>
-              </p>
-            </motion.div>
-
-            {/* Stats */}
-            <motion.div
-              initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="mb-8 space-y-4"
-            >
-              <div className="flex items-center gap-4">
-                <div className="text-3xl font-bold text-purple-400">
-                  <AnimatedCounter end={127} />
-                </div>
-                <span className="text-gray-300">Projects Delivered</span>
-              </div>
-              <StatusIndicator />
-            </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div
-              initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4"
-            >
-              <Link href="/contact">
-              <button className="btn-primary"> test </button>
-                <motion.button
-                  whileHover={mounted ? { scale: 1.05, y: -2 } : {}}
-                  whileTap={mounted ? { scale: 0.95 } : {}}
-                  className="btn-primary"
-                >
-                  Start Your Project
-                  <motion.span
-                    animate={mounted ? { x: [0, 5, 0] } : {}}
-                    transition={mounted ? { duration: 1.5, repeat: Infinity } : {}}
-                  >
-                    →
-                  </motion.span>
-                </motion.button>
-              </Link>
-              <Link href="/services">
-                <motion.button
-                  whileHover={mounted ? { scale: 1.05, y: -2 } : {}}
-                  whileTap={mounted ? { scale: 0.95 } : {}}
-                  className="px-8 py-4 border-2 border-purple-400 text-purple-400 font-semibold rounded-xl hover:bg-purple-400 hover:text-white transition-all duration-300"
-                >
-                  View Our Work
-                </motion.button>
-              </Link>
-            </motion.div>
-          </motion.div>
-
-          {/* Right Content - Code Editor */}
-          <motion.div
-            initial={mounted ? { opacity: 0, x: 50 } : { opacity: 1, x: 0 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="flex justify-center lg:justify-end"
-          >
-            <AnimatedCodeEditor />
+              See our work
+              <Play className="size-4 text-zinc-500 group-hover:text-zinc-300 transition-colors" />
+            </Link>
           </motion.div>
         </div>
-      </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={mounted ? { opacity: 0 } : { opacity: 1 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 2 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-      >
-        <motion.div
-          animate={mounted ? { y: [0, 10, 0] } : {}}
-          transition={mounted ? { duration: 2, repeat: Infinity } : {}}
-          className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center"
-        >
-          <motion.div
-            animate={mounted ? { y: [0, 12, 0] } : {}}
-            transition={mounted ? { duration: 2, repeat: Infinity } : {}}
-            className="w-1 h-3 bg-white/60 rounded-full mt-2"
-          />
-        </motion.div>
-      </motion.div>
+        {/* RIGHT — <xl compact tile; ≥xl desktop bridge */}
+        <div className="relative justify-self-center md:justify-self-auto w-full">
+          <div className="xl:hidden w-full max-w-[min(90vw,520px)] mx-auto">
+            <LaptopSyncTile />
+          </div>
+          <div className="hidden xl:block">
+            <DesktopBridgeShowcase />
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

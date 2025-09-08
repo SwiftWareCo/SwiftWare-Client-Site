@@ -8,7 +8,6 @@ import { motion } from "motion/react";
 
 // Client-only to avoid SSR random/hydration issues
 const SplashScreen = dynamic(() => import("./SplashScreen"), { ssr: false });
-const ContactDialog = dynamic(() => import("./ContactDialog"), { ssr: false });
 
 interface ClientAppProps {
   children: React.ReactNode;
@@ -16,15 +15,10 @@ interface ClientAppProps {
 
 export default function ClientApp({ children }: ClientAppProps) {
   const [showSplash, setShowSplash] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const splashTimer = setTimeout(() => setShowSplash(false), 3000);
 
-    (async () => {
-      await import("./ContactDialog");
-      setIsLoaded(true);
-    })();
 
     return () => clearTimeout(splashTimer);
   }, []);
@@ -43,7 +37,6 @@ export default function ClientApp({ children }: ClientAppProps) {
           <UnifiedHeader />
           {children}
           <Footer />
-          {isLoaded && <ContactDialog />}
         </motion.div>
       )}
     </>
