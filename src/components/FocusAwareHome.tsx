@@ -23,7 +23,7 @@ export default function FocusAwareHome() {
   }, [focus]);
 
   return (
-    <section aria-live="polite" className="mx-auto max-w-5xl px-4 sm:px-6 py-6">
+    <section aria-live="polite" className="mx-auto max-w-5xl px-0 sm:px-6 py-6">
       <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
         <p className="text-sm text-zinc-300">
           {copy}
