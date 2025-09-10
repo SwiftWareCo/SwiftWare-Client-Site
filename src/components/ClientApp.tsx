@@ -1,12 +1,12 @@
 "use client";
-
-import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
 import UnifiedHeader from "./UnifiedHeader";
 import Footer from "./Footer";
 import { motion } from "motion/react";
+import { FocusProvider } from "@/context/FocusContext";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+import { getSavedFocus } from "@/lib/useFocus";
 
-// Client-only to avoid SSR random/hydration issues
 const SplashScreen = dynamic(() => import("./SplashScreen"), { ssr: false });
 
 interface ClientAppProps {
@@ -14,31 +14,34 @@ interface ClientAppProps {
 }
 
 export default function ClientApp({ children }: ClientAppProps) {
-  const [showSplash, setShowSplash] = useState(true);
+  const [splashDone, setSplashDone] = useState(false);
 
   useEffect(() => {
-    const splashTimer = setTimeout(() => setShowSplash(false), 3000);
-
-
-    return () => clearTimeout(splashTimer);
+    const saved = getSavedFocus();
+    if (saved) setSplashDone(true);
   }, []);
 
   return (
     <>
-      <SplashScreen />
-
-      {!showSplash && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.1 }}
-          className="min-h-screen"
-        >
-          <UnifiedHeader />
-          {children}
-          <Footer />
-        </motion.div>
-      )}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.1 }}
+        className="min-h-screen"
+      >
+        <FocusProvider>
+          {!splashDone && (
+            <SplashScreen requireChoice onDone={() => setSplashDone(true)} />
+          )}
+          {splashDone && (
+            <>
+              <UnifiedHeader />
+              {children}
+              <Footer />
+            </>
+          )}
+        </FocusProvider>
+      </motion.div>
     </>
   );
 }

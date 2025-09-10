@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
-import { ArrowRight, Sparkles, Zap, Activity } from "lucide-react";
+import { ArrowRight, Sparkles, Zap } from "lucide-react";
+import ThemedFocusDropdown from "./focus/ThemedFocusDropdown";
 
 const LINKS = [
   { href: "/#work", label: "Work", id: "work", icon: Sparkles },
@@ -94,7 +95,7 @@ export default function UnifiedHeader() {
           <motion.div
             initial={{ y: -18, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 3.5, ease: [0.16, 1, 0.3, 1] }}
             className="relative group"
           >
             <motion.div
@@ -195,22 +196,7 @@ export default function UnifiedHeader() {
                       </div>
                     </Link>
 
-                    {/* status hidden on mobile */}
-                    <div className="hidden md:flex items-center gap-4">
-                      <div className="flex items-center gap-2">
-                        <motion.div
-                          animate={{ opacity: [0.5, 1, 0.5] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                          className="size-2 bg-emerald-400 rounded-full shadow-[0_0_8px_rgba(34,197,94,0.8)]"
-                        />
-                        <span className="text-sm text-zinc-400">Online</span>
-                      </div>
-                      <div className="h-3 w-px bg-zinc-700" />
-                      <div className="flex items-center gap-2">
-                        <Activity className="size-3 text-blue-400" />
-                        <span className="text-sm text-zinc-400">Response &lt;100ms</span>
-                      </div>
-                    </div>
+                    {/* status removed per request */}
                   </div>
 
                   {/* Row 2 */}
@@ -272,13 +258,16 @@ export default function UnifiedHeader() {
                       })}
                     </div>
 
-                    {/* CTA */}
+                    {/* Focus dropdown + CTA */}
                     <motion.div
                       initial={{ x: 16, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ duration: 0.4, delay: 0.3 }}
-                      className="ml-2"
+                      className="ml-2 flex items-center gap-3"
                     >
+                      <div className="hidden md:block">
+                        <ThemedFocusDropdown />
+                      </div>
                       <motion.div
                         initial="rest"
                         animate="rest"
