@@ -12,11 +12,11 @@ export default function Icon({
   "aria-hidden": ariaHidden = true
 }: { name?: string; className?: string; "aria-hidden"?: boolean }) {
   if (!name) {
-    const Fallback = (Lucide as any)["Sparkles"] ?? (Lucide as any).Circle;
+    const Fallback = (Lucide as unknown as Record<string, React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>>)["Sparkles"] ?? (Lucide as unknown as Record<string, React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>>).Circle;
     return <Fallback className={className} aria-hidden={ariaHidden} />;
   }
-  const Comp = (Lucide as any)[name] as React.ComponentType<any>;
-  const Resolved = Comp ?? (Lucide as any)["Sparkles"] ?? (Lucide as any).Circle;
+  const Comp = (Lucide as unknown as Record<string, React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>>)[name];
+  const Resolved = Comp ?? (Lucide as unknown as Record<string, React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>>)["Sparkles"] ?? (Lucide as unknown as Record<string, React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>>).Circle;
   return <Resolved className={className} aria-hidden={ariaHidden} />;
 }
 
