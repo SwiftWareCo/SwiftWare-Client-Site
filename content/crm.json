@@ -1,0 +1,47 @@
+{
+  "focus": "crm",
+  "hero": {
+    "subline": "Field teams move faster with a CRM they actually use.",
+    "primaryCta": { "label": "Start a project", "href": "/#contact" },
+    "secondaryCta": { "label": "See capabilities", "href": "#capabilities" }
+  },
+  "bullets": [
+    { "label": "Dispatch in minutes", "shortLine": "Reduce back-and-forth with live scheduling." },
+    { "label": "Mobile-first field app", "shortLine": "Photos, notes, signatures—even offline." },
+    { "label": "Proof & invoicing", "shortLine": "Before/after, signed work orders, PDF/email." }
+  ],
+  "capabilities": [
+    { "title": "Work Orders", "summary": "Create, assign, and track jobs end to end.", "icon": "Clipboard" },
+    { "title": "Scheduling", "summary": "Drag-and-drop calendar with technician load.", "icon": "Calendar" },
+    { "title": "Mobile App", "summary": "Photos, notes, signatures, and offline mode.", "icon": "Smartphone" },
+    { "title": "Photo Logs", "summary": "Before/after galleries tied to each job.", "icon": "Images" },
+    { "title": "Invoicing", "summary": "Generate PDF, email invoices, and export.", "icon": "FileText" },
+    { "title": "Permissions", "summary": "Role-based access for ops, techs, admins.", "icon": "Shield" },
+    { "title": "Reporting", "summary": "Utilization, completion rates, error trends.", "icon": "BarChart2" },
+    { "title": "Build on request", "summary": "We extend the system to fit your ops.", "icon": "Sparkles" }
+  ],
+  "modules": ["FieldOpsTimeline", "DispatchScheduling", "ProofInvoicing"],
+  "outcomes": [
+    { "metric": "-42%", "unit": "dispatch time", "blurb": "Fewer touchpoints to assign jobs." },
+    { "metric": "-29%", "unit": "rework", "blurb": "Photo proof and checklists reduce errors." },
+    { "metric": "+3.1x", "unit": "doc speed", "blurb": "One-tap exports speed invoicing." }
+  ],
+  "faq": [
+    { "q": "Who owns our data?", "a": "You do. Your data lives in your cloud accounts/repo." },
+    { "q": "Does it work offline?", "a": "Yes. The mobile app caches jobs and syncs when online." },
+    { "q": "Can we integrate payments?", "a": "Yes. We can add Stripe or your preferred provider." }
+  ],
+  "engagement": {
+    "variants": [
+      { "name": "Fixed Scope", "highlight": "Well-defined modules delivered end-to-end." },
+      { "name": "Sprint Retainer", "highlight": "Iterate weekly, ship continuously." },
+      { "name": "Support", "highlight": "Ops tweaks, reports, and on-call fixes." }
+    ]
+  },
+  "seo": {
+    "title": "Service CRM & Field App — Swiftware",
+    "description": "A made-to-fit CRM field teams actually use: dispatch, mobile app, photo proof, signatures, and invoicing."
+  }
+}
+
+

@@ -1,11 +1,11 @@
-import Hero from "@/components/Hero";
+import FocusHero from "@/components/FocusHero";
 import ContactDialog from "@/components/ContactDialog";
 import FocusAwareHome from "@/components/FocusAwareHome";
 
 export default function Home() {
   return (
     <div id="home" >
-      <Hero />
+      <FocusHero />
       <FocusAwareHome />
       <ContactDialog />
     </div>

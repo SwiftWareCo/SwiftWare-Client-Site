@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { useFocusContext } from "@/context/FocusContext";
+import VerticalRenderer from "@/components/VerticalRenderer";
 
 export default function FocusAwareHome() {
   const { focus } = useFocusContext();
@@ -27,6 +28,11 @@ export default function FocusAwareHome() {
         <p className="text-sm text-zinc-300">
           {copy}
         </p>
+      </div>
+
+      {/* Vertical-specific content mounts below, using existing Hero above */}
+      <div className="mt-4">
+        <VerticalRenderer />
       </div>
     </section>
   );
