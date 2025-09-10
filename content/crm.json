@@ -11,20 +11,20 @@
     { "label": "Proof & invoicing", "shortLine": "Before/after, signed work orders, PDF/email." }
   ],
   "capabilities": [
-    { "title": "Work Orders", "summary": "Create, assign, and track jobs end to end.", "icon": "Clipboard" },
-    { "title": "Scheduling", "summary": "Drag-and-drop calendar with technician load.", "icon": "Calendar" },
-    { "title": "Mobile App", "summary": "Photos, notes, signatures, and offline mode.", "icon": "Smartphone" },
-    { "title": "Photo Logs", "summary": "Before/after galleries tied to each job.", "icon": "Images" },
-    { "title": "Invoicing", "summary": "Generate PDF, email invoices, and export.", "icon": "FileText" },
-    { "title": "Permissions", "summary": "Role-based access for ops, techs, admins.", "icon": "Shield" },
-    { "title": "Reporting", "summary": "Utilization, completion rates, error trends.", "icon": "BarChart2" },
-    { "title": "Build on request", "summary": "We extend the system to fit your ops.", "icon": "Sparkles" }
+    { "title": "Work Orders", "summary": "Create, assign, and track jobs end to end.", "icon": "ClipboardList", "category": "Essentials" },
+    { "title": "Scheduling", "summary": "Drag-and-drop calendar with technician load.", "icon": "CalendarClock", "badges": ["Load view"], "category": "Essentials" },
+    { "title": "Mobile App", "summary": "Photos, notes, signatures, and offline mode.", "icon": "Smartphone", "badges": ["Offline"], "category": "Essentials" },
+    { "title": "Photo Logs", "summary": "Before/after galleries tied to each job.", "icon": "Images", "category": "Essentials" },
+    { "title": "Invoicing", "summary": "Generate PDF, email invoices, and export.", "icon": "FileText", "category": "Advanced" },
+    { "title": "Permissions", "summary": "Role-based access for ops, techs, admins.", "icon": "Shield", "badges": ["RBAC"], "category": "Advanced" },
+    { "title": "Reporting", "summary": "Utilization, completion rates, error trends.", "icon": "BarChart3", "category": "Advanced" },
+    { "title": "Build on request", "summary": "We extend the system to fit your ops.", "icon": "Sparkles", "highlight": true, "category": "Advanced" }
   ],
   "modules": ["FieldOpsTimeline", "DispatchScheduling", "ProofInvoicing"],
   "outcomes": [
     { "metric": "-42%", "unit": "dispatch time", "blurb": "Fewer touchpoints to assign jobs." },
     { "metric": "-29%", "unit": "rework", "blurb": "Photo proof and checklists reduce errors." },
-    { "metric": "+3.1x", "unit": "doc speed", "blurb": "One-tap exports speed invoicing." }
+    { "metric": "+3.1×", "unit": "doc speed", "blurb": "One-tap exports speed invoicing." }
   ],
   "faq": [
     { "q": "Who owns our data?", "a": "You do. Your data lives in your cloud accounts/repo." },

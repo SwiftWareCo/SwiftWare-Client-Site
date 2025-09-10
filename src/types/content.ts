@@ -7,6 +7,8 @@ export type CapabilityTile = {
   cta?: string;
   href?: string;
   badges?: string[];
+  highlight?: boolean;
+  category?: string; // e.g., "Essentials", "Advanced", "Integrations" (default: Essentials)
 };
 
 export type Outcome = {
