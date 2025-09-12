@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { motion, AnimatePresence } from "motion/react";
-import { X, Send, Phone, Mail, MapPin, Sparkles } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { X, Send, Phone, Mail, MapPin, Sparkles } from 'lucide-react';
 
-export default function ContactDialog() {
-  const router = useRouter();
-  const params = useSearchParams();
-  const open = params.get("contact") === "open";
+interface ContactDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function ContactDialog({ isOpen, onClose }: ContactDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
@@ -16,28 +17,28 @@ export default function ContactDialog() {
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
 
   const focusables = useMemo(() => {
-    if (!open || !dialogRef.current) return [] as HTMLElement[];
+    if (!isOpen || !dialogRef.current) return [] as HTMLElement[];
     const sel = [
-      "a[href]",
-      "button:not([disabled])",
-      "textarea",
-      "input",
-      "select",
+      'a[href]',
+      'button:not([disabled])',
+      'textarea',
+      'input',
+      'select',
       "[tabindex]:not([tabindex='-1'])",
-    ].join(",");
+    ].join(',');
     return Array.from(dialogRef.current.querySelectorAll<HTMLElement>(sel));
-  }, [open]);
+  }, [isOpen]);
 
   // Only run focus/lock logic when open
   useEffect(() => {
-    if (!open) return;
+    if (!isOpen) return;
 
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
     const t = setTimeout(() => firstFieldRef.current?.focus(), 0);
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") router.replace("/", { scroll: false });
-      if (e.key === "Tab" && focusables.length) {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'Tab' && focusables.length) {
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
         const active = document.activeElement as HTMLElement | null;
@@ -50,26 +51,30 @@ export default function ContactDialog() {
         }
       }
     };
-    window.addEventListener("keydown", onKey);
+    window.addEventListener('keydown', onKey);
 
     return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
       clearTimeout(t);
     };
-  }, [open, router, focusables]);
-
-  const close = () => router.replace("/", { scroll: false });
+  }, [isOpen, onClose, focusables]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Scroll to button area to show loading state
+    const buttonArea = document.getElementById('button-area');
+    if (buttonArea) {
+      buttonArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
     try {
       const data = Object.fromEntries(new FormData(e.currentTarget).entries());
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
@@ -78,13 +83,13 @@ export default function ContactDialog() {
         (e.target as HTMLFormElement).reset();
         setTimeout(() => {
           setSubmitSuccess(false);
-          close();
+          onClose();
         }, 2000);
       } else {
-        throw new Error("Failed to send message");
+        throw new Error('Failed to send message');
       }
     } catch {
-      alert("Something went wrong. Please email swiftwareco@gmail.com");
+      alert('Something went wrong. Please email swiftwareco@gmail.com');
     } finally {
       setIsSubmitting(false);
     }
@@ -92,14 +97,14 @@ export default function ContactDialog() {
 
   return (
     // Keep mounted always; only toggle the child so exit can run
-    <AnimatePresence mode="wait" initial={false}>
-      {open && (
+    <AnimatePresence mode='wait' initial={false}>
+      {isOpen && (
         <motion.div
-          key="contact-dialog"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Contact Swiftware"
-          className="fixed inset-0 z-50 grid place-items-center p-4"
+          key='contact-dialog'
+          role='dialog'
+          aria-modal='true'
+          aria-label='Contact Swiftware'
+          className='fixed inset-0 z-50 grid place-items-center p-2 sm:p-4'
           ref={dialogRef}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -109,22 +114,32 @@ export default function ContactDialog() {
           {/* Backdrop */}
           <motion.button
             aria-hidden
-            className="fixed inset-0 bg-black/70"
-            onClick={close}
-            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            animate={{ opacity: 1, backdropFilter: "blur(12px)" }}
-            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            style={{ backdropFilter: "blur(12px)" }}
+            className='fixed inset-0 bg-black/70'
+            onClick={onClose}
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+              backdropFilter: ['blur(0px)', 'blur(6px)', 'blur(12px)'],
+            }}
+            exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            transition={{
+              duration: 0.8,
+              ease: [0.25, 0.46, 0.45, 0.94],
+              backdropFilter: {
+                duration: 0.8,
+                times: [0, 0.5, 1],
+              },
+            }}
+            style={{ backdropFilter: 'blur(12px)' }}
           />
 
           {/* Ambient brand glow */}
           <motion.div
             aria-hidden
-            className="pointer-events-none absolute inset-0"
+            className='pointer-events-none absolute inset-0'
             style={{
               background:
-                "radial-gradient(600px 400px at 50% 30%, rgba(59,130,246,0.15), rgba(168,85,247,0.1), transparent 70%)",
+                'radial-gradient(600px 400px at 50% 30%, rgba(59,130,246,0.15), rgba(168,85,247,0.1), transparent 70%)',
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -142,11 +157,11 @@ export default function ContactDialog() {
               ease: [0.16, 1, 0.3, 1],
               delay: 0.1,
             }}
-            className="relative w-[min(900px,95vw)] overflow-hidden rounded-2xl border border-zinc-800/60 bg-zinc-950/95 backdrop-blur-xl shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)]"
+            className='relative w-[min(900px,95vw)] max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] max-h-[calc(100vh-1rem)] sm:max-h-[calc(100vh-2rem)] overflow-hidden rounded-2xl border border-zinc-800/60 bg-zinc-950/95 backdrop-blur-xl shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)]'
           >
             {/* Top accent */}
             <motion.div
-              className="h-1 w-full bg-gradient-to-r from-transparent via-blue-500 to-transparent"
+              className='h-1 w-full bg-gradient-to-r from-transparent via-blue-500 to-transparent'
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 0.8, delay: 0.3 }}
@@ -156,28 +171,30 @@ export default function ContactDialog() {
             <AnimatePresence>
               {submitSuccess && (
                 <motion.div
-                  key="success"
+                  key='success'
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  className="absolute inset-0 z-10 flex items-center justify-center bg-zinc-950/95 backdrop-blur-sm"
+                  className='absolute inset-0 z-10 flex items-center justify-center bg-zinc-950/95 backdrop-blur-sm'
                 >
-                  <div className="text-center">
+                  <div className='text-center'>
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{
                         duration: 2,
                         repeat: Infinity,
-                        ease: "linear",
+                        ease: 'linear',
                       }}
-                      className="mx-auto mb-4 size-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center"
+                      className='mx-auto mb-4 size-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center'
                     >
-                      <Sparkles className="size-8 text-white" />
+                      <Sparkles className='size-8 text-white' />
                     </motion.div>
-                    <h3 className="text-xl font-semibold text-white mb-2">
+                    <h3 className='text-xl font-semibold text-white mb-2'>
                       Message Sent!
                     </h3>
-                    <p className="text-zinc-400">We&apos;ll be in touch within 4 hours.</p>
+                    <p className='text-zinc-400'>
+                      We&apos;ll be in touch within 4 hours.
+                    </p>
                   </div>
                 </motion.div>
               )}
@@ -185,70 +202,82 @@ export default function ContactDialog() {
 
             {/* Header */}
             <motion.header
-              className="flex items-center justify-between px-6 py-5 border-b border-zinc-800/40"
+              className='flex items-center justify-between px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-5 border-b border-zinc-800/40'
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
             >
-              <div>
-                <h2 className="text-xl font-bold bg-gradient-to-r from-white to-zinc-300 bg-clip-text text-transparent">
+              <div className='flex-1 min-w-0'>
+                <h2 className='text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-white to-zinc-300 bg-clip-text text-transparent'>
                   Let&apos;s Build Something Amazing
                 </h2>
-                <p className="mt-1 text-sm text-zinc-400">
+                <p className='mt-1 text-xs sm:text-sm text-zinc-400 leading-tight'>
                   Tell us about your project and we&apos;ll get back to you
                   quickly.
                 </p>
               </div>
               <motion.button
-                onClick={close}
-                className="group relative p-2 rounded-lg border border-zinc-700 bg-zinc-800/50 hover:bg-zinc-700/50 transition-all duration-200"
-                aria-label="Close contact form"
+                onClick={onClose}
+                className='group relative hover:cursor-pointer p-2 rounded-lg border border-zinc-700 bg-zinc-800/50 hover:bg-zinc-700/50 transition-all duration-200'
+                aria-label='Close contact form'
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <X className="size-5 text-zinc-400 group-hover:text-white transition-colors" />
+                <X className='size-5 text-zinc-400 group-hover:text-white transition-colors' />
               </motion.button>
             </motion.header>
 
             {/* Content */}
-            <div className="p-6">
-              <div className="grid gap-8 lg:grid-cols-3">
-                {/* Contact info */}
+            <div className='p-3 pb-12 sm:p-4 sm:pb-6 md:p-6 md:pb-6 overflow-y-auto max-h-full'>
+              <div className='grid gap-4 sm:gap-6 md:gap-8  lg:grid-cols-3'>
+                {/* Contact info - Hidden on mobile */}
                 <motion.div
-                  className="lg:col-span-1"
+                  className='hidden lg:block lg:col-span-1'
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 0.3 }}
                 >
-                  <h3 className="text-lg font-semibold text-white mb-4">
+                  <h3 className='text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4'>
                     Get in Touch
                   </h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      <div className="size-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                        <Mail className="size-5 text-white" />
+                  <div className='space-y-3 sm:space-y-4'>
+                    <div className='flex items-center gap-3'>
+                      <div className='size-8 sm:size-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0'>
+                        <Mail className='size-4 sm:size-5 text-white' />
                       </div>
-                      <div>
-                        <p className="text-sm text-zinc-400">Email</p>
-                        <p className="text-white">swiftwareco@gmail.com</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="size-10 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center">
-                        <Phone className="size-5 text-white" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-zinc-400">Phone</p>
-                        <p className="text-white">+1 (604) 862-5038</p>
+                      <div className='min-w-0 flex-1'>
+                        <p className='text-xs sm:text-sm text-zinc-400'>
+                          Email
+                        </p>
+                        <p className='text-sm sm:text-base text-white truncate'>
+                          swiftwareco@gmail.com
+                        </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="size-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
-                        <MapPin className="size-5 text-white" />
+                    <div className='flex items-center gap-3'>
+                      <div className='size-8 sm:size-10 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center flex-shrink-0'>
+                        <Phone className='size-4 sm:size-5 text-white' />
                       </div>
-                      <div>
-                        <p className="text-sm text-zinc-400">Location</p>
-                        <p className="text-white">Richmond, BC, Canada</p>
+                      <div className='min-w-0 flex-1'>
+                        <p className='text-xs sm:text-sm text-zinc-400'>
+                          Phone
+                        </p>
+                        <p className='text-sm sm:text-base text-white'>
+                          +1 (604) 862-5038
+                        </p>
+                      </div>
+                    </div>
+                    <div className='flex items-center gap-3'>
+                      <div className='size-8 sm:size-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center flex-shrink-0'>
+                        <MapPin className='size-4 sm:size-5 text-white' />
+                      </div>
+                      <div className='min-w-0 flex-1'>
+                        <p className='text-xs sm:text-sm text-zinc-400'>
+                          Location
+                        </p>
+                        <p className='text-sm sm:text-base text-white'>
+                          Richmond, BC, Canada
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -257,79 +286,111 @@ export default function ContactDialog() {
                 {/* Form */}
                 <motion.form
                   onSubmit={onSubmit}
-                  className="lg:col-span-2 space-y-4"
+                  className='lg:col-span-2 space-y-3 sm:space-y-4'
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 0.4 }}
                 >
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Field label="Name *">
+                  <div className='grid gap-3 sm:gap-4 sm:grid-cols-2'>
+                    <Field label='Name *'>
                       <input
                         ref={firstFieldRef}
                         required
-                        name="name"
-                        className="input"
-                        placeholder="Your name"
+                        name='name'
+                        className='w-full px-3 py-2 text-sm bg-zinc-800/50 border border-zinc-700 rounded-md text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-zinc-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
+                        placeholder='Your name'
                         disabled={isSubmitting}
                       />
                     </Field>
-                    <Field label="Email *">
+                    <Field label='Email *'>
                       <input
                         required
-                        type="email"
-                        name="email"
-                        className="input"
-                        placeholder="you@company.com"
+                        type='email'
+                        name='email'
+                        className='w-full px-3 py-2 text-sm bg-zinc-800/50 border border-zinc-700 rounded-md text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-zinc-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
+                        placeholder='you@company.com'
                         disabled={isSubmitting}
                       />
                     </Field>
                   </div>
 
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Field label="Company">
+                  <div className='grid gap-3 sm:gap-4 sm:grid-cols-2'>
+                    <Field label='Company'>
                       <input
-                        name="company"
-                        className="input"
-                        placeholder="Company name"
+                        name='company'
+                        className='w-full px-3 py-2 text-sm bg-zinc-800/50 border border-zinc-700 rounded-md text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-zinc-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
+                        placeholder='Company name'
                         disabled={isSubmitting}
                       />
                     </Field>
-                    <Field label="Project type">
-                      <select name="type" className="input" disabled={isSubmitting}>
-                        <option>Custom CRM</option>
-                        <option>Team Management</option>
-                        <option>AI/ML (RAG)</option>
-                        <option>Mobile App</option>
-                        <option>E-commerce</option>
-                        <option>Other</option>
+                    <Field label='Project type'>
+                      <select
+                        name='type'
+                        defaultValue=''
+                        className="w-full px-3 py-2 text-sm bg-zinc-800/50 border border-zinc-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-zinc-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns%3D%22http%3A//www.w3.org/2000/svg%22 viewBox%3D%220 0 24 24%22 fill%3D%22none%22 stroke%3D%22%23a1a1aa%22 stroke-width%3D%222%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%3E%3Cpath d%3D%22m6 9 6 6 6-6%22/%3E%3C/svg%3E')] bg-[right_0.5rem_center] bg-[length:1.5em_1.5em] bg-no-repeat pr-8"
+                        disabled={isSubmitting}
+                      >
+                        <option value='' disabled className='text-zinc-500'>
+                          Select project type
+                        </option>
+                        <option
+                          value='Custom CRM'
+                          className='bg-zinc-800 text-white'
+                        >
+                          Custom CRM
+                        </option>
+                        <option
+                          value='Team Management'
+                          className='bg-zinc-800 text-white'
+                        >
+                          Team Management
+                        </option>
+                        <option
+                          value='AI/ML (RAG)'
+                          className='bg-zinc-800 text-white'
+                        >
+                          AI/ML (RAG)
+                        </option>
+                        <option
+                          value='Mobile App'
+                          className='bg-zinc-800 text-white'
+                        >
+                          Mobile App
+                        </option>
+                        <option
+                          value='E-commerce'
+                          className='bg-zinc-800 text-white'
+                        >
+                          E-commerce
+                        </option>
+                        <option
+                          value='Other'
+                          className='bg-zinc-800 text-white'
+                        >
+                          Other
+                        </option>
                       </select>
                     </Field>
                   </div>
 
-                  <Field label="Timeline">
-                    <input
-                      name="timeline"
-                      className="input"
-                      placeholder="e.g., 6–8 weeks"
-                      disabled={isSubmitting}
-                    />
-                  </Field>
-
-                  <Field label="Project Details *">
+                  <Field label='Project Details *'>
                     <textarea
                       required
-                      name="message"
-                      rows={4}
-                      className="input resize-none"
-                      placeholder="Tell us about your project, goals, and any specific requirements..."
+                      name='message'
+                      rows={3}
+                      className='w-full px-3 py-2 text-sm bg-zinc-800/50 border border-zinc-700 rounded-md text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-zinc-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed resize-none'
+                      placeholder='Tell us about your project, goals, and any specific requirements...'
                       disabled={isSubmitting}
                     />
                   </Field>
 
-                  <div className="flex flex-wrap items-center gap-4 pt-4">
+                  <div
+                    id='button-area'
+                    className='flex flex-col text-center sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4 pt-3 sm:pt-4 pb-4 sm:pb-0 scroll-mt-4'
+                  >
                     <motion.button
-                      type="submit"
-                      className="group relative overflow-hidden rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 font-medium text-white transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
+                      type='submit'
+                      className='group relative w-full text-center overflow-hidden rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 px-4 sm:px-6 py-3 font-medium text-white transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
                       disabled={isSubmitting}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -337,13 +398,13 @@ export default function ContactDialog() {
                       {/* Sheen */}
                       <motion.div
                         aria-hidden
-                        className="absolute inset-0 -translate-x-full bg-gradient-to-r from-purple-600/0 via-purple-600/30 to-blue-500/0 opacity-0 group-hover:opacity-100"
+                        className='absolute inset-0 text-center -translate-x-full bg-gradient-to-r from-purple-600/0 via-purple-600/30 to-blue-500/0 opacity-0 group-hover:opacity-100'
                         initial={false}
-                        whileHover={{ x: "100%" }}
-                        transition={{ duration: 0.6, ease: "easeInOut" }}
+                        whileHover={{ x: '100%' }}
+                        transition={{ duration: 0.6, ease: 'easeInOut' }}
                       />
 
-                      <span className="relative z-10 flex items-center gap-2">
+                      <span className='relative z-10 flex items-center justify-center gap-2'>
                         {isSubmitting ? (
                           <>
                             <motion.div
@@ -351,31 +412,23 @@ export default function ContactDialog() {
                               transition={{
                                 duration: 1,
                                 repeat: Infinity,
-                                ease: "linear",
+                                ease: 'linear',
                               }}
-                              className="size-4 border-2 border-white/30 border-t-white rounded-full"
+                              className='size-4 border-2 border-white/30 border-t-white rounded-full flex-shrink-0'
                             />
-                            Sending...
+                            <span>Sending...</span>
                           </>
                         ) : (
                           <>
-                            <Send className="size-4" />
-                            Send Message
+                            <Send className='size-4 flex-shrink-0' />
+                            <span>Send Message</span>
                           </>
                         )}
                       </span>
                     </motion.button>
-
-                    <a
-                      href="tel:+16048625038"
-                      className="flex items-center gap-2 px-4 py-3 text-zinc-400 hover:text-white transition-colors"
-                    >
-                      <Phone className="size-4" />
-                      Or call us directly
-                    </a>
                   </div>
 
-                  <p className="text-xs text-zinc-500">
+                  <p className='text-xs text-zinc-500 mt-2 leading-tight'>
                     By submitting this form, you agree to our privacy policy and
                     terms of service.
                   </p>
@@ -384,11 +437,11 @@ export default function ContactDialog() {
             </div>
 
             {/* Floating particles */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className='absolute inset-0 pointer-events-none overflow-hidden'>
               {[...Array(6)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="absolute size-1 bg-blue-400/30 rounded-full"
+                  className='absolute size-1 bg-blue-400/30 rounded-full'
                   initial={{
                     x: Math.random() * 800,
                     y: Math.random() * 600,
@@ -402,7 +455,7 @@ export default function ContactDialog() {
                     duration: 3 + Math.random() * 2,
                     repeat: Infinity,
                     delay: Math.random() * 2,
-                    ease: "easeInOut",
+                    ease: 'easeInOut',
                   }}
                 />
               ))}
@@ -414,10 +467,16 @@ export default function ContactDialog() {
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
-    <label className="grid gap-1">
-      <span className="text-xs text-zinc-400">{label}</span>
+    <label className='grid gap-1.5'>
+      <span className='text-xs text-zinc-400 font-medium'>{label}</span>
       {children}
     </label>
   );

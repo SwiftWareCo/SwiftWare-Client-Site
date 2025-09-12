@@ -7,12 +7,15 @@ interface FocusContextValue {
   focus: FocusKey | null;
   setFocus: (focus: FocusKey) => void;
   clearFocus: () => void;
+  showContactModal: boolean;
+  setShowContactModal: (show: boolean) => void;
 }
 
 const FocusContext = createContext<FocusContextValue | undefined>(undefined);
 
 export function FocusProvider({ children }: { children: React.ReactNode }) {
   const [focus, setFocusState] = useState<FocusKey | null>(null);
+  const [showContactModal, setShowContactModal] = useState(false);
 
   useEffect(() => {
     const initial = getSavedFocus();
@@ -35,7 +38,13 @@ export function FocusProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const value = useMemo<FocusContextValue>(() => ({ focus, setFocus, clearFocus }), [focus, setFocus, clearFocus]);
+  const value = useMemo<FocusContextValue>(() => ({
+    focus,
+    setFocus,
+    clearFocus,
+    showContactModal,
+    setShowContactModal
+  }), [focus, setFocus, clearFocus, showContactModal, setShowContactModal]);
 
   return <FocusContext.Provider value={value}>{children}</FocusContext.Provider>;
 }

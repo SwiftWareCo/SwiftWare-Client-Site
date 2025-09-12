@@ -41,10 +41,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {/* Grid pattern */}
           <div className="absolute inset-0 bg-grid opacity-40" />
           
-          {/* Floating orbs */}
-          <div className="absolute top-20 left-1/4 size-96 bg-blue-500/5 rounded-full blur-3xl float-slow" />
-          <div className="absolute bottom-20 right-1/4 size-80 bg-purple-500/5 rounded-full blur-3xl float-medium" />
-          <div className="absolute top-1/2 left-1/3 size-64 bg-emerald-500/3 rounded-full blur-3xl float-slow" style={{ animationDelay: '2s' }} />
+          {/* Floating orbs - hidden on mobile to prevent layout issues */}
+          <div className="hidden md:block absolute top-20 left-1/4 size-96 bg-blue-500/5 rounded-full blur-3xl float-slow" />
+          <div className="hidden md:block absolute bottom-20 right-1/4 size-80 bg-purple-500/5 rounded-full blur-3xl float-medium" />
+          <div className="hidden md:block absolute top-1/2 left-1/3 size-64 bg-emerald-500/3 rounded-full blur-3xl float-slow" style={{ animationDelay: '2s' }} />
         </div>
 
         {/* Skip link */}
