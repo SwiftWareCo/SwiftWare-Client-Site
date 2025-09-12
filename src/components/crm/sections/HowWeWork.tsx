@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
-import { Search, Code, TestTube, Rocket, Users, MessageSquare, GitBranch, Zap } from "lucide-react";
+import { Search, Code, TestTube, Rocket, Users, GitBranch, Zap } from "lucide-react";
 
 const WORKFLOW_STEPS = [
   {
