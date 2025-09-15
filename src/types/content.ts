@@ -19,7 +19,7 @@ export type Outcome = {
   footnote?: string;
 };
 
-export type FocusKey = "crm" | "tee-sheet" | "ai-ml" | "web";
+export type FocusKey = 'crm' | 'tee-sheet' | 'ai-ml' | 'web' | 'all-solutions';
 
 export type FocusContent = {
   focus: FocusKey;
@@ -42,5 +42,3 @@ export type FocusContent = {
     ogImage?: string;
   };
 };
-
-

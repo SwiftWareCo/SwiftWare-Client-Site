@@ -2,6 +2,7 @@
 
 import { motion } from 'motion/react';
 import AISearchDemo from '@/components/ai-ml/interactive/AISearchDemo';
+import { openCalendlyPopup } from '@/lib/calendly';
 
 export default function AIDemoSection() {
   return (
@@ -54,7 +55,12 @@ export default function AIDemoSection() {
           <p className='text-zinc-400 mb-6'>
             Ready to see what SwiftMind can do with your data?
           </p>
-          <button className='px-8 py-4 bg-gradient-to-r from-teal-600 to-blue-600 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300 cursor-pointer'>
+          <button
+            onClick={() =>
+              openCalendlyPopup('https://calendly.com/swiftwareco/30min')
+            }
+            className='px-8 py-4 bg-gradient-to-r from-teal-600 to-blue-600 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300 cursor-pointer'
+          >
             Schedule Live Demo
           </button>
         </motion.div>

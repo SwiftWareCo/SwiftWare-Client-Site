@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 import { useFocusContext } from '@/context/FocusContext';
 import { getContentForFocusClient } from '@/lib/focusContent';
+import { openCalendlyPopup } from '@/lib/calendly';
 
 // Import CRM components
 import CapabilitiesSection from '@/components/crm/sections/CapabilitiesSection';
@@ -24,6 +25,10 @@ import GolfCapabilitiesSection from '@/components/tee-sheet/sections/GolfCapabil
 import GolfOutcomes from '@/components/tee-sheet/sections/GolfOutcomes';
 import GolfFAQ from '@/components/tee-sheet/sections/GolfFAQ';
 
+// Import All Solutions components
+import SolutionOverview from '@/components/all-solutions/sections/SolutionOverview';
+import SchedulingWidget from '@/components/SchedulingWidget';
+
 export default function FocusAwareHome() {
   const { focus, showContactModal, setShowContactModal } = useFocusContext();
   const [showCaseStudy, setShowCaseStudy] = useState(false);
@@ -38,6 +43,8 @@ export default function FocusAwareHome() {
         return 'AI-driven business intelligence that transforms your data.';
       case 'web':
         return 'Websites & portals that convert.';
+      case 'all-solutions':
+        return 'Complete software solutions for growing businesses.';
       default:
         return 'Choose a focus to tailor the content.';
     }
@@ -53,6 +60,12 @@ export default function FocusAwareHome() {
 
   const teeSheetData = useMemo(() => {
     return focus === 'tee-sheet' ? getContentForFocusClient('tee-sheet') : null;
+  }, [focus]);
+
+  const allSolutionsData = useMemo(() => {
+    return focus === 'all-solutions'
+      ? getContentForFocusClient('all-solutions')
+      : null;
   }, [focus]);
 
   if (focus === 'crm' && crmData) {
@@ -153,7 +166,9 @@ export default function FocusAwareHome() {
               </p>
               <div className='flex flex-col sm:flex-row gap-4 justify-center'>
                 <button
-                  onClick={() => setShowContactModal(true)}
+                  onClick={() =>
+                    openCalendlyPopup('https://calendly.com/swiftwareco/30min')
+                  }
                   className='inline-flex cursor-pointer items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300'
                 >
                   Schedule Discovery Call
@@ -294,13 +309,6 @@ export default function FocusAwareHome() {
             isOpen={showContactModal}
             onClose={() => setShowContactModal(false)}
           />
-
-          {/* Case Study Modal */}
-          <CaseStudyModal
-            isOpen={showCaseStudy}
-            onClose={() => setShowCaseStudy(false)}
-            onContactClick={() => setShowContactModal(true)}
-          />
         </div>
       </section>
     );
@@ -393,6 +401,41 @@ export default function FocusAwareHome() {
               </div>
             </div>
           </motion.section>
+
+          {/* Contact Dialog */}
+          <ContactDialog
+            isOpen={showContactModal}
+            onClose={() => setShowContactModal(false)}
+          />
+        </div>
+      </section>
+    );
+  }
+
+  if (focus === 'all-solutions' && allSolutionsData) {
+    return (
+      <section aria-live='polite' className='w-full'>
+        {/* All Solutions Content Sections */}
+        <div className='space-y-0'>
+          {/* Solution Overview */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
+            <SolutionOverview capabilities={allSolutionsData.capabilities} />
+          </motion.div>
+
+          {/* Scheduling Widget */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+          >
+            <SchedulingWidget />
+          </motion.div>
 
           {/* Contact Dialog */}
           <ContactDialog

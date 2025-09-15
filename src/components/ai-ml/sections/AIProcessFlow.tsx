@@ -2,6 +2,7 @@
 
 import { motion } from 'motion/react';
 import { Upload, Brain, Search, BarChart3, CheckCircle } from 'lucide-react';
+import { openCalendlyPopup } from '@/lib/calendly';
 
 const PROCESS_STEPS = [
   {
@@ -218,7 +219,12 @@ export default function AIProcessFlow() {
               personalized demo.
             </p>
             <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-              <button className='px-6 py-3 bg-gradient-to-r from-teal-600 to-blue-600 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300 cursor-pointer'>
+              <button
+                onClick={() =>
+                  openCalendlyPopup('https://calendly.com/swiftwareco/30min')
+                }
+                className='px-6 py-3 bg-gradient-to-r from-teal-600 to-blue-600 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300 cursor-pointer'
+              >
                 Book a Demo
               </button>
             </div>

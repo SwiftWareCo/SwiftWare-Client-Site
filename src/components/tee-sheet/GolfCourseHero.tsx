@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import Link from 'next/link';
 import { ArrowRight, Play, TrendingUp, Users, DollarSign } from 'lucide-react';
 import { getContentForFocusClient } from '@/lib/focusContent';
+import { openCalendlyPopup } from '@/lib/calendly';
 import { TeeTimeGrid, CourseLayout, WeatherWidget } from './index';
 
 const HEADLINE = 'GolfSync Operations Dashboard';
@@ -171,9 +172,11 @@ export default function GolfCourseHero() {
                 <ArrowRight className='size-4' />
               </Link>
             ) : (
-              <Link
-                href='/?contact=open'
-                className='relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-5 py-3 text-sm font-medium text-white ring-1 ring-zinc-800'
+              <button
+                onClick={() =>
+                  openCalendlyPopup('https://calendly.com/swiftwareco/30min')
+                }
+                className='relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-5 py-3 text-sm font-medium text-white ring-1 ring-zinc-800 cursor-pointer'
                 style={{
                   background:
                     'linear-gradient(90deg, rgb(16 185 129), rgb(34 197 94))',
@@ -188,7 +191,7 @@ export default function GolfCourseHero() {
                 />
                 Schedule Demo
                 <ArrowRight className='size-4' />
-              </Link>
+              </button>
             )}
 
             {/* Secondary CTA - Only show if explicitly provided in content */}
@@ -222,7 +225,7 @@ export default function GolfCourseHero() {
                 <button
                   key={key}
                   onClick={() => setActiveTab(key as typeof activeTab)}
-                  className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                  className={`flex-1 cursor-pointer flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
                     activeTab === key
                       ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30'
                       : 'text-zinc-400 hover:text-zinc-300 hover:bg-zinc-700/50'
