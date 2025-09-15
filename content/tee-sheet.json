@@ -1,0 +1,171 @@
+{
+  "focus": "tee-sheet",
+  "hero": {
+    "subline": "Complete golf course operations that run themselves.",
+    "primaryCta": { "label": "Schedule Demo", "href": "/#contact" }
+  },
+  "bullets": [
+    {
+      "label": "Smart Tee Sheet",
+      "shortLine": "Automated scheduling with member priorities and restrictions."
+    },
+    {
+      "label": "Fair Lottery System",
+      "shortLine": "Equitable prime time allocation with fairness scoring."
+    },
+    {
+      "label": "Member Portal",
+      "shortLine": "Self-service booking, guest invites, and mobile PWA."
+    }
+  ],
+  "capabilities": [
+    {
+      "title": "Tee Sheet Management",
+      "summary": "Automated daily tee sheets with configurable time blocks and real-time availability.",
+      "icon": "Calendar",
+      "category": "Pro Shop",
+      "badges": ["Real-time", "Automated"]
+    },
+    {
+      "title": "Member Portal",
+      "summary": "Self-service booking, guest management, and mobile PWA access.",
+      "icon": "Users",
+      "category": "Pro Shop",
+      "badges": ["Mobile PWA"]
+    },
+    {
+      "title": "Lottery System",
+      "summary": "Fair allocation of prime tee times with full customization and member prioritization.",
+      "icon": "Shuffle",
+      "category": "Tee Box",
+      "highlight": true,
+      "badges": ["Customizable"]
+    },
+    {
+      "title": "Pace Monitoring",
+      "summary": "Real-time pace-of-play monitoring and alerts to maintain course flow.",
+      "icon": "Clock",
+      "category": "Fairway"
+    },
+    {
+      "title": "Weather Integration",
+      "summary": "Automatic course closures and tee time adjustments based on conditions.",
+      "icon": "Cloud",
+      "category": "Fairway"
+    },
+    {
+      "title": "Cart Management",
+      "summary": "Automated billing for power carts with availability tracking and reservations.",
+      "icon": "Car",
+      "category": "Fairway",
+      "badges": ["Billing"]
+    },
+    {
+      "title": "Tournament System",
+      "summary": "Complete tournament organization with registration and pairings.",
+      "icon": "Trophy",
+      "category": "Green",
+      "badges": ["Events"]
+    },
+    {
+      "title": "Revenue Tracking",
+      "summary": "Real-time revenue dashboard with green fees, cart rentals, and guest charges.",
+      "icon": "DollarSign",
+      "category": "Clubhouse"
+    },
+    {
+      "title": "Multi-Course Support",
+      "summary": "Single platform managing multiple 18-hole courses with independent branding.",
+      "icon": "Map",
+      "category": "Clubhouse",
+      "highlight": true,
+      "badges": ["White-label"]
+    }
+  ],
+  "modules": [
+    "TeeTimeScheduler",
+    "MemberPortal",
+    "CartManagement",
+    "TournamentOrganizer",
+    "RevenueTracker"
+  ],
+  "outcomes": [
+    {
+      "metric": "+47%",
+      "unit": "tee time utilization",
+      "blurb": "Optimized scheduling fills more slots with member preferences."
+    },
+    {
+      "metric": "-38%",
+      "unit": "admin overhead",
+      "blurb": "Automated systems reduce manual tee sheet management."
+    },
+    {
+      "metric": "+2.3×",
+      "unit": "member satisfaction",
+      "blurb": "Fair lottery system and mobile access improve experience."
+    },
+    {
+      "metric": "+31%",
+      "unit": "cart revenue",
+      "blurb": "Automated billing and GPS tracking increase cart utilization."
+    }
+  ],
+  "faq": [
+    {
+      "q": "How does the lottery system ensure fairness?",
+      "a": "Our algorithm tracks member booking history and uses fairness scoring to ensure equitable access to prime tee times over time. The system is fully customizable to match your course's specific member priority rules and preferences."
+    },
+    {
+      "q": "Can members book tee times on mobile?",
+      "a": "Yes, the mobile PWA allows members to book tee times, invite guests, and manage their reservations from any device."
+    },
+
+    {
+      "q": "How does pace-of-play monitoring work?",
+      "a": "Our system monitors tee time intervals and provides real-time pace alerts to staff, with automated notifications to help maintain optimal course flow throughout the day."
+    },
+    {
+      "q": "Can we customize it for our course branding?",
+      "a": "Absolutely. Each course gets independent branding, custom color schemes, logo integration, and course-specific messaging."
+    }
+  ],
+  "engagement": {
+    "variants": [
+      {
+        "name": "Course Setup",
+        "highlight": "Complete tee sheet system configured for your course.",
+        "details": [
+          "18-hole course mapping",
+          "Member database import",
+          "Pricing and rules setup",
+          "Staff training"
+        ]
+      },
+      {
+        "name": "Multi-Course Package",
+        "highlight": "Enterprise solution for multiple golf facilities.",
+        "details": [
+          "Unlimited courses",
+          "Centralized management",
+          "Custom branding per course",
+          "Advanced analytics"
+        ]
+      },
+      {
+        "name": "Tournament Edition",
+        "highlight": "Enhanced features for tournament and event management.",
+        "details": [
+          "Tournament registration",
+          "Automated pairings",
+          "Leaderboard integration",
+          "Event marketing tools"
+        ]
+      }
+    ]
+  },
+  "seo": {
+    "title": "GolfSync - Complete Golf Course Management Platform",
+    "description": "Transform your golf course operations with automated tee sheets, member management, and revenue tracking. Perfect for private clubs, public courses, and resorts."
+  }
+}

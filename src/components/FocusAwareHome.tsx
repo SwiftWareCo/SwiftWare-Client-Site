@@ -19,6 +19,10 @@ import AIOutcomesSection from '@/components/ai-ml/sections/AIOutcomesSection';
 import AIProcessFlow from '@/components/ai-ml/sections/AIProcessFlow';
 import AIDemoSection from '@/components/ai-ml/sections/AIDemoSection';
 import AIFAQ from '@/components/ai-ml/sections/AIFAQ';
+// Import GolfSync components
+import GolfCapabilitiesSection from '@/components/tee-sheet/sections/GolfCapabilitiesSection';
+import GolfOutcomes from '@/components/tee-sheet/sections/GolfOutcomes';
+import GolfFAQ from '@/components/tee-sheet/sections/GolfFAQ';
 
 export default function FocusAwareHome() {
   const { focus, showContactModal, setShowContactModal } = useFocusContext();
@@ -45,6 +49,10 @@ export default function FocusAwareHome() {
 
   const aiMlData = useMemo(() => {
     return focus === 'ai-ml' ? getContentForFocusClient('ai-ml') : null;
+  }, [focus]);
+
+  const teeSheetData = useMemo(() => {
+    return focus === 'tee-sheet' ? getContentForFocusClient('tee-sheet') : null;
   }, [focus]);
 
   if (focus === 'crm' && crmData) {
@@ -292,6 +300,104 @@ export default function FocusAwareHome() {
             isOpen={showCaseStudy}
             onClose={() => setShowCaseStudy(false)}
             onContactClick={() => setShowContactModal(true)}
+          />
+        </div>
+      </section>
+    );
+  }
+
+  if (focus === 'tee-sheet' && teeSheetData) {
+    return (
+      <section aria-live='polite' className='w-full'>
+        {/* Golf Course Copy */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className='mx-auto max-w-5xl px-4 sm:px-6 py-8'
+        >
+          <div className='rounded-xl border border-emerald-800/50 bg-gradient-to-br from-emerald-500/10 via-green-500/5 to-zinc-900/40 p-6 backdrop-blur-sm'>
+            <p className='text-lg text-zinc-200 font-medium text-center'>
+              {copy}
+            </p>
+          </div>
+        </motion.div>
+
+        {/* GolfSync Content Sections */}
+        <div className='space-y-0'>
+          {/* Golf Capabilities Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
+            <GolfCapabilitiesSection tiles={teeSheetData.capabilities} />
+          </motion.div>
+
+          {/* Golf Outcomes */}
+          <motion.section
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className='py-20 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent'
+          >
+            <div className='max-w-7xl mx-auto px-4 sm:px-6'>
+              <div className='text-center mb-16'>
+                <h2 className='text-4xl font-bold mb-6 bg-gradient-to-r from-white via-emerald-100 to-green-100 bg-clip-text text-transparent'>
+                  Real Golf Course Results
+                </h2>
+                <p className='text-xl text-zinc-300 max-w-3xl mx-auto'>
+                  Measurable improvements across tee sheet operations, member
+                  satisfaction, and revenue.
+                </p>
+              </div>
+              <GolfOutcomes items={teeSheetData.outcomes} />
+            </div>
+          </motion.section>
+
+          {/* Golf FAQ */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.6 }}
+          >
+            <GolfFAQ items={teeSheetData.faq} />
+          </motion.div>
+
+          {/* Golf Course Contact CTA Section */}
+          <motion.section
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.7 }}
+            className='py-20 relative overflow-hidden'
+          >
+            <div className='max-w-4xl mx-auto px-4 sm:px-6 text-center'>
+              <h2 className='text-4xl font-bold mb-6 bg-gradient-to-r from-white via-emerald-100 to-green-100 bg-clip-text text-transparent'>
+                Ready to Transform Your Golf Course?
+              </h2>
+              <p className='text-xl text-zinc-300 max-w-2xl mx-auto mb-8'>
+                Let&apos;s discuss how GolfSync can streamline your tee sheet
+                operations and enhance your member experience.
+              </p>
+              <div className='flex flex-col sm:flex-row gap-4 justify-center'>
+                <button
+                  onClick={() => setShowContactModal(true)}
+                  className='inline-flex cursor-pointer items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-500 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300'
+                >
+                  Schedule Course Demo
+                </button>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* Contact Dialog */}
+          <ContactDialog
+            isOpen={showContactModal}
+            onClose={() => setShowContactModal(false)}
           />
         </div>
       </section>
