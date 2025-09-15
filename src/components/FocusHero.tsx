@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useFocusContext } from "@/context/FocusContext";
-import Hero from "@/components/Hero";
-import CRMHero from "@/components/crm/CRMHero";
+import React from 'react';
+import { useFocusContext } from '@/context/FocusContext';
+import Hero from '@/components/Hero';
+import CRMHero from '@/components/crm/CRMHero';
+import GolfCourseHero from '@/components/tee-sheet/GolfCourseHero';
 
 export default function FocusHero() {
   const { focus } = useFocusContext();
-  if (focus === "crm") return <CRMHero />;
+  if (focus === 'crm') return <CRMHero />;
+  if (focus === 'tee-sheet') return <GolfCourseHero />;
   return <Hero />;
 }
-
-
