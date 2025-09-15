@@ -225,7 +225,7 @@ export default function CaseStudyModal({ isOpen, onClose, onContactClick }: Case
                       game-changers for our operations.&quot;
                     </p>
                     <div className="text-sm text-zinc-400">
-                      <strong className="text-white">John Doe</strong> - Operations Manager, Vancouver Hood Doctors
+                      <strong className="text-white">Adam</strong> - Operations Manager, Vancouver Hood Doctors
                     </div>
                   </div>
                 </div>
