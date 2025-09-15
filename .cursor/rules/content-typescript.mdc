@@ -1,0 +1,630 @@
+---
+globs: src/**/*.ts,src/**/*.tsx,content/**/*.json
+description: Content management, TypeScript patterns, and type safety for SwiftWare
+---
+
+# Content Management & TypeScript Patterns
+
+## TypeScript Configuration
+
+### Strict Type Checking
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true
+  }
+}
+```
+
+### Path Mapping
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+## Content Type Definitions
+
+### Core Content Types (`src/types/content.ts`)
+
+```typescript
+// Focus and content types
+export type FocusKey = 'crm' | 'tee-sheet' | 'ai-ml' | 'web';
+
+export type CapabilityTile = {
+  title: string;
+  summary: string;
+  icon?: string;
+  cta?: string;
+  href?: string;
+  badges?: string[];
+  highlight?: boolean;
+  category?: 'Essentials' | 'Advanced' | 'Integrations';
+};
+
+export type Outcome = {
+  metric: string; // e.g., "-42%"
+  unit?: string; // e.g., "dispatch time"
+  timeframe?: string;
+  blurb: string; // One-liner explanation
+  footnote?: string;
+};
+
+export type FocusContent = {
+  focus: FocusKey;
+  hero: {
+    subline: string; // 9-12 words
+    primaryCta?: { label: string; href: string };
+    secondaryCta?: { label: string; href: string };
+  };
+  bullets: {
+    icon?: string;
+    label: string;
+    shortLine: string;
+  }[];
+  capabilities: CapabilityTile[];
+  modules: string[]; // Feature modules to mount
+  outcomes: Outcome[];
+  faq?: {
+    q: string;
+    a: string;
+  }[];
+  engagement?: {
+    variants: {
+      name: string;
+      highlight: string;
+      details?: string[];
+    }[];
+  };
+  seo: {
+    title: string;
+    description: string;
+    ogImage?: string;
+  };
+};
+```
+
+### Focus Content Types (`src/types/focus-content.ts`)
+
+```typescript
+// Additional focus-specific types
+export interface FocusNavigationItem {
+  key: FocusKey;
+  label: string;
+  description: string;
+  icon?: string;
+}
+
+export interface FocusMetadata {
+  key: FocusKey;
+  title: string;
+  description: string;
+  features: string[];
+  targetAudience: string[];
+  estimatedTimeline: string;
+  startingPrice: string;
+}
+
+// Re-export for convenience
+export type { FocusKey, FocusContent } from './content';
+```
+
+## Content Management Architecture
+
+### Content Loading Pattern
+
+```typescript
+// src/lib/focusContent.ts
+import type { FocusContent, FocusKey } from '@/types/content';
+
+// Static imports for JSON content
+import crmJson from '../../content/crm.json' assert { type: 'json' };
+// Future: import teeSheetJson from "../../content/tee-sheet.json" assert { type: "json" };
+
+export function getContentForFocusClient(
+  focus: FocusKey | null
+): FocusContent | null {
+  switch (focus) {
+    case 'crm':
+      return crmJson as FocusContent;
+    case 'tee-sheet':
+      // return teeSheetJson as FocusContent;
+      return null; // Not implemented yet
+    case 'ai-ml':
+    case 'web':
+      return null; // Not implemented yet
+    default:
+      return null;
+  }
+}
+
+// Type guard for content validation
+export function isValidFocusContent(content: unknown): content is FocusContent {
+  if (!content || typeof content !== 'object') return false;
+
+  const c = content as Record<string, unknown>;
+  return (
+    typeof c.focus === 'string' &&
+    typeof c.hero === 'object' &&
+    Array.isArray(c.bullets) &&
+    Array.isArray(c.capabilities) &&
+    Array.isArray(c.outcomes)
+  );
+}
+```
+
+### Content Validation
+
+```typescript
+// Runtime content validation
+export function validateFocusContent(content: unknown): FocusContent {
+  if (!isValidFocusContent(content)) {
+    throw new Error('Invalid focus content structure');
+  }
+
+  // Additional validation logic
+  if (content.hero.subline.length > 120) {
+    console.warn('Hero subline is longer than recommended 120 characters');
+  }
+
+  return content;
+}
+```
+
+## JSON Content Structure
+
+### Content File Organization
+
+```
+content/
+├── crm.json          # CRM focus content
+├── tee-sheet.json    # Tee sheet management (future)
+├── ai-ml.json        # AI/ML solutions (future)
+└── web.json          # Web development (future)
+```
+
+### CRM Content Example (`content/crm.json`)
+
+```json
+{
+  "focus": "crm",
+  "hero": {
+    "subline": "Field teams move faster with a CRM they actually use.",
+    "primaryCta": { "label": "Start a project", "href": "/#contact" },
+    "secondaryCta": { "label": "See capabilities", "href": "#capabilities" }
+  },
+  "bullets": [
+    {
+      "icon": "Zap",
+      "label": "Dispatch in minutes",
+      "shortLine": "Reduce back-and-forth with live scheduling."
+    },
+    {
+      "icon": "Smartphone",
+      "label": "Mobile-first field app",
+      "shortLine": "Photos, notes, signatures—even offline."
+    },
+    {
+      "icon": "FileText",
+      "label": "Proof & invoicing",
+      "shortLine": "Before/after, signed work orders, PDF/email."
+    }
+  ],
+  "capabilities": [
+    {
+      "title": "Work Orders",
+      "summary": "Create, assign, and track jobs end to end.",
+      "icon": "ClipboardList",
+      "category": "Essentials"
+    },
+    {
+      "title": "Mobile App",
+      "summary": "Photos, notes, signatures, and offline mode.",
+      "icon": "Smartphone",
+      "badges": ["Offline"],
+      "category": "Essentials"
+    },
+    {
+      "title": "Build on request",
+      "summary": "We extend the system to fit your ops.",
+      "icon": "Sparkles",
+      "highlight": true,
+      "category": "Advanced"
+    }
+  ],
+  "modules": ["FieldOpsTimeline", "DispatchScheduling", "ProofInvoicing"],
+  "outcomes": [
+    {
+      "metric": "-42%",
+      "unit": "dispatch time",
+      "blurb": "Fewer touchpoints to assign jobs."
+    },
+    {
+      "metric": "-29%",
+      "unit": "rework",
+      "blurb": "Photo proof and checklists reduce errors."
+    },
+    {
+      "metric": "+3.1×",
+      "unit": "doc speed",
+      "blurb": "One-tap exports speed invoicing."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Who owns our data?",
+      "a": "You do. Your data lives in your cloud accounts/repo."
+    },
+    {
+      "q": "Does it work offline?",
+      "a": "Yes. The mobile app caches jobs and syncs when online."
+    }
+  ],
+  "engagement": {
+    "variants": [
+      {
+        "name": "Fixed Scope",
+        "highlight": "Well-defined modules delivered end-to-end."
+      },
+      {
+        "name": "Sprint Retainer",
+        "highlight": "Iterate weekly, ship continuously."
+      },
+      {
+        "name": "Support",
+        "highlight": "Ops tweaks, reports, and on-call fixes."
+      }
+    ]
+  },
+  "seo": {
+    "title": "Service CRM & Field App — Swiftware",
+    "description": "A made-to-fit CRM field teams actually use: dispatch, mobile app, photo proof, signatures, and invoicing.",
+    "ogImage": "/og-crm.png"
+  }
+}
+```
+
+## TypeScript Best Practices
+
+### Generic Components
+
+```typescript
+// Generic focus-aware component
+interface FocusAwareProps<T = FocusContent> {
+  content: T | null;
+  fallback?: React.ComponentType;
+  children: (content: T) => React.ReactNode;
+}
+
+export function FocusAware<T = FocusContent>({
+  content,
+  fallback: Fallback,
+  children
+}: FocusAwareProps<T>) {
+  if (!content) {
+    return Fallback ? <Fallback /> : null;
+  }
+
+  return <>{children(content)}</>;
+}
+
+// Usage
+<FocusAware
+  content={getContentForFocusClient(focus)}
+  fallback={DefaultHome}
+>
+  {(content) => <FocusSpecificHome content={content} />}
+</FocusAware>
+```
+
+### Utility Types
+
+```typescript
+// Extract nested types
+type HeroData = FocusContent['hero'];
+type CapabilityData = FocusContent['capabilities'][number];
+type OutcomeData = FocusContent['outcomes'][number];
+
+// Make properties optional
+type PartialCapability = Partial<CapabilityTile>;
+
+// Pick specific properties
+type CapabilitySummary = Pick<CapabilityTile, 'title' | 'summary'>;
+
+// Utility for content validation
+type ContentKeys = keyof FocusContent;
+type RequiredContentKeys = NonNullable<ContentKeys>;
+```
+
+### Discriminated Unions
+
+```typescript
+// For different content types
+type ContentType = 'static' | 'dynamic' | 'generated';
+
+interface BaseContent {
+  type: ContentType;
+  id: string;
+  title: string;
+}
+
+interface StaticContent extends BaseContent {
+  type: 'static';
+  content: string;
+}
+
+interface DynamicContent extends BaseContent {
+  type: 'dynamic';
+  fetchUrl: string;
+}
+
+interface GeneratedContent extends BaseContent {
+  type: 'generated';
+  generator: () => string;
+}
+
+type Content = StaticContent | DynamicContent | GeneratedContent;
+
+// Type-safe content handler
+function processContent(content: Content) {
+  switch (content.type) {
+    case 'static':
+      return content.content;
+    case 'dynamic':
+      return fetch(content.fetchUrl);
+    case 'generated':
+      return content.generator();
+  }
+}
+```
+
+## Error Handling & Validation
+
+### Content Loading with Error Handling
+
+```typescript
+// src/lib/contentLoader.ts
+export class ContentLoadError extends Error {
+  constructor(focus: FocusKey, originalError: Error) {
+    super(`Failed to load content for focus: ${focus}`);
+    this.name = 'ContentLoadError';
+    this.cause = originalError;
+  }
+}
+
+export async function loadFocusContent(focus: FocusKey): Promise<FocusContent> {
+  try {
+    const content = getContentForFocusClient(focus);
+
+    if (!content) {
+      throw new Error(`No content available for focus: ${focus}`);
+    }
+
+    return validateFocusContent(content);
+  } catch (error) {
+    throw new ContentLoadError(focus, error as Error);
+  }
+}
+
+// Usage with error boundary
+try {
+  const content = await loadFocusContent(focus);
+  // Use content
+} catch (error) {
+  if (error instanceof ContentLoadError) {
+    console.error('Content loading failed:', error.message);
+    // Show fallback UI
+  }
+}
+```
+
+### Schema Validation
+
+```typescript
+// Content schema validation
+import { z } from 'zod';
+
+const HeroSchema = z.object({
+  subline: z.string().min(10).max(120),
+  primaryCta: z
+    .object({
+      label: z.string(),
+      href: z.string(),
+    })
+    .optional(),
+  secondaryCta: z
+    .object({
+      label: z.string(),
+      href: z.string(),
+    })
+    .optional(),
+});
+
+const CapabilitySchema = z.object({
+  title: z.string(),
+  summary: z.string(),
+  icon: z.string().optional(),
+  category: z.enum(['Essentials', 'Advanced', 'Integrations']).optional(),
+  highlight: z.boolean().optional(),
+  badges: z.array(z.string()).optional(),
+});
+
+const FocusContentSchema = z.object({
+  focus: z.enum(['crm', 'tee-sheet', 'ai-ml', 'web']),
+  hero: HeroSchema,
+  bullets: z.array(
+    z.object({
+      icon: z.string().optional(),
+      label: z.string(),
+      shortLine: z.string(),
+    })
+  ),
+  capabilities: z.array(CapabilitySchema),
+  outcomes: z.array(
+    z.object({
+      metric: z.string(),
+      unit: z.string().optional(),
+      blurb: z.string(),
+      footnote: z.string().optional(),
+    })
+  ),
+  faq: z
+    .array(
+      z.object({
+        q: z.string(),
+        a: z.string(),
+      })
+    )
+    .optional(),
+});
+
+// Validation function
+export function validateContentWithSchema(content: unknown): FocusContent {
+  return FocusContentSchema.parse(content);
+}
+```
+
+## Content Development Workflow
+
+### Content Authoring Guidelines
+
+1. **Hero Subline**: Keep between 9-12 words, focus on value proposition
+2. **Capabilities**: Group by category (Essentials, Advanced, Integrations)
+3. **Outcomes**: Use specific metrics with clear timeframes
+4. **FAQ**: Anticipate common customer questions
+5. **SEO**: Optimize title and description for search engines
+
+### Content Testing
+
+```typescript
+// Content validation tests
+describe('CRM Content', () => {
+  const content = getContentForFocusClient('crm');
+
+  it('has valid structure', () => {
+    expect(content).toBeDefined();
+    expect(content?.focus).toBe('crm');
+  });
+
+  it('has required hero content', () => {
+    expect(content?.hero.subline).toBeDefined();
+    expect(content?.hero.subline.length).toBeGreaterThan(10);
+    expect(content?.hero.subline.length).toBeLessThan(120);
+  });
+
+  it('has valid capabilities', () => {
+    expect(Array.isArray(content?.capabilities)).toBe(true);
+    content?.capabilities.forEach((capability) => {
+      expect(capability.title).toBeDefined();
+      expect(capability.summary).toBeDefined();
+    });
+  });
+});
+```
+
+## Performance Optimization
+
+### Content Caching
+
+```typescript
+// Content cache for performance
+class ContentCache {
+  private cache = new Map<FocusKey, FocusContent>();
+  private readonly ttl = 1000 * 60 * 5; // 5 minutes
+
+  get(focus: FocusKey): FocusContent | null {
+    const cached = this.cache.get(focus);
+    if (!cached) return null;
+
+    // Check if cache is expired
+    if (Date.now() - cached.timestamp > this.ttl) {
+      this.cache.delete(focus);
+      return null;
+    }
+
+    return cached.data;
+  }
+
+  set(focus: FocusKey, content: FocusContent): void {
+    this.cache.set(focus, {
+      data: content,
+      timestamp: Date.now(),
+    });
+  }
+
+  clear(): void {
+    this.cache.clear();
+  }
+}
+
+export const contentCache = new ContentCache();
+```
+
+### Lazy Loading Content
+
+```typescript
+// Dynamic content loading
+export function loadContentDynamically(focus: FocusKey) {
+  return import(`../../content/${focus}.json`)
+    .then((module) => module.default as FocusContent)
+    .catch(() => null);
+}
+
+// Usage in components
+const [content, setContent] = useState<FocusContent | null>(null);
+
+useEffect(() => {
+  if (focus) {
+    loadContentDynamically(focus).then(setContent);
+  }
+}, [focus]);
+```
+
+## Migration & Evolution
+
+### Content Versioning
+
+```typescript
+// Version-aware content loading
+interface VersionedContent {
+  version: string;
+  content: FocusContent;
+  migrationNotes?: string[];
+}
+
+export function migrateContent(content: any): FocusContent {
+  const version = content.version || '1.0.0';
+
+  switch (version) {
+    case '1.0.0':
+      return migrateFromV1(content);
+    default:
+      return content;
+  }
+}
+
+function migrateFromV1(oldContent: any): FocusContent {
+  // Migration logic for breaking changes
+  return {
+    ...oldContent,
+    // Apply migrations
+  };
+}
+```
+
+This comprehensive set of Cursor Rules provides a solid foundation for maintaining and extending the SwiftWare project with proper type safety, content management, and development patterns.

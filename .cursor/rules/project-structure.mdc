@@ -1,0 +1,137 @@
+---
+alwaysApply: true
+description: Core project structure and organization patterns for SwiftWare
+---
+
+# SwiftWare Project Structure & Organization
+
+## Directory Structure Standards
+
+### Core Architecture
+
+- **`src/app/`** - Next.js App Router pages and API routes
+- **`src/components/`** - All React components with specific organization:
+  - **`components/ui/`** - Reusable UI primitives (buttons, inputs, etc.)
+  - **`components/focus/`** - Focus-related components (FocusHero, FocusAwareHome)
+  - **`components/hero/`** - Hero section components (TypingHeadline, DesktopBridgeShowcase)
+  - **`components/{focus}/`** - Focus-specific components (e.g., `components/crm/`)
+  - **`components/{focus}/sections/`** - Section components for each focus area
+- **`src/context/`** - React Context providers (FocusContext)
+- **`src/lib/`** - Utility functions and business logic
+- **`src/types/`** - TypeScript type definitions
+- **`content/`** - JSON content files for different focus areas
+- **`public/`** - Static assets and images
+
+### Focus-Based Organization Pattern
+
+Each focus area follows this structure:
+
+```
+content/{focus}.json          # Content data
+src/components/{focus}/       # Focus-specific components
+  ├── {Focus}Hero.tsx        # Main hero component
+  ├── sections/              # Section components
+  │   ├── *.tsx
+  └── *.tsx
+```
+
+## File Naming Conventions
+
+### Components
+
+- **PascalCase** for component files: `CRMHero.tsx`, `FocusAwareHome.tsx`
+- **Focus prefix** for focus-specific components: `CRMHero.tsx`, `TeeSheetCapabilities.tsx`
+- **Descriptive names** that indicate purpose: `CapabilitiesSection.tsx`, `OutcomeSnapshots.tsx`
+
+### Utilities & Hooks
+
+- **camelCase** for utility files: `useFocus.ts`, `focusContent.ts`
+- **Prefix with use** for custom hooks: `useFocus.ts`
+- **Descriptive names** for utility functions
+
+### Types
+
+- **PascalCase** for type names
+- **kebab-case** for files: `focus-content.ts`, `content.ts`
+- **Descriptive and specific** type names
+
+## Import Patterns
+
+### Absolute Imports
+
+Use `@/` prefix for all internal imports:
+
+```typescript
+import FocusHero from '@/components/FocusHero';
+import { useFocusContext } from '@/context/FocusContext';
+import type { FocusContent } from '@/types/content';
+```
+
+### Barrel Exports
+
+Create index files for clean imports:
+
+```typescript
+// src/components/ui/index.ts
+export { default as Icon } from './Icon';
+export { default as Button } from './Button';
+```
+
+### Import Organization
+
+Group imports by type and add spacing:
+
+```typescript
+// External libraries
+import { motion } from 'motion/react';
+import { useState } from 'react';
+
+// Internal components
+import FocusHero from '@/components/FocusHero';
+import { useFocusContext } from '@/context/FocusContext';
+
+// Types
+import type { FocusContent } from '@/types/content';
+```
+
+## Focus System Architecture
+
+### Core Principles
+
+- **Single Responsibility**: Each focus manages its own content and components
+- **Shared Infrastructure**: Common components, context, and utilities
+- **Type Safety**: Strict TypeScript throughout the focus system
+- **Content-Driven**: JSON-based content with type validation
+
+### Focus Keys
+
+Current focus areas: `"crm" | "tee-sheet" | "ai-ml" | "web"`
+
+### Content Management
+
+- Content stored in `content/{focus}.json`
+- Typed with `FocusContent` interface
+- Loaded via `getContentForFocusClient()` function
+- Persisted focus selection in localStorage
+
+## Best Practices
+
+### Component Organization
+
+- Keep components focused and single-purpose
+- Use composition over inheritance
+- Extract reusable logic into custom hooks
+- Follow the focus-based directory structure
+
+### State Management
+
+- Use React Context for global state (FocusContext)
+- localStorage for persistence across sessions
+- Keep state as close to usage as possible
+
+### Performance
+
+- Use dynamic imports for heavy components
+- Implement proper loading states
+- Optimize images and assets
+- Use Next.js built-in optimizations

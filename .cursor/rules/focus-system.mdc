@@ -1,0 +1,247 @@
+---
+alwaysApply: true
+description: Focus system architecture and implementation patterns
+---
+
+# Focus System Architecture
+
+## Overview
+
+The SwiftWare application uses a focus-based architecture where users select a business focus area (CRM, tee-sheet, AI/ML, Web) that determines the content and features displayed. This system enables personalized experiences while maintaining a unified codebase.
+
+## Core Components
+
+### FocusContext (`src/context/FocusContext.tsx`)
+
+Central state management for focus selection:
+
+```typescript
+interface FocusContextValue {
+  focus: FocusKey | null;
+  setFocus: (focus: FocusKey) => void;
+  clearFocus: () => void;
+  showContactModal: boolean;
+  setShowContactModal: (show: boolean) => void;
+}
+```
+
+### Focus Types (`src/lib/useFocus.ts`)
+
+```typescript
+export type FocusKey = 'crm' | 'tee-sheet' | 'ai-ml' | 'web';
+
+export function isValidFocus(value: unknown): value is FocusKey {
+  return (
+    value === 'crm' ||
+    value === 'tee-sheet' ||
+    value === 'ai-ml' ||
+    value === 'web'
+  );
+}
+```
+
+### Content Management (`src/lib/focusContent.ts`)
+
+Content loading pattern:
+
+```typescript
+export function getContentForFocusClient(
+  focus: FocusKey | null
+): FocusContent | null {
+  if (focus === 'crm') return crmJson as FocusContent;
+  return null; // Extend for other focus areas
+}
+```
+
+## Focus Content Structure
+
+### FocusContent Interface (`src/types/content.ts`)
+
+Each focus area content follows this structure:
+
+```typescript
+type FocusContent = {
+  focus: FocusKey;
+  hero: {
+    subline: string; // 9-12 words
+    primaryCta?: { label: string; href: string };
+    secondaryCta?: { label: string; href: string };
+  };
+  bullets: { icon?: string; label: string; shortLine: string }[];
+  capabilities: CapabilityTile[];
+  modules: string[]; // Feature modules to mount
+  outcomes: Outcome[];
+  faq?: { q: string; a: string }[];
+  engagement?: {
+    variants: { name: string; highlight: string; details?: string[] }[];
+  };
+  seo: {
+    title: string;
+    description: string;
+    ogImage?: string;
+  };
+};
+```
+
+## Implementation Patterns
+
+### Focus-Aware Components
+
+Components that adapt based on selected focus:
+
+```typescript
+// components/FocusAwareHome.tsx
+import { useFocusContext } from "@/context/FocusContext";
+import { getContentForFocusClient } from "@/lib/focusContent";
+
+export default function FocusAwareHome() {
+  const { focus } = useFocusContext();
+  const content = getContentForFocusClient(focus);
+
+  if (!content) return <DefaultHome />;
+
+  return <FocusSpecificHome content={content} />;
+}
+```
+
+### Focus-Specific Components
+
+Each focus area has its own component directory:
+
+```
+components/crm/
+├── CRMHero.tsx
+├── sections/
+│   ├── CapabilitiesSection.tsx
+│   ├── FAQ.tsx
+│   └── ...
+```
+
+### Hero Components
+
+Pattern for focus-specific heroes:
+
+```typescript
+// components/crm/CRMHero.tsx
+import type { FocusContent } from "@/types/content";
+
+interface CRMHeroProps {
+  content: FocusContent;
+}
+
+export default function CRMHero({ content }: CRMHeroProps) {
+  return (
+    <section>
+      <h1>{content.hero.subline}</h1>
+      {/* Focus-specific hero implementation */}
+    </section>
+  );
+}
+```
+
+## Content Management
+
+### JSON Content Files
+
+Store content in `content/{focus}.json`:
+
+```json
+{
+  "focus": "crm",
+  "hero": {
+    "subline": "Field teams move faster with a CRM they actually use.",
+    "primaryCta": { "label": "Start a project", "href": "/#contact" },
+    "secondaryCta": { "label": "See capabilities", "href": "#capabilities" }
+  },
+  "bullets": [
+    {
+      "label": "Dispatch in minutes",
+      "shortLine": "Reduce back-and-forth with live scheduling."
+    }
+  ],
+  "capabilities": [...],
+  "outcomes": [...],
+  "faq": [...],
+  "seo": {...}
+}
+```
+
+### Content Extension Pattern
+
+When adding new focus areas:
+
+1. Add new FocusKey to type definition
+2. Create `content/{new-focus}.json`
+3. Add case to `getContentForFocusClient()`
+4. Create focus-specific components in `components/{new-focus}/`
+5. Update routing and navigation
+
+## Focus Persistence
+
+### localStorage Pattern
+
+```typescript
+const STORAGE_KEY = 'swiftware.focus.v1';
+
+export function saveFocus(focus: FocusKey): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, focus);
+  } catch {
+    // Handle storage errors gracefully
+  }
+}
+```
+
+### Initialization Flow
+
+1. App loads → Check localStorage for saved focus
+2. If saved focus exists → Load focus content
+3. If no saved focus → Show focus selection splash screen
+4. User selects focus → Save to localStorage and load content
+
+## Focus-Specific Features
+
+### CRM Focus (Implemented)
+
+- **Capabilities**: Work Orders, Scheduling, Mobile App, Photo Logs, Invoicing, Permissions, Reporting
+- **Outcomes**: -42% dispatch time, -29% rework, +3.1x doc speed
+- **Modules**: FieldOpsTimeline, DispatchScheduling, ProofInvoicing
+
+### Future Focus Areas
+
+Pattern for extending to other focus areas:
+
+- **tee-sheet**: Golf course management system
+- **ai-ml**: AI/ML automation solutions
+- **web**: Web application development
+
+## Best Practices
+
+### Focus Independence
+
+- Each focus area should be self-contained
+- Shared components should not depend on focus-specific logic
+- Use the FocusContent interface for type safety
+- Keep focus-specific styling scoped to components
+
+### Performance Considerations
+
+- Load focus content only when needed
+- Use dynamic imports for heavy focus components
+- Cache content in memory to avoid repeated JSON parsing
+- Implement loading states for focus switches
+
+### Type Safety
+
+- Always use the FocusKey union type
+- Validate focus values with `isValidFocus()`
+- Use proper TypeScript generics for focus-specific components
+- Keep content types in sync with JSON structure
+
+### User Experience
+
+- Smooth transitions between focus areas
+- Persistent focus selection across sessions
+- Clear visual feedback for focus changes
+- Graceful fallback for unsupported focus areas
