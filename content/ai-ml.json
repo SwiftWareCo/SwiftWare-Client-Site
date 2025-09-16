@@ -1,0 +1,154 @@
+{
+  "focus": "ai-ml",
+  "hero": {
+    "subline": "Unlock the power of your data with advanced AI capabilities.",
+    "primaryCta": { "label": "Start Free Trial", "href": "/#contact" },
+    "secondaryCta": { "label": "See Demo", "href": "#demo" }
+  },
+  "bullets": [
+    {
+      "label": "Advanced RAG",
+      "shortLine": "Contextual answers from your documents."
+    },
+    {
+      "label": "Hybrid Search",
+      "shortLine": "Semantic + keyword matching."
+    },
+    {
+      "label": "Auto Processing",
+      "shortLine": "Intelligent document ingestion."
+    }
+  ],
+  "capabilities": [
+    {
+      "title": "RAG Engine",
+      "summary": "Advanced retrieval-augmented generation for contextual answers from your business knowledge.",
+      "icon": "Brain",
+      "category": "Core AI",
+      "badges": ["Contextual", "Multi-modal"]
+    },
+    {
+      "title": "Hybrid Search",
+      "summary": "Combines semantic understanding with keyword precision for accurate results.",
+      "icon": "Search",
+      "category": "Core AI",
+      "badges": ["Vector + Text", "Real-time"]
+    },
+    {
+      "title": "Document Processing",
+      "summary": "Automated ingestion and analysis of PDFs, docs, spreadsheets, and more.",
+      "icon": "FileText",
+      "category": "Core AI",
+      "badges": ["Auto-chunking", "Metadata"]
+    },
+    {
+      "title": "AI Chat Interface",
+      "summary": "Natural language interactions with your business data and processes.",
+      "icon": "MessageSquare",
+      "category": "Essentials",
+      "badges": ["Conversational", "Context-aware"]
+    },
+    {
+      "title": "Data Insights",
+      "summary": "Automated analysis and pattern recognition in your business data.",
+      "icon": "TrendingUp",
+      "category": "Advanced",
+      "badges": ["Predictive", "Automated"]
+    },
+    {
+      "title": "Custom Models",
+      "summary": "Fine-tuned AI models specifically trained on your domain and use cases.",
+      "icon": "Settings",
+      "category": "Advanced",
+      "badges": ["Domain-specific", "Fine-tuned"]
+    },
+    {
+      "title": "API Integration",
+      "summary": "Seamless integration with your existing tools and workflows.",
+      "icon": "Zap",
+      "category": "Integrations",
+      "badges": ["REST API", "Webhooks"]
+    },
+    {
+      "title": "Enterprise Security",
+      "summary": "Multi-tenant architecture with role-based access and audit logging.",
+      "icon": "Shield",
+      "category": "Enterprise",
+      "badges": ["RLS", "SOC2"]
+    }
+  ],
+  "modules": ["AISearchInterface", "DocumentProcessor", "InsightsDashboard"],
+  "outcomes": [
+    {
+      "metric": "-75%",
+      "unit": "search time",
+      "blurb": "Instant answers from enterprise knowledge base."
+    },
+    {
+      "metric": "+3.2×",
+      "unit": "data insights",
+      "blurb": "AI-driven pattern recognition and analysis."
+    },
+    {
+      "metric": "-60%",
+      "unit": "manual processing",
+      "blurb": "Automated document ingestion and categorization."
+    }
+  ],
+  "faq": [
+    {
+      "q": "How secure is our data?",
+      "a": "Enterprise-grade encryption with multi-tenant isolation, role-based access control, and comprehensive audit logging. Your data never leaves your secure environment."
+    },
+    {
+      "q": "What file formats are supported?",
+      "a": "We support PDFs, Word docs, Excel files, CSVs, plain text, and can integrate with your existing document management systems."
+    },
+    {
+      "q": "Can we customize the AI models?",
+      "a": "Yes. We fine-tune models on your specific domain, terminology, and use cases for maximum accuracy and relevance."
+    },
+    {
+      "q": "How does the hybrid search work?",
+      "a": "Our system combines semantic vector search for contextual understanding with traditional keyword matching for precision, giving you the best of both approaches."
+    }
+  ],
+  "engagement": {
+    "variants": [
+      {
+        "name": "AI Pilot",
+        "highlight": "Start with core RAG and search capabilities.",
+        "details": [
+          "Document processing setup",
+          "Basic AI chat interface",
+          "Search optimization"
+        ]
+      },
+      {
+        "name": "Full Platform",
+        "highlight": "Complete AI-driven business intelligence solution.",
+        "details": [
+          "Advanced RAG system",
+          "Custom model training",
+          "Enterprise integrations",
+          "Analytics dashboard"
+        ]
+      },
+      {
+        "name": "AI Consulting",
+        "highlight": "Strategic AI implementation and optimization.",
+        "details": [
+          "AI strategy development",
+          "Model fine-tuning",
+          "Performance optimization",
+          "Team training"
+        ]
+      }
+    ]
+  },
+  "seo": {
+    "title": "SwiftMind AI - Business Intelligence Platform — Swiftware",
+    "description": "Transform your business with AI-powered data analysis, advanced RAG, hybrid search, and intelligent automation. Enterprise-ready AI solutions.",
+    "ogImage": "/images/swiftmind-og.png"
+  }
+}

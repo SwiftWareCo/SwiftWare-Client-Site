@@ -37,7 +37,7 @@ const timelineSteps = [
   },
 ];
 
-export default function Timeline() {
+export default function WebProcess() {
   const reduce = useReducedMotion();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -65,14 +65,14 @@ export default function Timeline() {
         <div className="hidden lg:block">
           <div className="relative flex items-center justify-between">
             {/* Connecting Line Background */}
-            <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-zinc-800 -translate-y-1/2 z-0" />
+            <div className="absolute top-1/2 left-16 right-16 h-0.5 bg-zinc-800 -translate-y-1/2 z-0" />
             
             {/* Animated Connecting Line */}
             <motion.div
               initial={{ scaleX: 0 }}
               animate={isInView ? { scaleX: 1 } : {}}
               transition={{ duration: 2, ease: "easeInOut", delay: 0.5 }}
-              className="absolute top-1/2 left-0 right-0 h-0.5 -translate-y-1/2 z-10 origin-left"
+              className="absolute top-1/2 left-16 right-16 h-0.5 -translate-y-1/2 z-10 origin-left"
               style={{
                 background: "linear-gradient(90deg, rgba(59,130,246,0.8), rgba(168,85,247,0.8), rgba(59,130,246,0.8))",
                 boxShadow: "0 0 20px rgba(59,130,246,0.3)",
@@ -118,10 +118,21 @@ export default function Timeline() {
                   </motion.div>
 
                   {/* Content */}
-                  <div className="text-center max-w-[200px]">
-                    <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
-                    <p className="text-sm text-zinc-400 leading-relaxed">{step.description}</p>
-                  </div>
+                  <motion.div 
+                    className="text-center max-w-[200px] group-hover:scale-105 transition-transform duration-200"
+                    whileHover={{ y: -2 }}
+                  >
+                    <motion.h3 
+                      className="text-xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors duration-200"
+                    >
+                      {step.title}
+                    </motion.h3>
+                    <motion.p 
+                      className="text-sm text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors duration-200"
+                    >
+                      {step.description}
+                    </motion.p>
+                  </motion.div>
                 </motion.div>
               );
             })}
@@ -181,10 +192,21 @@ export default function Timeline() {
                 </motion.div>
 
                 {/* Content */}
-                <div className="flex-1 pt-3">
-                  <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
-                  <p className="text-zinc-400 leading-relaxed">{step.description}</p>
-                </div>
+                <motion.div 
+                  className="flex-1 pt-3 group-hover:translate-x-1 transition-transform duration-200"
+                  whileHover={{ x: 4 }}
+                >
+                  <motion.h3 
+                    className="text-xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors duration-200"
+                  >
+                    {step.title}
+                  </motion.h3>
+                  <motion.p 
+                    className="text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors duration-200"
+                  >
+                    {step.description}
+                  </motion.p>
+                </motion.div>
               </motion.div>
             );
           })}

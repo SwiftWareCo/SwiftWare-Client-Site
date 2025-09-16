@@ -2,20 +2,25 @@
 
 import { motion, useReducedMotion, useInView } from "motion/react";
 import { useRef } from "react";
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useFocusContext } from "@/context/FocusContext";
+import type { FocusContent } from "@/types/content";
 
-export default function CTASection() {
+interface WebCTAProps {
+  content: FocusContent;
+}
+
+export default function WebCTA({ content }: WebCTAProps) {
   const reduce = useReducedMotion();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { setShowContactModal } = useFocusContext();
 
   return (
     <section 
       ref={ref}
       className="relative w-full pt-20 sm:pt-24 lg:pt-28 pb-12 sm:pb-16 lg:pb-20"
     >
-
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
         <motion.h2
           initial={reduce ? { opacity: 1 } : { opacity: 0, y: 30 }}
@@ -43,8 +48,8 @@ export default function CTASection() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
         >
-          <Link
-            href="/ClientWebsites?contact=open"
+          <button
+            onClick={() => setShowContactModal(true)}
             className="relative inline-flex items-center gap-3 overflow-hidden rounded-xl px-8 py-4 text-lg font-medium text-white ring-1 ring-zinc-800 transition-all duration-300"
             style={{ 
               background: "linear-gradient(90deg, rgb(59 130 246), rgb(168 85 247))"
@@ -66,7 +71,7 @@ export default function CTASection() {
             >
               <ArrowRight className="size-5" />
             </motion.div>
-          </Link>
+          </button>
         </motion.div>
 
         <motion.div

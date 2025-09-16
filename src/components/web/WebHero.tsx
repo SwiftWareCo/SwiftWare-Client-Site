@@ -2,16 +2,20 @@
 
 import { useMemo } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
+import type { FocusContent } from "@/types/content";
+import { useFocusContext } from "@/context/FocusContext";
 
-import TypingHeadline from "@/components/ClientWebsites/hero/TypingHeadline";
-import WebsiteAssembly from "@/components/ClientWebsites/hero/WebsiteAssembly";
+import TypingHeadline from "@/components/web/hero/TypingHeadline";
+import WebsiteAssembly from "@/components/web/hero/WebsiteAssembly";
 
-const HEADLINE = "Your Vision, Beautifully Built";
+interface WebHeroProps {
+  content: FocusContent;
+}
 
-export default function Hero() {
+export default function WebHero({ content }: WebHeroProps) {
   const reduce = useReducedMotion();
+  const { setShowContactModal } = useFocusContext();
   const stripes = useMemo(() => [4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92], []);
 
   return (
@@ -92,7 +96,7 @@ export default function Hero() {
 
           <h1 id="hero-heading" className="mt-2">
             <TypingHeadline
-              text={HEADLINE}
+              text={content.hero.subline}
               className="text-[1.35rem] sm:text-[1.65rem] lg:text-[2.1rem] font-bold leading-tight"
               step={0.065}
               blinkPeriod={2}
@@ -105,8 +109,8 @@ export default function Hero() {
             transition={{ delay: 0.75, duration: 0.45 }}
             className="mt-4 flex flex-wrap items-center gap-3 justify-center md:justify-start"
           >
-            <Link
-              href="/ClientWebsites?contact=open"
+            <button
+              onClick={() => setShowContactModal(true)}
               className="relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-5 py-3 text-sm font-medium text-white ring-1 ring-zinc-800"
               style={{ background: "linear-gradient(90deg, rgb(59 130 246), rgb(168 85 247))" }}
               aria-label="Start your project"
@@ -117,15 +121,15 @@ export default function Hero() {
                 whileHover={{ x: "100%" }}
                 transition={{ duration: 0.7, ease: "easeInOut" }}
               />
-              Start your project
+              {content.hero.primaryCta?.label || "Start your project"}
               <ArrowRight className="size-4" />
-            </Link>
+            </button>
 
             <button
               onClick={() => {
                 const clientsSection = document.getElementById('clients');
                 if (clientsSection) {
-                  const yOffset = -80; // Offset to account for header and provide breathing room
+                  const yOffset = -80;
                   const y = clientsSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
                   window.scrollTo({
                     top: y,
@@ -135,7 +139,7 @@ export default function Hero() {
               }}
               className="group inline-flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/60 px-5 py-3 text-sm text-zinc-200 hover:bg-zinc-900 transition-colors"
             >
-              See our work
+              {content.hero.secondaryCta?.label || "See our work"}
               <Play className="size-4 text-zinc-500 group-hover:text-zinc-300 transition-colors" />
             </button>
           </motion.div>

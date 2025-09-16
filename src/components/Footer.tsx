@@ -6,9 +6,9 @@ import { motion } from "motion/react";
 
 export default function Footer() {
   return (
-    <footer className="relative mt-32">
+    <footer className="relative mt-16 md:mt-32">
       {/* Gradient separator */}
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="relative h-px w-full">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-zinc-700 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/20 to-transparent blur-sm" />
@@ -16,29 +16,29 @@ export default function Footer() {
       </div>
 
       {/* Footer content */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
-        className="mx-auto max-w-7xl px-6 py-16"
+        className="mx-auto max-w-7xl px-4 sm:px-6 py-8 md:py-16"
       >
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 md:gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand section */}
-          <div className="lg:col-span-2">
+          <div className="md:col-span-2 lg:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <div className="relative">
-                <div className="size-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-brand-glow flex items-center justify-center p-1.5">
+                <div className="size-8 md:size-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-brand-glow flex items-center justify-center p-1 md:p-1.5">
                   <Image
                     src="/images/swiftware-logo.png"
                     alt="SwiftWare Logo"
-                    width={32}
-                    height={32}
-                    className="mix-blend-screen"
+                    width={24}
+                    height={24}
+                    className="md:w-8 md:h-8 mix-blend-screen"
                   />
                 </div>
               </div>
-              <h3 className="text-xl font-bold bg-gradient-to-r from-white to-zinc-300 bg-clip-text text-transparent">
+              <h3 className="text-lg md:text-xl font-bold bg-gradient-to-r from-white to-zinc-300 bg-clip-text text-transparent">
                 Swiftware
               </h3>
             </div>
@@ -47,7 +47,7 @@ export default function Footer() {
             </p>
             
             {/* Social links */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 md:gap-4">
               <a href="#" className="btn-ghost px-3 py-2 hover:text-blue-400 transition-colors">
                 Twitter
               </a>
@@ -94,18 +94,20 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-8 border-t border-zinc-800/60">
-          <div className="flex flex-col gap-4 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-zinc-800/60">
+          <div className="flex flex-col gap-4 text-sm text-zinc-500 md:flex-row md:items-center md:justify-between">
             <p>© {new Date().getFullYear()} Swiftware. All rights reserved.</p>
-            
-            <div className="flex items-center gap-6">
-              <Link href="/privacy" className="hover:text-zinc-300 transition-colors">
-                Privacy
-              </Link>
-              <Link href="/terms" className="hover:text-zinc-300 transition-colors">
-                Terms
-              </Link>
-              <Link href="/?contact=open" className="btn-primary px-4 py-2 text-xs">
+
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+              <div className="flex items-center gap-6">
+                <Link href="/privacy" className="hover:text-zinc-300 transition-colors">
+                  Privacy
+                </Link>
+                <Link href="/terms" className="hover:text-zinc-300 transition-colors">
+                  Terms
+                </Link>
+              </div>
+              <Link href="/?contact=open" className="btn-primary px-4 py-2 text-xs text-center">
                 Let&apos;s build something amazing
               </Link>
             </div>
@@ -115,8 +117,8 @@ export default function Footer() {
 
       {/* Footer ambient glow */}
       <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 size-96 
-                      bg-gradient-to-t from-blue-500/5 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-80 h-80 md:w-96 md:h-96
+                      bg-gradient-to-t from-blue-500/5 to-transparent rounded-full blur-2xl md:blur-3xl" />
       </div>
     </footer>
   );

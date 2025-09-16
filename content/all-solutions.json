@@ -1,0 +1,113 @@
+{
+  "focus": "all-solutions",
+  "hero": {
+    "subline": "Complete software solutions for growing businesses.",
+    "primaryCta": { "label": "Schedule Discovery Call", "href": "#scheduling" },
+    "secondaryCta": { "label": "Explore Solutions", "href": "#solutions" }
+  },
+  "bullets": [
+    {
+      "label": "Custom CRM Systems",
+      "shortLine": "Field apps your teams will actually use."
+    },
+    {
+      "label": "AI & ML Solutions",
+      "shortLine": "Automations where they matter most."
+    },
+    {
+      "label": "Golf Course Management",
+      "shortLine": "Tee sheet operations that run themselves."
+    },
+    {
+      "label": "Web Development",
+      "shortLine": "Sites and portals that convert."
+    }
+  ],
+  "capabilities": [
+    {
+      "title": "Service CRM",
+      "summary": "Field apps your teams will actually use.",
+      "icon": "Smartphone",
+      "cta": "Learn More",
+      "href": "#focus-crm",
+      "category": "Solutions"
+    },
+    {
+      "title": "Tee Sheet Management",
+      "summary": "Operations that run themselves.",
+      "icon": "Calendar",
+      "cta": "Learn More",
+      "href": "#focus-tee-sheet",
+      "category": "Solutions"
+    },
+    {
+      "title": "AI & Machine Learning",
+      "summary": "Business intelligence that transforms your data.",
+      "icon": "Brain",
+      "cta": "Learn More",
+      "href": "#focus-ai-ml",
+      "category": "Solutions"
+    },
+    {
+      "title": "Web Development",
+      "summary": "Websites and portals that convert.",
+      "icon": "Monitor",
+      "cta": "Learn More",
+      "href": "#focus-web",
+      "category": "Solutions"
+    }
+  ],
+  "modules": ["SolutionOverview", "SchedulingSection", "ContactModal"],
+  "outcomes": [
+    {
+      "metric": "50+",
+      "unit": "projects delivered",
+      "blurb": "Across all service areas and industries."
+    },
+    {
+      "metric": "100%",
+      "unit": "client satisfaction",
+      "blurb": "Every project meets or exceeds expectations."
+    },
+    {
+      "metric": "24/7",
+      "unit": "support availability",
+      "blurb": "We're here when you need us most."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Which solution is right for me?",
+      "a": "Schedule a discovery call and we'll help you determine the best approach for your specific needs."
+    },
+    {
+      "q": "How long does a project take?",
+      "a": "Timeline varies by scope. Simple solutions can be delivered in 2-4 weeks, while complex systems may take 2-3 months."
+    },
+    {
+      "q": "Do you provide ongoing support?",
+      "a": "Yes, we offer maintenance, support, and feature enhancements for all our solutions."
+    }
+  ],
+  "engagement": {
+    "variants": [
+      {
+        "name": "Discovery Call",
+        "highlight": "30-minute consultation to discuss your needs."
+      },
+      {
+        "name": "Custom Quote",
+        "highlight": "Detailed proposal based on your requirements."
+      },
+      {
+        "name": "Ongoing Support",
+        "highlight": "Maintenance and feature updates post-launch."
+      }
+    ]
+  },
+  "seo": {
+    "title": "Complete Software Solutions — SwiftWare",
+    "description": "Custom CRM, AI/ML, tee sheet management, and web development solutions for growing businesses. Schedule a discovery call today.",
+    "ogImage": "/og-all-solutions.png"
+  }
+}

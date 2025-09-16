@@ -23,7 +23,7 @@ const VideoShowcaseContext = createContext<VideoShowcaseContextType | undefined>
 
 export const projects: ClientProject[] = [
   {
-    name: "E-Commerce Platform",
+    name: "E-Commerce",
     logo: "/images/swiftware-logo.png",
     desktopVideo: "/videos/swiftware-demo.mp4",
     mobileVideo: "/videos/swiftware-demo-mobile.mp4",
@@ -33,7 +33,7 @@ export const projects: ClientProject[] = [
     industry: "E-Commerce"
   },
   {
-    name: "Restaurant Chain",
+    name: "Restaurant",
     logo: "/images/swiftware-logo.png",
     desktopVideo: "/videos/swiftware-demo.mp4",
     mobileVideo: "/videos/swiftware-demo-mobile.mp4",
@@ -43,7 +43,7 @@ export const projects: ClientProject[] = [
     industry: "Restaurant"
   },
   {
-    name: "Corporate Portfolio",
+    name: "Corporate",
     logo: "/images/swiftware-logo.png",
     desktopVideo: "/videos/swiftware-demo.mp4",
     mobileVideo: "/videos/swiftware-demo-mobile.mp4",

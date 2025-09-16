@@ -1,0 +1,120 @@
+{
+  "focus": "web",
+  "hero": {
+    "subline": "Your vision, beautifully built.",
+    "primaryCta": { "label": "Start your project", "href": "/#contact" },
+    "secondaryCta": { "label": "See our work", "href": "#clients" }
+  },
+  "bullets": [
+    {
+      "icon": "Zap",
+      "label": "Lightning-fast delivery",
+      "shortLine": "From concept to launch in weeks, not months."
+    },
+    {
+      "icon": "Smartphone",
+      "label": "Mobile-first design",
+      "shortLine": "Responsive experiences that work everywhere."
+    },
+    {
+      "icon": "Code",
+      "label": "Modern technology",
+      "shortLine": "Built with the latest frameworks and best practices."
+    }
+  ],
+  "capabilities": [
+    {
+      "title": "Custom Websites",
+      "summary": "Bespoke websites tailored to your brand and goals.",
+      "icon": "Globe",
+      "category": "Essentials"
+    },
+    {
+      "title": "E-commerce Platforms",
+      "summary": "Online stores that convert visitors into customers.",
+      "icon": "ShoppingCart",
+      "category": "Essentials"
+    },
+    {
+      "title": "Web Applications",
+      "summary": "Interactive web apps with advanced functionality.",
+      "icon": "Monitor",
+      "category": "Advanced"
+    },
+    {
+      "title": "Client Portals",
+      "summary": "Secure portals for client communication and collaboration.",
+      "icon": "Users",
+      "category": "Advanced"
+    },
+    {
+      "title": "API Integration",
+      "summary": "Connect your website to third-party services and tools.",
+      "icon": "Link",
+      "category": "Integrations"
+    },
+    {
+      "title": "Performance Optimization",
+      "summary": "Lightning-fast loading times and SEO optimization.",
+      "icon": "Zap",
+      "category": "Advanced"
+    }
+  ],
+  "modules": ["WebsiteAssembly", "ClientShowcase", "WebProcess"],
+  "outcomes": [
+    {
+      "metric": "3.2x",
+      "unit": "faster load times",
+      "blurb": "Optimized performance drives better user experience."
+    },
+    {
+      "metric": "+47%",
+      "unit": "conversion rate",
+      "blurb": "Strategic design increases visitor-to-customer conversion."
+    },
+    {
+      "metric": "24/7",
+      "unit": "uptime guarantee",
+      "blurb": "Reliable hosting ensures your site is always available."
+    }
+  ],
+  "faq": [
+    {
+      "q": "How long does a typical website project take?",
+      "a": "Most websites are completed within 2-4 weeks, depending on complexity and content readiness."
+    },
+    {
+      "q": "Do you provide ongoing maintenance?",
+      "a": "Yes, we offer maintenance packages to keep your website secure, updated, and performing optimally."
+    },
+    {
+      "q": "Can you help with content creation?",
+      "a": "Absolutely! We can help with copywriting, photography coordination, and content strategy."
+    },
+    {
+      "q": "Will my website be mobile-friendly?",
+      "a": "Every website we build is fully responsive and optimized for all devices and screen sizes."
+    }
+  ],
+  "engagement": {
+    "variants": [
+      {
+        "name": "Website Package",
+        "highlight": "Complete website solution from design to launch."
+      },
+      {
+        "name": "Web Application",
+        "highlight": "Custom web apps with advanced functionality."
+      },
+      {
+        "name": "E-commerce Solution",
+        "highlight": "Full online store with payment processing."
+      }
+    ]
+  },
+  "seo": {
+    "title": "Custom Websites & Web Development — Swiftware",
+    "description": "Professional website development and web applications. Fast, responsive, and conversion-focused designs.",
+    "ogImage": "/og-web.png"
+  }
+}

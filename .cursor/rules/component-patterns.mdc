@@ -1,0 +1,473 @@
+---
+globs: src/components/**/*.tsx
+description: React component patterns and best practices for SwiftWare
+---
+
+# React Component Patterns
+
+## Component Organization
+
+### File Structure
+
+```
+components/
+├── ui/                    # Reusable UI primitives
+│   ├── Icon.tsx
+│   ├── Button.tsx
+│   └── index.ts          # Barrel exports
+├── focus/                # Focus-related components
+│   ├── FocusHero.tsx
+│   ├── FocusAwareHome.tsx
+│   └── ThemedFocusDropdown.tsx
+├── hero/                 # Hero section components
+│   ├── TypingHeadline.tsx
+│   ├── DesktopBridgeShowcase.tsx
+│   └── LaptopSyncTile.tsx
+├── crm/                  # Focus-specific components
+│   ├── CRMHero.tsx
+│   └── sections/
+│       ├── CapabilitiesSection.tsx
+│       ├── FAQ.tsx
+│       └── ...
+├── ClientApp.tsx        # App wrapper
+├── Footer.tsx
+├── UnifiedHeader.tsx
+└── SplashScreen.tsx
+```
+
+### Component Naming Conventions
+
+- **PascalCase** for component names and files
+- **Descriptive and specific** names
+- **Focus prefix** for focus-specific components: `CRMHero`, `TeeSheetCapabilities`
+- **Section suffix** for section components: `CapabilitiesSection`, `FAQSection`
+
+## Component Patterns
+
+### Focus-Aware Components
+
+Components that adapt based on selected focus:
+
+```typescript
+import { useFocusContext } from "@/context/FocusContext";
+import { getContentForFocusClient } from "@/lib/focusContent";
+
+interface FocusAwareComponentProps {
+  className?: string;
+}
+
+export default function FocusAwareComponent({ className }: FocusAwareComponentProps) {
+  const { focus } = useFocusContext();
+  const content = getContentForFocusClient(focus);
+
+  if (!content) {
+    return <DefaultComponent className={className} />;
+  }
+
+  return <FocusSpecificComponent content={content} className={className} />;
+}
+```
+
+### Focus-Specific Components
+
+Components that render content for a specific focus area:
+
+```typescript
+import type { FocusContent } from "@/types/content";
+
+interface CRMHeroProps {
+  content: FocusContent;
+  className?: string;
+}
+
+export default function CRMHero({ content, className }: CRMHeroProps) {
+  return (
+    <section className={className}>
+      <h1 className="text-4xl font-bold">
+        {content.hero.subline}
+      </h1>
+      {/* Focus-specific rendering */}
+    </section>
+  );
+}
+```
+
+### Section Components
+
+Reusable section components within focus areas:
+
+```typescript
+import type { FocusContent } from "@/types/content";
+
+interface CapabilitiesSectionProps {
+  capabilities: FocusContent['capabilities'];
+  className?: string;
+}
+
+export default function CapabilitiesSection({
+  capabilities,
+  className
+}: CapabilitiesSectionProps) {
+  return (
+    <section className={className}>
+      <h2>Capabilities</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {capabilities.map((capability) => (
+          <CapabilityCard key={capability.title} {...capability} />
+        ))}
+      </div>
+    </section>
+  );
+}
+```
+
+## Props and TypeScript
+
+### Interface Patterns
+
+```typescript
+interface ComponentProps {
+  // Required props
+  title: string;
+  content: FocusContent;
+
+  // Optional props
+  className?: string;
+  onClick?: () => void;
+
+  // Complex optional props
+  children?: React.ReactNode;
+  style?: React.CSSProperties;
+}
+```
+
+### Default Props Pattern
+
+```typescript
+interface ButtonProps {
+  variant?: 'primary' | 'secondary' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
+  children: React.ReactNode;
+  onClick?: () => void;
+}
+
+const defaultProps: Partial<ButtonProps> = {
+  variant: 'primary',
+  size: 'md',
+  disabled: false,
+};
+
+export default function Button(props: ButtonProps) {
+  const { variant, size, disabled, children, onClick } = {
+    ...defaultProps,
+    ...props,
+  };
+
+  // Component implementation
+}
+```
+
+### Children Props
+
+```typescript
+interface CardProps {
+  title: string;
+  children: React.ReactNode;
+  className?: string;
+}
+
+export default function Card({ title, children, className }: CardProps) {
+  return (
+    <div className={`card ${className || ''}`}>
+      <h3>{title}</h3>
+      <div className="card-content">
+        {children}
+      </div>
+    </div>
+  );
+}
+```
+
+## Styling Patterns
+
+### Tailwind CSS Classes
+
+- Use utility-first approach with Tailwind
+- Follow the established color scheme (zinc, blue, purple)
+- Use responsive prefixes consistently
+- Group related classes logically
+
+```typescript
+<div className="
+  bg-zinc-950 text-zinc-100
+  border border-zinc-800
+  hover:bg-zinc-900 hover:border-blue-500/50
+  transition-colors duration-200
+  rounded-xl p-6
+">
+```
+
+### CSS Custom Properties
+
+For dynamic theming:
+
+```typescript
+<div
+  className="hero-gradient"
+  style={{
+    '--gradient-from': 'rgb(59, 130, 246)',
+    '--gradient-to': 'rgb(168, 85, 247)',
+  } as React.CSSProperties}
+>
+```
+
+### Responsive Design
+
+- Mobile-first approach
+- Use consistent breakpoint prefixes
+- Test on multiple screen sizes
+
+```typescript
+<div className="
+  grid grid-cols-1
+  md:grid-cols-2
+  lg:grid-cols-3
+  xl:grid-cols-4
+  gap-4
+">
+```
+
+## Animation Patterns
+
+### Motion/React Usage
+
+```typescript
+import { motion } from "motion/react";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.5 }
+  }
+};
+
+export default function AnimatedList() {
+  return (
+    <motion.ul
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      {items.map((item) => (
+        <motion.li key={item.id} variants={itemVariants}>
+          {item.content}
+        </motion.li>
+      ))}
+    </motion.ul>
+  );
+}
+```
+
+### Reduced Motion Support
+
+```typescript
+import { motion, useReducedMotion } from "motion/react";
+
+export default function AccessibleAnimation() {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <motion.div
+      animate={{
+        scale: shouldReduceMotion ? 1 : [1, 1.1, 1]
+      }}
+      transition={{
+        duration: shouldReduceMotion ? 0 : 0.3
+      }}
+    >
+      Content
+    </motion.div>
+  );
+}
+```
+
+## Performance Patterns
+
+### Dynamic Imports
+
+```typescript
+import dynamic from "next/dynamic";
+
+const HeavyComponent = dynamic(() => import("@/components/HeavyComponent"), {
+  loading: () => <SkeletonLoader />,
+  ssr: false // If component requires browser APIs
+});
+```
+
+### Memoization
+
+```typescript
+import { memo, useMemo } from "react";
+
+interface ExpensiveComponentProps {
+  data: ComplexData[];
+  filter: string;
+}
+
+const ExpensiveComponent = memo(({ data, filter }: ExpensiveComponentProps) => {
+  const filteredData = useMemo(() => {
+    return data.filter(item =>
+      item.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  }, [data, filter]);
+
+  return (
+    <div>
+      {filteredData.map(item => (
+        <Item key={item.id} {...item} />
+      ))}
+    </div>
+  );
+});
+```
+
+## Accessibility Patterns
+
+### Semantic HTML
+
+```typescript
+// Good
+<section aria-labelledby="capabilities-heading">
+  <h2 id="capabilities-heading">Our Capabilities</h2>
+  <ul role="list">
+    {capabilities.map(capability => (
+      <li key={capability.title} role="listitem">
+        {capability.title}
+      </li>
+    ))}
+  </ul>
+</section>
+```
+
+### Focus Management
+
+```typescript
+import { useEffect, useRef } from "react";
+
+export default function Modal({ isOpen, onClose }: ModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      modalRef.current.focus();
+    }
+  }, [isOpen]);
+
+  return (
+    <div
+      ref={modalRef}
+      tabIndex={-1}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      {/* Modal content */}
+    </div>
+  );
+}
+```
+
+### Keyboard Navigation
+
+```typescript
+const handleKeyDown = (event: KeyboardEvent) => {
+  switch (event.key) {
+    case 'Escape':
+      onClose();
+      break;
+    case 'Enter':
+    case ' ':
+      event.preventDefault();
+      onSelect();
+      break;
+  }
+};
+```
+
+## Testing Patterns
+
+### Component Testing Structure
+
+```typescript
+// __tests__/CRMHero.test.tsx
+import { render, screen } from "@testing-library/react";
+import CRMHero from "@/components/crm/CRMHero";
+
+const mockContent = {
+  focus: "crm" as const,
+  hero: {
+    subline: "Field teams move faster with a CRM they actually use.",
+    primaryCta: { label: "Start a project", href: "/#contact" }
+  }
+};
+
+describe("CRMHero", () => {
+  it("renders hero content correctly", () => {
+    render(<CRMHero content={mockContent} />);
+
+    expect(screen.getByText(mockContent.hero.subline)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /start a project/i })).toBeInTheDocument();
+  });
+});
+```
+
+## Error Boundaries
+
+```typescript
+import { Component, ErrorInfo, ReactNode } from "react";
+
+interface ErrorBoundaryProps {
+  children: ReactNode;
+  fallback?: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(): ErrorBoundaryState {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error("Component error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || <div>Something went wrong.</div>;
+    }
+
+    return this.props.children;
+  }
+}
+```
