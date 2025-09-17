@@ -97,14 +97,14 @@ export default function WebVideoShowcase() {
 
             <div className="relative rounded-2xl border border-zinc-800/80 bg-zinc-900/60 overflow-hidden">
               {/* Mobile: Vertical Stack */}
-              <div className="md:hidden p-4 sm:p-6">
-                <div className="flex flex-col items-center gap-6">
+              <div className="md:hidden p-2 sm:p-4">
+                <div className="flex flex-col items-center gap-4">
                   {/* Desktop Monitor (top on mobile) */}
-                  <div className="w-full max-w-[400px]">
-                    <MonitorFrame>
+                  <div className="w-full max-w-[340px] mx-auto">
+                    <MobileMonitorFrame>
                       <video
                         ref={desktopVideoRef}
-                        className="w-full h-full object-cover rounded-md"
+                        className="w-full h-full object-contain rounded-md bg-black"
                         src={currentProject.desktopVideo}
                         poster={currentProject.poster}
                         autoPlay
@@ -116,18 +116,7 @@ export default function WebVideoShowcase() {
                         <source src={currentProject.desktopVideo.replace('.mp4', '.webm')} type="video/webm" />
                         <source src={currentProject.desktopVideo} type="video/mp4" />
                       </video>
-                      
-                      {/* Client logo watermark */}
-                      <div className="absolute bottom-1 right-1 opacity-20">
-                        <Image
-                          src="/images/swiftware-logo-text.png"
-                          alt=""
-                          width={80}
-                          height={24}
-                          className="w-auto h-3"
-                        />
-                      </div>
-                    </MonitorFrame>
+                    </MobileMonitorFrame>
                   </div>
 
                   {/* Mobile Phone (bottom on mobile) */}
@@ -159,7 +148,7 @@ export default function WebVideoShowcase() {
                   <MonitorFrame>
                     <video
                       ref={desktopVideoRef}
-                      className="w-full h-full object-cover rounded-md"
+                      className="w-full h-full object-contain rounded-md bg-black"
                       src={currentProject.desktopVideo}
                       poster={currentProject.poster}
                       autoPlay
@@ -171,17 +160,6 @@ export default function WebVideoShowcase() {
                       <source src={currentProject.desktopVideo.replace('.mp4', '.webm')} type="video/webm" />
                       <source src={currentProject.desktopVideo} type="video/mp4" />
                     </video>
-                    
-                    {/* Client logo watermark */}
-                    <div className="absolute bottom-3 right-3 opacity-20">
-                      <Image
-                        src="/images/swiftware-logo-text.png"
-                        alt=""
-                        width={80}
-                        height={24}
-                        className="w-auto h-6"
-                      />
-                    </div>
                   </MonitorFrame>
                 </div>
 
@@ -206,16 +184,16 @@ export default function WebVideoShowcase() {
                 </div>
               </div>
 
-              {/* Live Status Indicator - Top left */}
-              <div className="absolute top-2 left-2 sm:top-4 sm:left-4 lg:top-6 lg:left-6 z-10">
+              {/* Live Status Indicator - Desktop: Top left, Mobile: Bottom center */}
+              <div className="absolute md:top-6 md:left-6 bottom-3 left-1/2 md:left-auto -translate-x-1/2 md:translate-x-0 z-10">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.7, duration: 0.3 }}
-                  className="flex items-center gap-1 sm:gap-2 px-2 py-1 sm:px-3 sm:py-1.5 lg:px-4 lg:py-2 rounded-full bg-zinc-900/90 border border-zinc-700/50 backdrop-blur-sm shadow-lg"
+                  className="flex items-center gap-1 md:gap-2 px-2 py-1 md:px-4 md:py-2 rounded-full bg-zinc-900/90 border border-zinc-700/50 backdrop-blur-sm shadow-lg"
                 >
-                  <span className="inline-block w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-xs sm:text-sm text-zinc-300 font-mono">Live Site</span>
+                  <span className="inline-block w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-xs md:text-sm text-zinc-300 font-mono">Live Site</span>
                 </motion.div>
               </div>
             </div>
@@ -233,7 +211,7 @@ function MonitorFrame({ children }: { children: React.ReactNode }) {
       <div className="rounded-[1.2rem] sm:rounded-[1.8rem] border border-zinc-700 bg-zinc-950 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)] p-2 sm:p-4">
         <div className="rounded-lg sm:rounded-xl border border-zinc-800 bg-zinc-900/80 p-1.5 sm:p-3">
           <div className="relative rounded-md sm:rounded-lg border border-zinc-800/70 bg-zinc-950/80 overflow-hidden">
-            <div className="aspect-video">
+            <div className="aspect-video min-h-[200px] sm:min-h-[250px] lg:min-h-[300px]">
               {children}
             </div>
           </div>
@@ -242,6 +220,26 @@ function MonitorFrame({ children }: { children: React.ReactNode }) {
       {/* Stand - Hidden on mobile for space */}
       <div className="hidden sm:block absolute left-1/2 -bottom-6 h-6 w-3 -translate-x-1/2 rounded bg-zinc-700" />
       <div className="hidden sm:block absolute left-1/2 -bottom-10 h-4 w-32 -translate-x-1/2 rounded-lg bg-zinc-800 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]" />
+    </div>
+  );
+}
+
+/* ---------- Mobile Monitor Frame ---------- */
+function MobileMonitorFrame({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative">
+      <div className="rounded-lg border border-zinc-700 bg-zinc-950 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.6)] p-1.5">
+        <div className="rounded-md border border-zinc-800 bg-zinc-900/80 p-1">
+          <div className="relative rounded-sm border border-zinc-800/70 bg-zinc-950/80 overflow-hidden">
+            <div className="aspect-video min-h-[140px]">
+              {children}
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Simplified stand for mobile */}
+      <div className="absolute left-1/2 -bottom-3 h-3 w-2 -translate-x-1/2 rounded bg-zinc-700" />
+      <div className="absolute left-1/2 -bottom-6 h-2 w-20 -translate-x-1/2 rounded bg-zinc-800" />
     </div>
   );
 }
