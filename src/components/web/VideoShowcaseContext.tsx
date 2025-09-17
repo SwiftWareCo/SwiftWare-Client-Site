@@ -5,12 +5,17 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 interface ClientProject {
   name: string;
   logo: string;
+  description: string;
+  metrics: string;
+  website: string;
   desktopVideo: string;
   mobileVideo: string;
   poster: string;
   mobilePoster: string;
   techStack: string[];
   industry: string;
+  lighthouseImage?: string;
+  isApp?: boolean;
 }
 
 interface VideoShowcaseContextType {
@@ -23,34 +28,45 @@ const VideoShowcaseContext = createContext<VideoShowcaseContextType | undefined>
 
 export const projects: ClientProject[] = [
   {
-    name: "E-Commerce",
-    logo: "/images/swiftware-logo.png",
+    name: "VHD",
+    logo: "/images/vhdlogo.webp",
+    description: "HVAC company achieving 140% conversion increase",
+    metrics: "+140% conversions",
+    website: "https://vancouverventcleaning.ca",
     desktopVideo: "/videos/swiftware-demo.mp4",
     mobileVideo: "/videos/swiftware-demo-mobile.mp4",
     poster: "/images/swiftware-demo.jpg",
     mobilePoster: "/images/swiftware-demo-mobile.jpg",
-    techStack: ["React", "Next.js", "Shopify"],
-    industry: "E-Commerce"
+    techStack: ["React", "Next.js", "TypeScript"],
+    industry: "HVAC/Trades",
+    lighthouseImage: "/images/lighthouse-vhd.png"
   },
   {
-    name: "Restaurant",
-    logo: "/images/swiftware-logo.png",
+    name: "CJS Academy",
+    logo: "/images/cjslogo.png",
+    description: "Golf lesson booking platform driving more student enrollment",
+    metrics: "3x more bookings",
+    website: "https://cjsgolfacademy.ca",
     desktopVideo: "/videos/swiftware-demo.mp4",
     mobileVideo: "/videos/swiftware-demo-mobile.mp4",
     poster: "/images/swiftware-demo.jpg",
     mobilePoster: "/images/swiftware-demo-mobile.jpg",
-    techStack: ["Vue.js", "Node.js"],
-    industry: "Restaurant"
+    techStack: ["React", "Next.js", "Stripe"],
+    industry: "Sports & Education"
   },
   {
-    name: "Corporate",
-    logo: "/images/swiftware-logo.png",
+    name: "Beacon",
+    logo: "/images/beacon-logo.webp",
+    description: "Location-based mobile app with seamless user experience",
+    metrics: "App store ready",
+    website: "https://beacon-topaz.vercel.app",
     desktopVideo: "/videos/swiftware-demo.mp4",
     mobileVideo: "/videos/swiftware-demo-mobile.mp4",
     poster: "/images/swiftware-demo.jpg",
     mobilePoster: "/images/swiftware-demo-mobile.jpg",
-    techStack: ["React", "TypeScript"],
-    industry: "Corporate"
+    techStack: ["React Native", "TypeScript", "Firebase"],
+    industry: "Mobile App",
+    isApp: true
   },
 ];
 

@@ -324,52 +324,76 @@ export default function ContactDialog({ isOpen, onClose }: ContactDialogProps) {
                       />
                     </Field>
                     <Field label='Project type'>
-                      <select
-                        name='type'
-                        defaultValue=''
-                        className="w-full px-3 py-2 text-sm bg-zinc-800/50 border border-zinc-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-zinc-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns%3D%22http%3A//www.w3.org/2000/svg%22 viewBox%3D%220 0 24 24%22 fill%3D%22none%22 stroke%3D%22%23a1a1aa%22 stroke-width%3D%222%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%3E%3Cpath d%3D%22m6 9 6 6 6-6%22/%3E%3C/svg%3E')] bg-[right_0.5rem_center] bg-[length:1.5em_1.5em] bg-no-repeat pr-8"
-                        disabled={isSubmitting}
-                      >
-                        <option value='' disabled className='text-zinc-500'>
-                          Select project type
-                        </option>
-                        <option
-                          value='Custom CRM'
-                          className='bg-zinc-800 text-white'
+                      <div className="relative">
+                        <select
+                          name='type'
+                          defaultValue=''
+                          className="w-full px-3 py-2 text-sm bg-zinc-800/50 border border-zinc-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-zinc-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed appearance-none cursor-pointer pr-10"
+                          disabled={isSubmitting}
                         >
-                          Custom CRM
-                        </option>
-                        <option
-                          value='Team Management'
-                          className='bg-zinc-800 text-white'
-                        >
-                          Team Management
-                        </option>
-                        <option
-                          value='AI/ML (RAG)'
-                          className='bg-zinc-800 text-white'
-                        >
-                          AI/ML (RAG)
-                        </option>
-                        <option
-                          value='Mobile App'
-                          className='bg-zinc-800 text-white'
-                        >
-                          Mobile App
-                        </option>
-                        <option
-                          value='E-commerce'
-                          className='bg-zinc-800 text-white'
-                        >
-                          E-commerce
-                        </option>
-                        <option
-                          value='Other'
-                          className='bg-zinc-800 text-white'
-                        >
-                          Other
-                        </option>
-                      </select>
+                          <option value='' disabled className='text-zinc-500'>
+                            Select project type
+                          </option>
+                          <option
+                            value='Custom CRM'
+                            className='bg-zinc-900 text-white py-2'
+                          >
+                            Custom CRM
+                          </option>
+                          <option
+                            value='Tee Sheet Management'
+                            className='bg-zinc-900 text-white py-2'
+                          >
+                            Tee Sheet Management
+                          </option>
+                          <option
+                            value='AI/ML Solutions'
+                            className='bg-zinc-900 text-white py-2'
+                          >
+                            AI/ML Solutions
+                          </option>
+                          <option
+                            value='Web & Portals'
+                            className='bg-zinc-900 text-white py-2'
+                          >
+                            Web & Portals
+                          </option>
+                          <option
+                            value='Mobile App'
+                            className='bg-zinc-900 text-white py-2'
+                          >
+                            Mobile App
+                          </option>
+                          <option
+                            value='Complete Solution'
+                            className='bg-zinc-900 text-white py-2'
+                          >
+                            Complete Solution
+                          </option>
+                          <option
+                            value='Other'
+                            className='bg-zinc-900 text-white py-2'
+                          >
+                            Other
+                          </option>
+                        </select>
+                        {/* Custom dropdown arrow */}
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                          <svg
+                            className="h-4 w-4 text-zinc-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </div>
+                      </div>
                     </Field>
                   </div>
 

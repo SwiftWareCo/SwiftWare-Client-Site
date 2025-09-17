@@ -27,6 +27,7 @@ import GolfFAQ from '@/components/tee-sheet/sections/GolfFAQ';
 
 // Import Web components
 import WebCapabilities from '@/components/web/sections/WebCapabilities';
+import WebFeatures from '@/components/web/sections/WebFeatures';
 import WebVideoShowcase from '@/components/web/sections/WebVideoShowcase';
 import WebProcess from '@/components/web/sections/WebProcess';
 import WebCTA from '@/components/web/sections/WebCTA';
@@ -476,6 +477,18 @@ export default function FocusAwareHome() {
             </div>
           </motion.div>
 
+          {/* Technical Features */}
+          {webData.features && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+            >
+              <WebFeatures features={webData.features} />
+            </motion.div>
+          )}
+
           {/* Web Content Sections */}
           <div className='space-y-0'>
             {/* Client Showcase */}
@@ -483,7 +496,7 @@ export default function FocusAwareHome() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              transition={{ duration: 0.7, delay: 0.25 }}
             >
               <WebCapabilities capabilities={webData.capabilities} />
             </motion.div>

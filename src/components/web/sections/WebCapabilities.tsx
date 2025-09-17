@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 import Image from "next/image";
+import { ExternalLink } from "lucide-react";
 import { useVideoShowcase } from "@/components/web/VideoShowcaseContext";
 import type { FocusContent } from "@/types/content";
 
@@ -40,90 +41,187 @@ export default function WebCapabilities({ capabilities }: WebCapabilitiesProps) 
       >
         <header className="text-center mb-8 sm:mb-10">
           <h2 id="clients-heading" className="text-2xl sm:text-3xl font-bold tracking-tight">
-            Transforming Businesses Through Web Excellence
+            Transforming Businesses with Measurable Results
           </h2>
           <p className="mt-3 text-base sm:text-lg text-zinc-300">
-            Delivering excellence to businesses across every sector
+            Real clients, real improvements, real growth
           </p>
         </header>
 
-        {/* Logos row */}
+        {/* Client Cards - Desktop */}
         {!isMobile && (
-          <ul className="flex items-center justify-center gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {projects.map((project, idx) => (
-              <li key={`${project.name}-desktop-${idx}`} className="group flex flex-col items-center">
-                <button
-                  onClick={() => setActiveProject(idx)}
-                  onMouseEnter={() => setActiveProject(idx)}
-                  className={`relative p-2 rounded-xl transition-all duration-300 ${
-                    activeProject === idx 
-                      ? 'bg-blue-500/10 border border-blue-500/30' 
-                      : 'hover:bg-zinc-800/50'
-                  }`}
-                >
-                    <Image
-                      src={project.logo}
-                      alt={`${project.name} logo`}
-                      width={96}
-                      height={96}
-                      className={`h-12 sm:h-14 md:h-16 w-auto transition duration-300 ease-out transform hover:scale-105 ${
-                        activeProject === idx 
-                          ? 'grayscale-0 drop-shadow-[0_6px_22px_rgba(59,130,246,0.4)]' 
-                          : 'grayscale hover:grayscale-0 hover:drop-shadow-[0_6px_22px_rgba(59,130,246,0.25)]'
-                      }`}
-                    />
-                  {activeProject === idx && (
-                    <motion.div
-                      layoutId="active-project-indicator"
-                      className="absolute inset-0 rounded-xl border-2 border-blue-500/50 bg-blue-500/5"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                  )}
-                </button>
-                <span className={`mt-3 text-sm sm:text-base transition-colors duration-300 ${
-                  activeProject === idx ? 'text-blue-300' : 'text-zinc-400'
-                }`}>
-                  {project.name}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
+              <div
+                key={`${project.name}-desktop-${idx}`}
+                className={`group relative p-6 rounded-2xl border transition-all duration-300 cursor-pointer ${
+                  activeProject === idx
+                    ? 'bg-blue-500/10 border-blue-500/30'
+                    : 'bg-zinc-900/40 border-zinc-800/50 hover:border-blue-500/20 hover:bg-zinc-900/60'
+                }`}
+                onClick={() => setActiveProject(idx)}
+                onMouseEnter={() => setActiveProject(idx)}
+              >
+                {/* Metrics Badge */}
+                <div className="absolute -top-3 -right-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-20">
+                  {project.metrics}
+                </div>
 
-        {isMobile && (
-          <div className="w-full overflow-hidden px-1">
-            <ul className="flex items-center justify-between gap-2">
-              {projects.map((project, idx) => (
-                <li key={`${project.name}-mobile-${idx}`} className="group flex flex-col items-center flex-1 min-w-0">
-                  <button
-                    onClick={() => setActiveProject(idx)}
-                    onTouchStart={() => setActiveProject(idx)}
-                    className={`relative p-1 rounded-lg transition-all duration-300 ${
-                      activeProject === idx
-                        ? 'bg-blue-500/10 border border-blue-500/30' 
-                        : 'hover:bg-zinc-800/50'
-                    }`}
-                  >
+                {/* Logo and Content */}
+                <div className="flex flex-col items-center text-center">
+                  <div className="relative mb-4">
                     <Image
                       src={project.logo}
                       alt={`${project.name} logo`}
-                      width={64}
-                      height={64}
-                      className={`h-7 w-auto transition duration-300 ease-out transform hover:scale-105 ${
+                      width={80}
+                      height={80}
+                      className={`h-16 w-auto transition duration-300 ease-out transform group-hover:scale-105 ${
                         activeProject === idx
-                          ? 'grayscale-0 drop-shadow-[0_6px_22px_rgba(59,130,246,0.4)]' 
-                          : 'grayscale hover:grayscale-0 hover:drop-shadow-[0_6px_22px_rgba(59,130,246,0.25)]'
+                          ? 'grayscale-0 drop-shadow-[0_6px_22px_rgba(59,130,246,0.4)]'
+                          : 'grayscale group-hover:grayscale-0 group-hover:drop-shadow-[0_6px_22px_rgba(59,130,246,0.25)]'
+                      } ${
+                        project.name === 'CJS Academy' || project.name === 'Beacon'
+                          ? 'rounded-lg'
+                          : ''
                       }`}
                     />
-                  </button>
-                  <span className={`mt-1 text-xs transition-colors duration-300 text-center leading-tight ${
-                    activeProject === idx ? 'text-blue-300' : 'text-zinc-400'
+                  </div>
+
+                  <h3 className={`text-lg font-semibold mb-2 transition-colors duration-300 ${
+                    activeProject === idx ? 'text-blue-300' : 'text-white group-hover:text-blue-100'
                   }`}>
                     {project.name}
-                  </span>
-                </li>
-              ))}
-            </ul>
+                  </h3>
+
+                  <p className="text-sm text-zinc-400 group-hover:text-zinc-300 mb-3 leading-relaxed">
+                    {project.description}
+                  </p>
+
+                  {/* Lighthouse Score for VHD */}
+                  {project.lighthouseImage && (
+                    <div className="mb-3">
+                      <span className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/30 rounded-full text-xs font-medium text-green-400">
+                        🚨 Perfect Lighthouse Scores: 100/100
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="text-xs text-zinc-500 mb-4">
+                    {project.industry}
+                  </div>
+
+                  {/* External Link */}
+                  <a
+                    href={project.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-200 relative z-10"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      window.open(project.website, '_blank', 'noopener,noreferrer');
+                    }}
+                  >
+                    {project.isApp ? 'View App' : 'Visit Website'}
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
+
+                {/* Active Project Indicator */}
+                {activeProject === idx && (
+                  <motion.div
+                    layoutId="active-project-indicator-desktop"
+                    className="absolute inset-0 rounded-2xl border-2 border-blue-500/50 bg-blue-500/5 z-10"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Client Cards - Mobile */}
+        {isMobile && (
+          <div className="space-y-4">
+            {projects.map((project, idx) => (
+              <div
+                key={`${project.name}-mobile-${idx}`}
+                className={`group relative p-4 rounded-xl border transition-all duration-300 cursor-pointer ${
+                  activeProject === idx
+                    ? 'bg-blue-500/10 border-blue-500/30'
+                    : 'bg-zinc-900/40 border-zinc-800/50'
+                }`}
+                onClick={() => setActiveProject(idx)}
+                onTouchStart={() => setActiveProject(idx)}
+              >
+                {/* Metrics Badge */}
+                <div className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg z-20">
+                  {project.metrics}
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="relative flex-shrink-0">
+                    <Image
+                      src={project.logo}
+                      alt={`${project.name} logo`}
+                      width={48}
+                      height={48}
+                      className={`h-12 w-auto transition duration-300 ${
+                        activeProject === idx
+                          ? 'grayscale-0'
+                          : 'grayscale'
+                      } ${
+                        project.name === 'CJS Academy' || project.name === 'Beacon'
+                          ? 'rounded-lg'
+                          : ''
+                      }`}
+                    />
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <h3 className={`font-semibold text-sm mb-1 ${
+                      activeProject === idx ? 'text-blue-300' : 'text-white'
+                    }`}>
+                      {project.name}
+                    </h3>
+                    <p className="text-xs text-zinc-400 mb-2 line-clamp-2">
+                      {project.description}
+                    </p>
+                    {/* Lighthouse Score for VHD - Mobile */}
+                    {project.lighthouseImage && (
+                      <div className="mb-2">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-500/10 border border-green-500/30 rounded-full text-xs font-medium text-green-400">
+                          🚨 100/100 Lighthouse
+                        </span>
+                      </div>
+                    )}
+                    <a
+                      href={project.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-blue-400 text-xs font-medium relative z-10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        window.open(project.website, '_blank', 'noopener,noreferrer');
+                      }}
+                    >
+                      {project.isApp ? 'View App' : 'Visit'}
+                      <ExternalLink className="h-2.5 w-2.5" />
+                    </a>
+                  </div>
+                </div>
+
+                {/* Active Project Indicator */}
+                {activeProject === idx && (
+                  <motion.div
+                    layoutId="active-project-indicator-mobile"
+                    className="absolute inset-0 rounded-xl border-2 border-blue-500/50 bg-blue-500/5 z-10"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+              </div>
+            ))}
           </div>
         )}
       </motion.div>

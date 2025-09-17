@@ -11,6 +11,13 @@ export type CapabilityTile = {
   category?: string; // e.g., "Essentials", "Advanced", "Integrations" (default: Essentials)
 };
 
+export type Feature = {
+  title: string;
+  description: string;
+  icon: string;
+  category?: string;
+};
+
 export type Outcome = {
   metric: string; // e.g., "-42%"
   unit?: string; // e.g., "dispatch time"
@@ -30,6 +37,7 @@ export type FocusContent = {
   };
   bullets: { icon?: string; label: string; shortLine: string }[];
   capabilities: CapabilityTile[];
+  features?: Feature[];
   modules: string[]; // feature modules to mount later (names only)
   outcomes: Outcome[];
   faq?: { q: string; a: string }[];

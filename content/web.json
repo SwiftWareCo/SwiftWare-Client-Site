@@ -60,6 +60,44 @@
       "category": "Advanced"
     }
   ],
+  "features": [
+    {
+      "title": "SEO Optimization",
+      "description": "Built-in search engine optimization with meta tags, structured data, and performance tuning for higher rankings.",
+      "icon": "Search",
+      "category": "Marketing"
+    },
+    {
+      "title": "Lightning Performance",
+      "description": "Core Web Vitals optimization, CDN delivery, and advanced caching for sub-second load times.",
+      "icon": "Zap",
+      "category": "Performance"
+    },
+    {
+      "title": "Enterprise Security",
+      "description": "SSL encryption, secure hosting, data protection, and regular security audits to keep your site safe.",
+      "icon": "Shield",
+      "category": "Security"
+    },
+    {
+      "title": "Mobile-First Design",
+      "description": "Responsive layouts that work flawlessly across all devices and screen sizes.",
+      "icon": "Smartphone",
+      "category": "Design"
+    },
+    {
+      "title": "Accessibility Compliant",
+      "description": "WCAG 2.1 AA compliant design ensuring your site is accessible to all users.",
+      "icon": "Eye",
+      "category": "Accessibility"
+    },
+    {
+      "title": "Analytics & Insights",
+      "description": "Built-in conversion tracking, user behavior analysis, and performance monitoring.",
+      "icon": "BarChart3",
+      "category": "Analytics"
+    }
+  ],
   "modules": ["WebsiteAssembly", "ClientShowcase", "WebProcess"],
   "outcomes": [
     {
