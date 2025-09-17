@@ -115,7 +115,7 @@ export default function SplashScreen() {
               <div className="absolute inset-0 m-auto size-12 flex items-center justify-center">
                 <Image
                   src="/images/swiftware-logo.png"
-                  alt="SwiftWare Logo"
+                  alt="SwiftWare software development company logo"
                   width={150}
                   height={150}
                   className="mix-blend-screen"

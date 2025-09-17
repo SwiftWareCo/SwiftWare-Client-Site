@@ -31,7 +31,7 @@ export default function Footer() {
                 <div className="size-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-brand-glow flex items-center justify-center p-1.5">
                   <Image
                     src="/images/swiftware-logo.png"
-                    alt="SwiftWare Logo"
+                    alt="SwiftWare software development company logo"
                     width={32}
                     height={32}
                     className="mix-blend-screen"

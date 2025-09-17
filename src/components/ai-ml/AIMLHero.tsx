@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import Link from 'next/link';
 import { ArrowRight, Play } from 'lucide-react';
@@ -18,6 +18,10 @@ export default function AIMLHero() {
     []
   );
   const data = getContentForFocusClient('ai-ml');
+
+  useEffect(() => {
+    document.title = "AI & Machine Learning Solutions | Swiftware";
+  }, []);
 
   return (
     <section

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight, Play } from "lucide-react";
 import type { FocusContent } from "@/types/content";
@@ -17,6 +17,10 @@ export default function WebHero({ content }: WebHeroProps) {
   const reduce = useReducedMotion();
   const { setShowContactModal } = useFocusContext();
   const stripes = useMemo(() => [4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92], []);
+
+  useEffect(() => {
+    document.title = "Web Development & Portals | Swiftware";
+  }, []);
 
   return (
     <section

@@ -15,7 +15,7 @@ const LABELS: Record<FocusKey, string> = {
 };
 
 export default function ThemedFocusDropdown() {
-  const { focus, setFocus, clearFocus } = useFocusContext();
+  const { focus, setFocus} = useFocusContext();
   const [open, setOpen] = useState(false);
   const options = useMemo(
     () => ['all-solutions', 'crm', 'tee-sheet', 'ai-ml', 'web'] as FocusKey[],
@@ -91,6 +91,7 @@ export default function ThemedFocusDropdown() {
                 onClick={() => {
                   setFocus(key);
                   setOpen(false);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className={`w-full hover:cursor-pointer text-left rounded-md px-3 py-2 text-sm ${focus === key ? 'bg-zinc-800/50 text-white' : 'text-zinc-300 hover:bg-zinc-900'}`}
               >

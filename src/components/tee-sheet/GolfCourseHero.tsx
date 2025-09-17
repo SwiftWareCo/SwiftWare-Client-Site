@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import Link from 'next/link';
 import { ArrowRight, Play, TrendingUp, Users, Sun, DollarSign } from 'lucide-react';
@@ -31,6 +31,10 @@ export default function GolfCourseHero() {
   );
   const [stats] = useState<DashboardStats>(mockStats);
   const data = getContentForFocusClient('tee-sheet');
+
+  useEffect(() => {
+    document.title = "Golf Course Tee Sheet Management | Swiftware";
+  }, []);
 
   const stripes = useMemo(
     () => [8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96],

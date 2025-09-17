@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
@@ -16,6 +16,10 @@ export default function CRMHero() {
   const reduce = useReducedMotion();
   const stripes = useMemo(() => [4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92], []);
   const data = getContentForFocusClient("crm");
+
+  useEffect(() => {
+    document.title = "Custom CRM Development | Swiftware";
+  }, []);
 
   return (
     <section

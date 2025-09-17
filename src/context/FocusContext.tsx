@@ -1,7 +1,14 @@
-"use client";
+'use client';
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { FocusKey, getSavedFocus, saveFocus } from "@/lib/useFocus";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { FocusKey, getSavedFocus, saveFocus } from '@/lib/useFocus';
 
 interface FocusContextValue {
   focus: FocusKey | null;
@@ -25,34 +32,42 @@ export function FocusProvider({ children }: { children: React.ReactNode }) {
   const setFocus = useCallback((next: FocusKey) => {
     setFocusState(next);
     saveFocus(next);
+    // Scroll to top when focus changes to show new hero content
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }, []);
 
   const clearFocus = useCallback(() => {
     setFocusState(null);
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       try {
-        window.localStorage.removeItem("swiftware.focus.v1");
+        window.localStorage.removeItem('swiftware.focus.v1');
       } catch {
         // ignore
       }
     }
   }, []);
 
-  const value = useMemo<FocusContextValue>(() => ({
-    focus,
-    setFocus,
-    clearFocus,
-    showContactModal,
-    setShowContactModal
-  }), [focus, setFocus, clearFocus, showContactModal, setShowContactModal]);
+  const value = useMemo<FocusContextValue>(
+    () => ({
+      focus,
+      setFocus,
+      clearFocus,
+      showContactModal,
+      setShowContactModal,
+    }),
+    [focus, setFocus, clearFocus, showContactModal, setShowContactModal]
+  );
 
-  return <FocusContext.Provider value={value}>{children}</FocusContext.Provider>;
+  return (
+    <FocusContext.Provider value={value}>{children}</FocusContext.Provider>
+  );
 }
 
 export function useFocusContext(): FocusContextValue {
   const ctx = useContext(FocusContext);
-  if (!ctx) throw new Error("useFocusContext must be used within a FocusProvider");
+  if (!ctx)
+    throw new Error('useFocusContext must be used within a FocusProvider');
   return ctx;
 }
-
-

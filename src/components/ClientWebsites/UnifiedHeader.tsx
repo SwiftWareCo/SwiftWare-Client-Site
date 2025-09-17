@@ -135,7 +135,7 @@ export default function UnifiedHeader() {
                       >
                         <Image
                           src="/images/swiftware-logo.png"
-                          alt="Swiftware Logo"
+                          alt="Swiftware software development company logo"
                           width={20}
                           height={20}
                           className="mix-blend-screen"
@@ -178,7 +178,7 @@ export default function UnifiedHeader() {
                         >
                           <Image
                             src="/images/swiftware-logo.png"
-                            alt="Swiftware Logo"
+                            alt="Swiftware software development company logo"
                             width={22}
                             height={22}
                             className="mix-blend-screen"
