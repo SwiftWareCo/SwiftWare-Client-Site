@@ -8,6 +8,7 @@ import { ArrowRight, Play } from 'lucide-react';
 import TypingHeadline from '@/components/hero/TypingHeadline';
 import AIVisualization from '@/components/ai-ml/hero/AIVisualization';
 import { getContentForFocusClient } from '@/lib/focusContent';
+import { useFocusContext } from '@/context/FocusContext';
 
 const HEADLINE = 'SwiftMind. AI that works.';
 
@@ -18,6 +19,7 @@ export default function AIMLHero() {
     []
   );
   const data = getContentForFocusClient('ai-ml');
+  const { setShowContactModal } = useFocusContext();
 
   useEffect(() => {
     document.title = "AI & Machine Learning Solutions | Swiftware";
@@ -150,46 +152,25 @@ export default function AIMLHero() {
             transition={{ delay: 0.75, duration: 0.45 }}
             className='mt-6 flex flex-wrap items-center gap-3 justify-center md:justify-start'
           >
-            {/* Primary CTA from AI/ML content */}
-            {data?.hero?.primaryCta ? (
-              <Link
-                href={data.hero.primaryCta.href}
-                className='relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-6 py-3 text-sm font-medium text-white ring-1 ring-teal-500/30'
-                style={{
-                  background:
-                    'linear-gradient(90deg, rgb(15 76 92), rgb(0 212 255))',
-                }}
-                aria-label={data.hero.primaryCta.label}
-              >
-                <motion.span
-                  aria-hidden
-                  className='pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-teal-600/0 via-blue-400/30 to-teal-400/0'
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.7, ease: 'easeInOut' }}
-                />
-                {data.hero.primaryCta.label}
-                <ArrowRight className='size-4' />
-              </Link>
-            ) : (
-              <Link
-                href='/?contact=open'
-                className='relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-6 py-3 text-sm font-medium text-white ring-1 ring-teal-500/30'
-                style={{
-                  background:
-                    'linear-gradient(90deg, rgb(15 76 92), rgb(0 212 255))',
-                }}
-                aria-label='Start your AI project'
-              >
-                <motion.span
-                  aria-hidden
-                  className='pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-teal-600/0 via-blue-400/30 to-teal-400/0'
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.7, ease: 'easeInOut' }}
-                />
-                Start your AI project
-                <ArrowRight className='size-4' />
-              </Link>
-            )}
+            {/* Primary CTA - Always opens contact modal */}
+            <button
+              onClick={() => setShowContactModal(true)}
+              className='relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-6 py-3 text-sm font-medium text-white ring-1 ring-teal-500/30'
+              style={{
+                background:
+                  'linear-gradient(90deg, rgb(15 76 92), rgb(0 212 255))',
+              }}
+              aria-label='Start Free Trial'
+            >
+              <motion.span
+                aria-hidden
+                className='pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-teal-600/0 via-blue-400/30 to-teal-400/0'
+                whileHover={{ x: '100%' }}
+                transition={{ duration: 0.7, ease: 'easeInOut' }}
+              />
+              {data?.hero?.primaryCta?.label || 'Start Free Trial'}
+              <ArrowRight className='size-4' />
+            </button>
 
             {/* Secondary CTA from AI/ML content */}
             <Link

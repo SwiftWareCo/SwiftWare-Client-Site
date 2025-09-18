@@ -5,7 +5,8 @@ import { motion, useReducedMotion } from 'motion/react';
 import Link from 'next/link';
 import { ArrowRight, Play, TrendingUp, Users, Sun, DollarSign } from 'lucide-react';
 import { getContentForFocusClient } from '@/lib/focusContent';
-import { openCalendlyPopup } from '@/lib/calendly';
+import { openCalendlyPopup, initCalendlyScripts } from '@/lib/calendly';
+import { useFocusContext } from '@/context/FocusContext';
 import { TeeTimeGrid, CourseLayout, WeatherWidget } from './index';
 
 const HEADLINE = 'GolfSync Operations Dashboard';
@@ -31,9 +32,11 @@ export default function GolfCourseHero() {
   );
   const [stats] = useState<DashboardStats>(mockStats);
   const data = getContentForFocusClient('tee-sheet');
+  const { setShowContactModal } = useFocusContext();
 
   useEffect(() => {
     document.title = "Golf Course Tee Sheet Management | Swiftware";
+    initCalendlyScripts();
   }, []);
 
   const stripes = useMemo(
@@ -155,48 +158,25 @@ export default function GolfCourseHero() {
             transition={{ delay: 0.75, duration: 0.45 }}
             className='mt-6 flex flex-wrap items-center gap-3'
           >
-            {/* Primary CTA */}
-            {data?.hero?.primaryCta ? (
-              <Link
-                href={data.hero.primaryCta.href}
-                className='relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-5 py-3 text-sm font-medium text-white ring-1 ring-zinc-800'
-                style={{
-                  background:
-                    'linear-gradient(90deg, rgb(16 185 129), rgb(34 197 94))',
-                }}
-                aria-label={data.hero.primaryCta.label}
-              >
-                <motion.span
-                  aria-hidden
-                  className='pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-emerald-600/0 via-emerald-600/30 to-green-500/0'
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.7, ease: 'easeInOut' }}
-                />
-                {data.hero.primaryCta.label}
-                <ArrowRight className='size-4' />
-              </Link>
-            ) : (
-              <button
-                onClick={() =>
-                  openCalendlyPopup('https://calendly.com/swiftwareco/30min')
-                }
-                className='relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-5 py-3 text-sm font-medium text-white ring-1 ring-zinc-800 cursor-pointer'
-                style={{
-                  background:
-                    'linear-gradient(90deg, rgb(16 185 129), rgb(34 197 94))',
-                }}
-                aria-label='Schedule Demo'
-              >
-                <motion.span
-                  aria-hidden
-                  className='pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-emerald-600/0 via-emerald-600/30 to-green-500/0'
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.7, ease: 'easeInOut' }}
-                />
-                Schedule Demo
-                <ArrowRight className='size-4' />
-              </button>
-            )}
+            {/* Primary CTA - Opens Calendly Discovery Call */}
+            <button
+              onClick={() => openCalendlyPopup('https://calendly.com/swiftwareco/30min')}
+              className='relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-5 py-3 text-sm font-medium text-white ring-1 ring-zinc-800 cursor-pointer'
+              style={{
+                background:
+                  'linear-gradient(90deg, rgb(16 185 129), rgb(34 197 94))',
+              }}
+              aria-label='Schedule Demo'
+            >
+              <motion.span
+                aria-hidden
+                className='pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-emerald-600/0 via-emerald-600/30 to-green-500/0'
+                whileHover={{ x: '100%' }}
+                transition={{ duration: 0.7, ease: 'easeInOut' }}
+              />
+              {data?.hero?.primaryCta?.label || 'Schedule Demo'}
+              <ArrowRight className='size-4' />
+            </button>
 
             {/* Secondary CTA - Only show if explicitly provided in content */}
             {data?.hero?.secondaryCta && (

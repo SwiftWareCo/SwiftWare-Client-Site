@@ -9,6 +9,7 @@ import TypingHeadline from "@/components/hero/TypingHeadline";
 import DesktopBridgeShowcase from "@/components/hero/DesktopBridgeShowcase";
 import LaptopSyncTile from "@/components/hero/LaptopSyncTile";
 import { getContentForFocusClient } from "@/lib/focusContent";
+import { useFocusContext } from "@/context/FocusContext";
 
 const HEADLINE = "Software. Made to fit.";
 
@@ -16,6 +17,7 @@ export default function CRMHero() {
   const reduce = useReducedMotion();
   const stripes = useMemo(() => [4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92], []);
   const data = getContentForFocusClient("crm");
+  const { setShowContactModal } = useFocusContext();
 
   useEffect(() => {
     document.title = "Custom CRM Development | Swiftware";
@@ -117,40 +119,22 @@ export default function CRMHero() {
             transition={{ delay: 0.75, duration: 0.45 }}
             className="mt-4 flex flex-wrap items-center gap-3 justify-center md:justify-start"
           >
-            {/* Primary CTA from CRM content */}
-            {data?.hero?.primaryCta ? (
-              <Link
-                href={data.hero.primaryCta.href}
-                className="relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-5 py-3 text-sm font-medium text-white ring-1 ring-zinc-800"
-                style={{ background: "linear-gradient(90deg, rgb(59 130 246), rgb(168 85 247))" }}
-                aria-label={data.hero.primaryCta.label}
-              >
-                <motion.span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-purple-600/0 via-purple-600/30 to-blue-500/0"
-                  whileHover={{ x: "100%" }}
-                  transition={{ duration: 0.7, ease: "easeInOut" }}
-                />
-                {data.hero.primaryCta.label}
-                <ArrowRight className="size-4" />
-              </Link>
-            ) : (
-              <Link
-                href="/?contact=open"
-                className="relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-5 py-3 text-sm font-medium text-white ring-1 ring-zinc-800"
-                style={{ background: "linear-gradient(90deg, rgb(59 130 246), rgb(168 85 247))" }}
-                aria-label="Start your project"
-              >
-                <motion.span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-purple-600/0 via-purple-600/30 to-blue-500/0"
-                  whileHover={{ x: "100%" }}
-                  transition={{ duration: 0.7, ease: "easeInOut" }}
-                />
-                Start your project
-                <ArrowRight className="size-4" />
-              </Link>
-            )}
+            {/* Primary CTA - Always opens contact modal */}
+            <button
+              onClick={() => setShowContactModal(true)}
+              className="relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-5 py-3 text-sm font-medium text-white ring-1 ring-zinc-800"
+              style={{ background: "linear-gradient(90deg, rgb(59 130 246), rgb(168 85 247))" }}
+              aria-label="Start your project"
+            >
+              <motion.span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-purple-600/0 via-purple-600/30 to-blue-500/0"
+                whileHover={{ x: "100%" }}
+                transition={{ duration: 0.7, ease: "easeInOut" }}
+              />
+              {data?.hero?.primaryCta?.label || "Start your project"}
+              <ArrowRight className="size-4" />
+            </button>
 
             {/* Secondary CTA from CRM content (defaults to See capabilities) */}
             <Link

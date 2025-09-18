@@ -3,8 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "motion/react";
+import { useFocusContext } from "@/context/FocusContext";
 
 export default function Footer() {
+  const { setShowContactModal } = useFocusContext();
   return (
     <footer className="relative mt-32">
       {/* Gradient separator */}
@@ -70,9 +72,12 @@ export default function Footer() {
               <Link href="/ClientWebsites#process" className="block text-zinc-400 hover:text-white transition-colors">
                 Process
               </Link>
-              <Link href="/ClientWebsites?contact=open" className="block text-blue-400 hover:text-blue-300 transition-colors">
+              <button 
+                onClick={() => setShowContactModal(true)}
+                className="block text-blue-400 hover:text-blue-300 transition-colors text-left"
+              >
                 Start Project
-              </Link>
+              </button>
             </nav>
           </div>
 

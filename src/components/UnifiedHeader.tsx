@@ -310,7 +310,8 @@ export default function UnifiedHeader() {
                         initial='rest'
                         animate='rest'
                         whileHover='hover'
-                        className='relative inline-flex items-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-blue-500 via-blue-600 to-purple-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-blue-500/25 ring-1 ring-white/20 hover:cursor-pointer'
+                        className='relative inline-flex items-center gap-2 overflow-hidden rounded-lg px-4 py-2 text-sm font-medium text-white ring-1 ring-zinc-800 hover:cursor-pointer'
+                        style={{ background: 'linear-gradient(90deg, rgb(59, 130, 246), rgb(168, 85, 247))' }}
                       >
                         <motion.span
                           aria-hidden

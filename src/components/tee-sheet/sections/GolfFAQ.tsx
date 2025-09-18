@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { openCalendlyPopup, initCalendlyScripts } from '@/lib/calendly';
 import {
   ChevronDown,
   HelpCircle,
@@ -76,6 +77,10 @@ export default function GolfFAQ({
   className = '',
 }: GolfFAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    initCalendlyScripts();
+  }, []);
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -231,7 +236,10 @@ export default function GolfFAQ({
             </p>
 
             <div className='flex justify-center'>
-              <button className='inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300'>
+              <button 
+                onClick={() => openCalendlyPopup('https://calendly.com/swiftwareco/30min')}
+                className='inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300'
+              >
                 Schedule Consultation
               </button>
             </div>

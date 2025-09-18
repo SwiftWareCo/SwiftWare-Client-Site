@@ -46,7 +46,7 @@ export const projects: ClientProject[] = [
     logo: "/images/cjslogo.png",
     description: "Golf lesson booking platform driving more student enrollment",
     metrics: "3x more bookings",
-    website: "https://cjsgolfacademy.ca",
+    website: "https://www.cjsgolfacademy.ca/",
     desktopVideo: "/videos/cjs-demo.mp4",
     mobileVideo: "/videos/cjs-mobile-demo.mp4",
     poster: "/images/cjs-demo.jpg",

@@ -59,7 +59,13 @@ export default function WebCapabilities({ capabilities }: WebCapabilitiesProps) 
                     ? 'bg-blue-500/10 border-blue-500/30'
                     : 'bg-zinc-900/40 border-zinc-800/50 hover:border-blue-500/20 hover:bg-zinc-900/60'
                 }`}
-                onClick={() => setActiveProject(idx)}
+                onClick={(e) => {
+                  // Don't change active project if clicking on a link
+                  if ((e.target as HTMLElement).closest('a')) {
+                    return;
+                  }
+                  setActiveProject(idx);
+                }}
                 onMouseEnter={() => setActiveProject(idx)}
               >
                 {/* Metrics Badge */}
@@ -115,12 +121,11 @@ export default function WebCapabilities({ capabilities }: WebCapabilitiesProps) 
                     href={project.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-200 relative z-10"
+                    className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-200 relative z-30"
                     onClick={(e) => {
                       e.stopPropagation();
-                      e.preventDefault();
-                      window.open(project.website, '_blank', 'noopener,noreferrer');
                     }}
+                    style={{ pointerEvents: 'auto' }}
                   >
                     {project.isApp ? 'View App' : 'Visit Website'}
                     <ExternalLink className="h-3 w-3" />
@@ -151,7 +156,13 @@ export default function WebCapabilities({ capabilities }: WebCapabilitiesProps) 
                     ? 'bg-blue-500/10 border-blue-500/30'
                     : 'bg-zinc-900/40 border-zinc-800/50'
                 }`}
-                onClick={() => setActiveProject(idx)}
+                onClick={(e) => {
+                  // Don't change active project if clicking on a link
+                  if ((e.target as HTMLElement).closest('a')) {
+                    return;
+                  }
+                  setActiveProject(idx);
+                }}
                 onTouchStart={() => setActiveProject(idx)}
               >
                 {/* Metrics Badge */}
@@ -199,12 +210,11 @@ export default function WebCapabilities({ capabilities }: WebCapabilitiesProps) 
                       href={project.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-blue-400 text-xs font-medium relative z-10"
+                      className="inline-flex items-center gap-1 text-blue-400 text-xs font-medium relative z-30"
                       onClick={(e) => {
                         e.stopPropagation();
-                        e.preventDefault();
-                        window.open(project.website, '_blank', 'noopener,noreferrer');
                       }}
+                      style={{ pointerEvents: 'auto' }}
                     >
                       {project.isApp ? 'View App' : 'Visit'}
                       <ExternalLink className="h-2.5 w-2.5" />
