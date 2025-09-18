@@ -11,7 +11,7 @@ interface WebCapabilitiesProps {
   capabilities: FocusContent['capabilities'];
 }
 
-export default function WebCapabilities({ capabilities }: WebCapabilitiesProps) {
+export default function WebCapabilities({ }: WebCapabilitiesProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [isMobile, setIsMobile] = useState(false);

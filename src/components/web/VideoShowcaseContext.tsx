@@ -28,6 +28,19 @@ const VideoShowcaseContext = createContext<VideoShowcaseContextType | undefined>
 
 export const projects: ClientProject[] = [
   {
+    name: "CJS Academy",
+    logo: "/images/cjslogo.png",
+    description: "Golf lesson booking platform driving more student enrollment",
+    metrics: "3x more bookings",
+    website: "https://www.cjsgolfacademy.ca/",
+    desktopVideo: "/videos/cjs-demo.mp4",
+    mobileVideo: "/videos/cjs-mobile-demo.mp4",
+    poster: "/images/cjs-demo.jpg",
+    mobilePoster: "/images/cjs-mobile-demo.PNG",
+    techStack: ["React", "Next.js", "Stripe"],
+    industry: "Sports & Education"
+  },
+  {
     name: "VHD",
     logo: "/images/vhdlogo.webp",
     description: "HVAC company achieving 140% conversion increase",
@@ -41,19 +54,7 @@ export const projects: ClientProject[] = [
     industry: "HVAC/Trades",
     lighthouseImage: "/images/lighthouse-vhd.png"
   },
-  {
-    name: "CJS Academy",
-    logo: "/images/cjslogo.png",
-    description: "Golf lesson booking platform driving more student enrollment",
-    metrics: "3x more bookings",
-    website: "https://www.cjsgolfacademy.ca/",
-    desktopVideo: "/videos/cjs-demo.mp4",
-    mobileVideo: "/videos/cjs-mobile-demo.mp4",
-    poster: "/images/cjs-demo.jpg",
-    mobilePoster: "/images/cjs-mobile-demo.PNG",
-    techStack: ["React", "Next.js", "Stripe"],
-    industry: "Sports & Education"
-  },
+
   {
     name: "Beacon",
     logo: "/images/beacon-logo.webp",

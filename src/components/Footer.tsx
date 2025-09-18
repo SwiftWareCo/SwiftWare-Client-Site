@@ -25,9 +25,9 @@ export default function Footer() {
         viewport={{ once: true }}
         className="mx-auto max-w-7xl px-4 sm:px-6 py-8 md:py-16"
       >
-        <div className="grid gap-8 md:gap-12 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 md:gap-12 md:grid-cols-1 lg:grid-cols-2">
           {/* Brand section */}
-          <div className="md:col-span-2 lg:col-span-2">
+          <div>
             <div className="flex items-center gap-3 mb-4">
               <div className="relative">
                 <div className="size-8 md:size-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-brand-glow flex items-center justify-center p-1 md:p-1.5">
@@ -44,41 +44,9 @@ export default function Footer() {
                 Swiftware
               </h3>
             </div>
-            <p className="text-zinc-400 max-w-md leading-relaxed mb-6">
+            <p className="text-zinc-400 max-w-md leading-relaxed">
               Building tomorrow&apos;s software today. We craft bespoke solutions that scale with your vision and exceed your expectations.
             </p>
-            
-            {/* Social links */}
-            <div className="flex items-center gap-3 md:gap-4">
-              <a href="#" className="btn-ghost px-3 py-2 hover:text-blue-400 transition-colors">
-                Twitter
-              </a>
-              <a href="#" className="btn-ghost px-3 py-2 hover:text-blue-400 transition-colors">
-                LinkedIn
-              </a>
-              <a href="#" className="btn-ghost px-3 py-2 hover:text-blue-400 transition-colors">
-                GitHub
-              </a>
-            </div>
-          </div>
-
-          {/* Quick links */}
-          <div>
-            <h4 className="text-sm font-semibold text-zinc-300 mb-4 uppercase tracking-wider">Services</h4>
-            <nav className="space-y-3">
-              <Link href="/#work" className="block text-zinc-400 hover:text-white transition-colors">
-                Our Work
-              </Link>
-              <Link href="/#process" className="block text-zinc-400 hover:text-white transition-colors">
-                Process
-              </Link>
-              <button 
-                onClick={() => setShowContactModal(true)}
-                className="block text-blue-400 hover:text-blue-300 transition-colors text-left"
-              >
-                Start Project
-              </button>
-            </nav>
           </div>
 
           {/* Contact info */}
@@ -86,7 +54,7 @@ export default function Footer() {
             <h4 className="text-sm font-semibold text-zinc-300 mb-4 uppercase tracking-wider">Contact</h4>
             <div className="space-y-3 text-zinc-400">
               <p className="hover:text-white transition-colors cursor-pointer">
-                swiftwareco@gmail.com
+                support@swiftware.ca
               </p>
               <p className="hover:text-white transition-colors cursor-pointer">
                 +1 (604) 862-5038

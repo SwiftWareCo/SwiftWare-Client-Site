@@ -5,7 +5,7 @@ export default function SchemaMarkup() {
     "name": "Swiftware",
     "url": "https://swiftware.ca",
     "telephone": "+1-604-862-5038",
-    "email": "swiftwareco@gmail.com",
+    "email": "support@swiftware.ca",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Richmond",

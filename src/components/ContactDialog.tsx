@@ -89,7 +89,7 @@ export default function ContactDialog({ isOpen, onClose }: ContactDialogProps) {
         throw new Error('Failed to send message');
       }
     } catch {
-      alert('Something went wrong. Please email swiftwareco@gmail.com');
+      alert('Something went wrong. Please email support@swiftware.ca');
     } finally {
       setIsSubmitting(false);
     }
@@ -250,7 +250,7 @@ export default function ContactDialog({ isOpen, onClose }: ContactDialogProps) {
                           Email
                         </p>
                         <p className='text-sm sm:text-base text-white truncate'>
-                          swiftwareco@gmail.com
+                          support@swiftware.ca
                         </p>
                       </div>
                     </div>

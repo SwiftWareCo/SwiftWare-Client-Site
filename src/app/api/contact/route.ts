@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     // Send email using Resend
     const { data, error } = await resend.emails.send({
       from: 'Swiftware <noreply@swiftware.ca>',
-      to: ['swiftwareco@gmail.com'], // Your email
+      to: ['support@swiftware.ca'], // Your email
       replyTo: email,
       subject: `New Contact Form Submission from ${name}`,
       html: `
