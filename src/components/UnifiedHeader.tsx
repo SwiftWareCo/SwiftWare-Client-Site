@@ -5,19 +5,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
-import ThemedFocusDropdown from './focus/ThemedFocusDropdown';
-import { useFocusContext } from '@/context/FocusContext';
-
 
 export default function UnifiedHeader() {
-  const { setShowContactModal } = useFocusContext();
   const [scrolled, setScrolled] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
 
-
   const { scrollY } = useScroll();
   const headerY = useTransform(scrollY, [0, 100], [0, -5]);
-
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -25,7 +19,6 @@ export default function UnifiedHeader() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -126,7 +119,9 @@ export default function UnifiedHeader() {
                   </Link>
 
                   <button
-                    onClick={() => setShowContactModal(true)}
+                    onClick={() => {
+                      // TODO: Open contact modal
+                    }}
                     className='relative inline-flex items-center gap-1.5 overflow-hidden rounded-lg border border-blue-400/20 bg-gradient-to-r from-blue-500 to-purple-600 px-3 py-1.5 text-xs font-medium text-white'
                   >
                     <span>Start project</span>
@@ -173,45 +168,37 @@ export default function UnifiedHeader() {
                     </div>
                   </Link>
 
-                  {/* Focus dropdown + CTA */}
+                  {/* CTA Button (removed focus dropdown) */}
                   <motion.div
-                    initial={{ x: 16, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.4, delay: 0.3 }}
-                    className='flex items-center gap-3'
+                    initial='rest'
+                    animate='rest'
+                    whileHover='hover'
+                    className='relative inline-flex items-center gap-2 overflow-hidden rounded-lg px-4 py-2 text-sm font-medium text-white ring-1 ring-zinc-800 hover:cursor-pointer'
+                    style={{ background: 'linear-gradient(90deg, rgb(59, 130, 246), rgb(168, 85, 247))' }}
                   >
-                    <div className='hidden md:block'>
-                      <ThemedFocusDropdown />
-                    </div>
-                    <motion.div
-                      initial='rest'
-                      animate='rest'
-                      whileHover='hover'
-                      className='relative inline-flex items-center gap-2 overflow-hidden rounded-lg px-4 py-2 text-sm font-medium text-white ring-1 ring-zinc-800 hover:cursor-pointer'
-                      style={{ background: 'linear-gradient(90deg, rgb(59, 130, 246), rgb(168, 85, 247))' }}
+                    <motion.span
+                      aria-hidden
+                      className='pointer-events-none hover:cursor-pointer absolute inset-0 -translate-x-full bg-gradient-to-r from-white/0 via-white/20 to-white/0'
+                      variants={{
+                        rest: { x: '-100%', opacity: 0 },
+                        hover: { x: '100%', opacity: 1 },
+                      }}
+                      transition={{ duration: 0.6, ease: 'easeInOut' }}
+                    />
+                    <button
+                      onClick={() => {
+                        // TODO: Open contact modal
+                      }}
+                      className='relative hover:cursor-pointer z-10 flex items-center gap-2'
                     >
+                      <span>Start your project</span>
                       <motion.span
-                        aria-hidden
-                        className='pointer-events-none hover:cursor-pointer absolute inset-0 -translate-x-full bg-gradient-to-r from-white/0 via-white/20 to-white/0'
-                        variants={{
-                          rest: { x: '-100%', opacity: 0 },
-                          hover: { x: '100%', opacity: 1 },
-                        }}
-                        transition={{ duration: 0.6, ease: 'easeInOut' }}
-                      />
-                      <button
-                        onClick={() => setShowContactModal(true)}
-                        className='relative hover:cursor-pointer z-10 flex items-center gap-2'
+                        variants={{ rest: { x: 0 }, hover: { x: 4 } }}
+                        transition={{ type: 'spring', stiffness: 400 }}
                       >
-                        <span>Start your project</span>
-                        <motion.span
-                          variants={{ rest: { x: 0 }, hover: { x: 4 } }}
-                          transition={{ type: 'spring', stiffness: 400 }}
-                        >
-                          <ArrowRight className='size-4' />
-                        </motion.span>
-                      </button>
-                    </motion.div>
+                        <ArrowRight className='size-4' />
+                      </motion.span>
+                    </button>
                   </motion.div>
                 </div>
               </div>

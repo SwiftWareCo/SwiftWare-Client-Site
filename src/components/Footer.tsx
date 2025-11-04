@@ -3,10 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "motion/react";
-import { useFocusContext } from "@/context/FocusContext";
 
 export default function Footer() {
-  const { setShowContactModal } = useFocusContext();
   return (
     <footer className="relative mt-16 md:mt-32">
       {/* Gradient separator */}

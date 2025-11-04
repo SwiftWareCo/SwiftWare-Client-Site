@@ -3,47 +3,29 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Image from 'next/image';
-import { useFocusContext } from '@/context/FocusContext';
-import { getSavedFocus } from '@/lib/useFocus';
 
 interface SplashScreenProps {
-  requireChoice?: boolean;
   onDone?: () => void;
 }
 
-export default function SplashScreen({
-  requireChoice,
-  onDone,
-}: SplashScreenProps) {
-  const { setFocus } = useFocusContext();
+export default function SplashScreen({ onDone }: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
-  const [showChoice, setShowChoice] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
+  // Auto-dismiss after animation completes (~5 seconds)
   useEffect(() => {
-    if (requireChoice) {
-      setShowChoice(true);
-      return;
-    }
-    const saved = getSavedFocus();
-    setShowChoice(!saved);
-  }, [requireChoice]);
+    const timer = setTimeout(() => {
+      if (!isExiting) {
+        setIsExiting(true);
+        setTimeout(() => {
+          setIsVisible(false);
+          onDone?.();
+        }, 700);
+      }
+    }, 4500);
 
-  function startExit() {
-    if (isExiting) return;
-    setIsExiting(true);
-    setTimeout(() => {
-      setIsVisible(false);
-      onDone?.();
-    }, 700);
-  }
-
-  const handleSelect = (
-    key: 'crm' | 'tee-sheet' | 'ai-ml' | 'web' | 'all-solutions'
-  ) => {
-    setFocus(key);
-    startExit();
-  };
+    return () => clearTimeout(timer);
+  }, [isExiting, onDone]);
 
   return (
     <AnimatePresence mode='wait'>
@@ -117,7 +99,7 @@ export default function SplashScreen({
             </motion.div>
           </div>
 
-          {/* Main content */}
+          {/* Main content - Logo only, no choice buttons */}
           <div className='relative z-10 flex flex-col items-center gap-8'>
             {/* Logo with pulsing animation */}
             <motion.div
@@ -165,88 +147,6 @@ export default function SplashScreen({
                 className='absolute inset-0 rounded-2xl border border-purple-400'
               />
             </motion.div>
-
-            {showChoice ? (
-              <motion.div
-                initial={{ y: 12, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.25 }}
-                className='w-[min(92vw,720px)]'
-              >
-                <div className='rounded-2xl border border-zinc-700/30 bg-zinc-900/20 p-4 sm:p-6'>
-                  <div className='text-center mb-4'>
-                    <h2 className='text-lg font-semibold'>Choose your focus</h2>
-                    <p className='text-sm text-zinc-400'>
-                      Tailor the content to what you care about.
-                    </p>
-                  </div>
-                  <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
-                    <motion.button
-                      initial={{ y: 8, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.4, delay: 0.25 }}
-                      onClick={() => handleSelect('all-solutions')}
-                      className='group cursor-pointer text-left rounded-xl border border-zinc-800 bg-zinc-950/60 p-4 hover:border-purple-500/40 hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-purple-500/40 sm:col-span-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10'
-                    >
-                      <div className='font-medium text-white'>
-                        All Solutions
-                      </div>
-                      <div className='text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors'>
-                        Complete overview of what we offer.
-                      </div>
-                    </motion.button>
-                    <motion.button
-                      initial={{ y: 8, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.4, delay: 0.35 }}
-                      onClick={() => handleSelect('crm')}
-                      className='group cursor-pointer text-left rounded-xl border border-zinc-800 bg-zinc-950/60 p-4 hover:border-blue-500/40 hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-500/40'
-                    >
-                      <div className='font-medium'>Service CRM</div>
-                      <div className='text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors'>
-                        Field apps your teams will use.
-                      </div>
-                    </motion.button>
-                    <motion.button
-                      initial={{ y: 8, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.4, delay: 0.45 }}
-                      onClick={() => handleSelect('tee-sheet')}
-                      className='group cursor-pointer text-left rounded-xl border border-zinc-800 bg-zinc-950/60 p-4 hover:border-blue-500/40 hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-500/40'
-                    >
-                      <div className='font-medium'>Tee Sheet</div>
-                      <div className='text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors'>
-                        Ops that run themselves.
-                      </div>
-                    </motion.button>
-                    <motion.button
-                      initial={{ y: 8, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.4, delay: 0.55 }}
-                      onClick={() => handleSelect('ai-ml')}
-                      className='group cursor-pointer text-left rounded-xl border border-zinc-800 bg-zinc-950/60 p-4 hover:border-blue-500/40 hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-500/40'
-                    >
-                      <div className='font-medium'>AI & RAG</div>
-                      <div className='text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors'>
-                        Automations where it matters.
-                      </div>
-                    </motion.button>
-                    <motion.button
-                      initial={{ y: 8, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.4, delay: 0.65 }}
-                      onClick={() => handleSelect('web')}
-                      className='group cursor-pointer text-left rounded-xl border border-zinc-800 bg-zinc-950/60 p-4 hover:border-blue-500/40 hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-500/40'
-                    >
-                      <div className='font-medium'>Web & Portals</div>
-                      <div className='text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors'>
-                        Sites that convert.
-                      </div>
-                    </motion.button>
-                  </div>
-                </div>
-              </motion.div>
-            ) : null}
 
             <div className='absolute -top-20 -left-20 size-40 bg-blue-500/5 rounded-full blur-3xl' />
             <div className='absolute -bottom-20 -right-20 size-40 bg-purple-500/5 rounded-full blur-3xl' />

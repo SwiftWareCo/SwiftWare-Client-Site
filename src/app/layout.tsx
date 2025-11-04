@@ -4,6 +4,8 @@ import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import ClientApp from '@/components/ClientApp';
 import SchemaMarkup from '@/components/SchemaMarkup';
+import { ColorSchemeProvider } from '@/context/ColorSchemeContext';
+import { ColorSchemeWrapper } from '@/components/ColorSchemeWrapper';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -100,11 +102,15 @@ export default function RootLayout({
           Skip to main content
         </a>
 
-        <ClientApp>
-          <main id='main' tabIndex={-1} className='relative'>
-            {children}
-          </main>
-        </ClientApp>
+        <ColorSchemeProvider>
+          <ColorSchemeWrapper>
+            <ClientApp>
+              <main id='main' tabIndex={-1} className='relative'>
+                {children}
+              </main>
+            </ClientApp>
+          </ColorSchemeWrapper>
+        </ColorSchemeProvider>
       </body>
     </html>
   );
