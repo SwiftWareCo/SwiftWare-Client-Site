@@ -35,7 +35,7 @@ export interface AISearchResult {
   snippet: string;
   relevanceScore: number;
   source: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface DocumentProcessingStatus {
@@ -59,7 +59,7 @@ export interface AIInsight {
   confidence: number;
   category: 'trend' | 'anomaly' | 'prediction' | 'correlation';
   impact: 'low' | 'medium' | 'high';
-  data?: any;
+  data?: unknown;
 }
 
 export interface ChatMessage {

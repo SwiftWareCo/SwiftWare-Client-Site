@@ -4,11 +4,21 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
+
+const navigationLinks = [
+  { label: 'Brand Design', href: '/brand-design' },
+  { label: 'Digital Marketing & SEO', href: '/digital-marketing-seo' },
+  { label: 'AI & Automation', href: '/ai-automation' },
+  { label: 'Custom Software', href: '/custom-software' },
+  { label: 'Case Studies', href: '/case-studies' },
+  { label: 'About', href: '/about' },
+];
 
 export default function UnifiedHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const { scrollY } = useScroll();
   const headerY = useTransform(scrollY, [0, 100], [0, -5]);
@@ -80,7 +90,7 @@ export default function UnifiedHeader() {
               />
 
               <div className='relative px-4 sm:px-6 py-2.5 sm:py-3'>
-                {/* Mobile: Simple layout - Logo + CTA */}
+                {/* Mobile: Logo + Menu Button */}
                 <div className='flex items-center justify-between sm:hidden'>
                   <Link
                     href='/'
@@ -119,17 +129,49 @@ export default function UnifiedHeader() {
                   </Link>
 
                   <button
-                    onClick={() => {
-                      // TODO: Open contact modal
-                    }}
-                    className='relative inline-flex items-center gap-1.5 overflow-hidden rounded-lg border border-blue-400/20 bg-gradient-to-r from-blue-500 to-purple-600 px-3 py-1.5 text-xs font-medium text-white'
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    className='cursor-pointer p-2 text-zinc-300 hover:text-white transition-colors'
                   >
-                    <span>Start project</span>
-                    <ArrowRight className='size-3' />
+                    {mobileMenuOpen ? (
+                      <X className='size-5' />
+                    ) : (
+                      <Menu className='size-5' />
+                    )}
                   </button>
                 </div>
 
-                {/* Desktop: Single row layout */}
+                {/* Mobile Menu */}
+                {mobileMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className='mt-4 flex flex-col gap-2 border-t border-zinc-700/50 pt-4'
+                  >
+                    {navigationLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className='cursor-pointer px-3 py-2 text-sm text-zinc-300 hover:text-white hover:bg-zinc-800/50 rounded-lg transition-colors'
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                    <button
+                      onClick={() => {
+                        // TODO: Open contact modal
+                        setMobileMenuOpen(false);
+                      }}
+                      className='cursor-pointer w-full mt-2 inline-flex items-center gap-1.5 overflow-hidden rounded-lg border border-blue-400/20 bg-gradient-to-r from-blue-500 to-purple-600 px-3 py-1.5 text-xs font-medium text-white'
+                    >
+                      <span>Start project</span>
+                      <ArrowRight className='size-3' />
+                    </button>
+                  </motion.div>
+                )}
+
+                {/* Desktop: Full navigation */}
                 <div className='hidden sm:flex sm:items-center sm:justify-between'>
                   <Link
                     href='/'
@@ -168,17 +210,30 @@ export default function UnifiedHeader() {
                     </div>
                   </Link>
 
-                  {/* CTA Button (removed focus dropdown) */}
+                  {/* Navigation Links */}
+                  <nav className='hidden lg:flex items-center gap-6'>
+                    {navigationLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className='cursor-pointer text-sm text-zinc-300 hover:text-white transition-colors'
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </nav>
+
+                  {/* CTA Button */}
                   <motion.div
                     initial='rest'
                     animate='rest'
                     whileHover='hover'
-                    className='relative inline-flex items-center gap-2 overflow-hidden rounded-lg px-4 py-2 text-sm font-medium text-white ring-1 ring-zinc-800 hover:cursor-pointer'
+                    className='relative inline-flex items-center gap-2 overflow-hidden rounded-lg px-4 py-2 text-sm font-medium text-white ring-1 ring-zinc-800 cursor-pointer'
                     style={{ background: 'linear-gradient(90deg, rgb(59, 130, 246), rgb(168, 85, 247))' }}
                   >
                     <motion.span
                       aria-hidden
-                      className='pointer-events-none hover:cursor-pointer absolute inset-0 -translate-x-full bg-gradient-to-r from-white/0 via-white/20 to-white/0'
+                      className='pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-white/0 via-white/20 to-white/0'
                       variants={{
                         rest: { x: '-100%', opacity: 0 },
                         hover: { x: '100%', opacity: 1 },
@@ -189,7 +244,7 @@ export default function UnifiedHeader() {
                       onClick={() => {
                         // TODO: Open contact modal
                       }}
-                      className='relative hover:cursor-pointer z-10 flex items-center gap-2'
+                      className='relative cursor-pointer z-10 flex items-center gap-2'
                     >
                       <span>Start your project</span>
                       <motion.span

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { motion, useInView } from "motion/react";
-import Image from "next/image";
 import { useVideoShowcase } from "@/components/web/VideoShowcaseContext";
 
 export default function WebVideoShowcase() {
@@ -83,7 +82,7 @@ export default function WebVideoShowcase() {
                   {currentProject.industry}
                 </span>
                 <div className="flex gap-1 sm:gap-2">
-                  {currentProject.techStack.map((tech, idx) => (
+                  {currentProject.techStack.map((tech) => (
                     <span
                       key={tech}
                       className="px-1.5 sm:px-2 py-0.5 sm:py-1 text-xs rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30"

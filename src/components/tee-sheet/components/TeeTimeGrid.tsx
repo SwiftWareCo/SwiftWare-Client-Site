@@ -41,7 +41,7 @@ const generateMockTeeSheet = (): TeeTime[] => {
         const playerCount = Math.floor(Math.random() * 4) + 1;
         players = Array.from(
           { length: playerCount },
-          (_, i) =>
+          () =>
             [
               'Smith',
               'Johnson',

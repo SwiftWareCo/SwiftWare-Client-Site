@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
-import { Flag, MapPin, Users, Clock } from 'lucide-react';
+import { Flag, MapPin } from 'lucide-react';
 
 interface Hole {
   number: number;

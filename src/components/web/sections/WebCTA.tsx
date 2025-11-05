@@ -3,18 +3,11 @@
 import { motion, useReducedMotion, useInView } from "motion/react";
 import { useRef } from "react";
 import { ArrowRight } from "lucide-react";
-import { useFocusContext } from "@/context/FocusContext";
-import type { FocusContent } from "@/types/content";
 
-interface WebCTAProps {
-  content: FocusContent;
-}
-
-export default function WebCTA({ content }: WebCTAProps) {
+export default function WebCTA() {
   const reduce = useReducedMotion();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const { setShowContactModal } = useFocusContext();
 
   return (
     <section 
@@ -40,7 +33,7 @@ export default function WebCTA({ content }: WebCTAProps) {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-lg sm:text-xl text-zinc-300 mb-10 max-w-2xl mx-auto leading-relaxed"
         >
-          Contact us today and we'll get back to you within 24 hours.
+          Contact us today and we&apos;ll get back to you within 24 hours.
         </motion.p>
 
         <motion.div
@@ -49,7 +42,6 @@ export default function WebCTA({ content }: WebCTAProps) {
           transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
         >
           <button
-            onClick={() => setShowContactModal(true)}
             className="relative inline-flex items-center gap-3 overflow-hidden rounded-xl px-8 py-4 text-lg font-medium text-white ring-1 ring-zinc-800 transition-all duration-300"
             style={{ 
               background: "linear-gradient(90deg, rgb(59 130 246), rgb(168 85 247))"

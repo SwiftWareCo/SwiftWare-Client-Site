@@ -7,8 +7,6 @@ import { ArrowRight, Play } from 'lucide-react';
 
 import TypingHeadline from '@/components/hero/TypingHeadline';
 import AIVisualization from '@/components/ai-ml/hero/AIVisualization';
-import { getContentForFocusClient } from '@/lib/focusContent';
-import { useFocusContext } from '@/context/FocusContext';
 
 const HEADLINE = 'SwiftMind. AI that works.';
 
@@ -18,8 +16,6 @@ export default function AIMLHero() {
     () => [4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92],
     []
   );
-  const data = getContentForFocusClient('ai-ml');
-  const { setShowContactModal } = useFocusContext();
 
   useEffect(() => {
     document.title = "AI & Machine Learning Solutions | Swiftware";
@@ -112,24 +108,17 @@ export default function AIMLHero() {
             />
           </h1>
 
-          {/* AI/ML subline from content */}
-          {data?.hero?.subline && (
-            <p className='mt-3 text-sm sm:text-base text-zinc-300'>
-              {data.hero.subline}
-            </p>
-          )}
-
           {/* Key AI capabilities bullets */}
-          {data?.bullets && (
+          <div className='mt-4'>
             <motion.div
               initial={reduce ? { opacity: 1 } : { y: 12, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 1.2, duration: 0.6 }}
-              className='mt-4 space-y-2'
+              className='space-y-2'
             >
-              {data.bullets.slice(0, 3).map((bullet, index) => (
+              {['AI-Powered Insights', 'Real-time Analytics', 'Intelligent Automation'].map((label, index) => (
                 <motion.div
-                  key={bullet.label}
+                  key={label}
                   initial={reduce ? { opacity: 1 } : { x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 1.4 + index * 0.1, duration: 0.4 }}
@@ -137,14 +126,12 @@ export default function AIMLHero() {
                 >
                   <div className='w-1.5 h-1.5 rounded-full bg-gradient-to-r from-teal-400 to-blue-400 shadow-[0_0_8px_rgba(0,212,255,0.6)]' />
                   <span className='font-medium text-zinc-300'>
-                    {bullet.label}
+                    {label}
                   </span>
-                  <span className='text-zinc-500'>—</span>
-                  <span>{bullet.shortLine}</span>
                 </motion.div>
               ))}
             </motion.div>
-          )}
+          </div>
 
           <motion.div
             initial={reduce ? { opacity: 1 } : { y: 8, opacity: 0 }}
@@ -152,15 +139,14 @@ export default function AIMLHero() {
             transition={{ delay: 0.75, duration: 0.45 }}
             className='mt-6 flex flex-wrap items-center gap-3 justify-center md:justify-start'
           >
-            {/* Primary CTA - Always opens contact modal */}
+            {/* Primary CTA */}
             <button
-              onClick={() => setShowContactModal(true)}
               className='relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-6 py-3 text-sm font-medium text-white ring-1 ring-teal-500/30'
               style={{
                 background:
                   'linear-gradient(90deg, rgb(15 76 92), rgb(0 212 255))',
               }}
-              aria-label='Start Free Trial'
+              aria-label='Contact Us'
             >
               <motion.span
                 aria-hidden
@@ -168,16 +154,16 @@ export default function AIMLHero() {
                 whileHover={{ x: '100%' }}
                 transition={{ duration: 0.7, ease: 'easeInOut' }}
               />
-              {data?.hero?.primaryCta?.label || 'Start Free Trial'}
+              Contact Us
               <ArrowRight className='size-4' />
             </button>
 
-            {/* Secondary CTA from AI/ML content */}
+            {/* Secondary CTA */}
             <Link
-              href={data?.hero?.secondaryCta?.href ?? '#demo'}
+              href='#'
               className='group inline-flex items-center gap-2 rounded-xl border border-teal-700/50 bg-teal-900/20 px-6 py-3 text-sm text-zinc-200 hover:bg-teal-900/30 hover:border-teal-500/50 transition-all duration-300'
             >
-              {data?.hero?.secondaryCta?.label ?? 'See Demo'}
+              See Demo
               <Play className='size-4 text-teal-500 group-hover:text-teal-300 transition-colors' />
             </Link>
           </motion.div>

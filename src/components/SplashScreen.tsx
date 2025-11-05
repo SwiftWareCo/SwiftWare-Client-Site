@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+
 import Image from 'next/image';
 
 interface SplashScreenProps {
@@ -12,7 +13,7 @@ export default function SplashScreen({ onDone }: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [isExiting, setIsExiting] = useState(false);
 
-  // Auto-dismiss after animation completes (~5 seconds)
+  // Auto-dismiss after animation completes (~3 seconds)
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!isExiting) {
@@ -22,7 +23,7 @@ export default function SplashScreen({ onDone }: SplashScreenProps) {
           onDone?.();
         }, 700);
       }
-    }, 4500);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [isExiting, onDone]);

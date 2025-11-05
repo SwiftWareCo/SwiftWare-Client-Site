@@ -243,7 +243,7 @@ export default function WeatherWidget({ className = '' }: WeatherWidgetProps) {
       {/* Compact forecast */}
       <div>
         <h4 className='text-sm font-medium text-zinc-300 mb-3'>
-          Today's Forecast
+          Today&apos;s Forecast
         </h4>
         <div className='grid grid-cols-4 gap-2'>
           {weather.forecast.map((forecast, index) => (

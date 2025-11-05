@@ -2,11 +2,8 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-import Link from 'next/link';
-import { ArrowRight, Play, TrendingUp, Users, Sun, DollarSign } from 'lucide-react';
-import { getContentForFocusClient } from '@/lib/focusContent';
+import { ArrowRight, TrendingUp, Users, Sun, DollarSign } from 'lucide-react';
 import { openCalendlyPopup, initCalendlyScripts } from '@/lib/calendly';
-import { useFocusContext } from '@/context/FocusContext';
 import { TeeTimeGrid, CourseLayout, WeatherWidget } from './index';
 
 const HEADLINE = 'GolfSync Operations Dashboard';
@@ -31,8 +28,7 @@ export default function GolfCourseHero() {
     'teesheet'
   );
   const [stats] = useState<DashboardStats>(mockStats);
-  const data = getContentForFocusClient('tee-sheet');
-  const { setShowContactModal } = useFocusContext();
+  
 
   useEffect(() => {
     document.title = "Golf Course Tee Sheet Management | Swiftware";
@@ -117,12 +113,9 @@ export default function GolfCourseHero() {
             </div>
           </h1>
 
-          {/* GolfSync subline from content */}
-          {data?.hero?.subline && (
-            <p className='mt-3 text-sm sm:text-base text-zinc-300'>
-              {data.hero.subline}
-            </p>
-          )}
+          <p className='mt-3 text-sm sm:text-base text-zinc-300'>
+            Complete golf course operations management system.
+          </p>
 
           {/* Quick Stats */}
           <motion.div
@@ -174,20 +167,10 @@ export default function GolfCourseHero() {
                 whileHover={{ x: '100%' }}
                 transition={{ duration: 0.7, ease: 'easeInOut' }}
               />
-              {data?.hero?.primaryCta?.label || 'Schedule Demo'}
+                Schedule Demo
               <ArrowRight className='size-4' />
             </button>
 
-            {/* Secondary CTA - Only show if explicitly provided in content */}
-            {data?.hero?.secondaryCta && (
-              <Link
-                href={data.hero.secondaryCta.href}
-                className='group inline-flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/60 px-5 py-3 text-sm text-zinc-200 hover:bg-zinc-900'
-              >
-                {data.hero.secondaryCta.label}
-                <Play className='size-4 text-zinc-500 group-hover:text-zinc-300 transition-colors' />
-              </Link>
-            )}
           </motion.div>
         </div>
 

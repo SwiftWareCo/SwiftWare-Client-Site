@@ -8,16 +8,12 @@ import { ArrowRight, Play } from "lucide-react";
 import TypingHeadline from "@/components/hero/TypingHeadline";
 import DesktopBridgeShowcase from "@/components/hero/DesktopBridgeShowcase";
 import LaptopSyncTile from "@/components/hero/LaptopSyncTile";
-import { getContentForFocusClient } from "@/lib/focusContent";
-import { useFocusContext } from "@/context/FocusContext";
 
 const HEADLINE = "Software. Made to fit.";
 
 export default function CRMHero() {
   const reduce = useReducedMotion();
   const stripes = useMemo(() => [4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92], []);
-  const data = getContentForFocusClient("crm");
-  const { setShowContactModal } = useFocusContext();
 
   useEffect(() => {
     document.title = "Custom CRM Development | Swiftware";
@@ -108,10 +104,7 @@ export default function CRMHero() {
             />
           </h1>
 
-          {/* CRM subline from content */}
-          {data?.hero?.subline && (
-            <p className="mt-3 text-sm sm:text-base text-zinc-300">{data.hero.subline}</p>
-          )}
+          <p className="mt-3 text-sm sm:text-base text-zinc-300">Custom field service management software that teams actually use.</p>
 
           <motion.div
             initial={reduce ? { opacity: 1 } : { y: 8, opacity: 0 }}
@@ -119,9 +112,8 @@ export default function CRMHero() {
             transition={{ delay: 0.75, duration: 0.45 }}
             className="mt-4 flex flex-wrap items-center gap-3 justify-center md:justify-start"
           >
-            {/* Primary CTA - Always opens contact modal */}
+            {/* Primary CTA */}
             <button
-              onClick={() => setShowContactModal(true)}
               className="relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-5 py-3 text-sm font-medium text-white ring-1 ring-zinc-800"
               style={{ background: "linear-gradient(90deg, rgb(59 130 246), rgb(168 85 247))" }}
               aria-label="Start your project"
@@ -132,16 +124,16 @@ export default function CRMHero() {
                 whileHover={{ x: "100%" }}
                 transition={{ duration: 0.7, ease: "easeInOut" }}
               />
-              {data?.hero?.primaryCta?.label || "Start your project"}
+              Start your project
               <ArrowRight className="size-4" />
             </button>
 
-            {/* Secondary CTA from CRM content (defaults to See capabilities) */}
+            {/* Secondary CTA */}
             <Link
-              href={data?.hero?.secondaryCta?.href ?? "/#work"}
+              href="/#"
               className="group inline-flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/60 px-5 py-3 text-sm text-zinc-200 hover:bg-zinc-900"
             >
-              {data?.hero?.secondaryCta?.label ?? "See our work"}
+              See our work
               <Play className="size-4 text-zinc-500 group-hover:text-zinc-300 transition-colors" />
             </Link>
           </motion.div>

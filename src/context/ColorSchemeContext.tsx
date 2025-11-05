@@ -6,7 +6,7 @@ import {
   useState,
   useCallback,
   ReactNode,
-  useEffect,
+  
 } from 'react';
 import { ColorSchemeKey, colorSchemes } from '@/constants/colorSchemes';
 

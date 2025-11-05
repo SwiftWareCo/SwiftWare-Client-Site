@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { useFocusContext } from '@/context/FocusContext';
 import type { CapabilityTile } from '@/types/content';
 import Icon from '@/components/ui/Icon';
 
@@ -12,8 +11,6 @@ interface SolutionOverviewProps {
 export default function SolutionOverview({
   capabilities,
 }: SolutionOverviewProps) {
-  const { setFocus, setShowContactModal } = useFocusContext();
-
   // Filter to only show solution cards (not contact cards)
   const solutionCards = capabilities.filter(
     (cap) => cap.category === 'Solutions'
@@ -21,29 +18,12 @@ export default function SolutionOverview({
   const contactCards = capabilities.filter((cap) => cap.category === 'Contact');
 
   const handleCardClick = (capability: CapabilityTile) => {
-    if (capability.href?.startsWith('#focus-')) {
-      // Scroll to top first, then navigate to specific focus
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(() => {
-        const focusKey = capability.href?.replace('#focus-', '');
-        if (
-          focusKey === 'crm' ||
-          focusKey === 'tee-sheet' ||
-          focusKey === 'ai-ml' ||
-          focusKey === 'web'
-        ) {
-          setFocus(focusKey);
-        }
-      }, 500); // Small delay to let scroll finish
-    } else if (capability.href === '#scheduling') {
-      // Scroll to scheduling section
-      const element = document.querySelector('#scheduling');
+    if (capability.href?.startsWith('#')) {
+      // Scroll to section
+      const element = document.querySelector(capability.href);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
-    } else if (capability.href === '#contact') {
-      // Open contact modal
-      setShowContactModal(true);
     }
   };
 

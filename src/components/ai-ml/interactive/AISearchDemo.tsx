@@ -241,10 +241,10 @@ export default function AISearchDemo() {
                     <div className='flex items-center justify-between'>
                       <div className='flex items-center gap-2 text-xs text-zinc-500'>
                         <span>{result.source}</span>
-                        {result.metadata?.department && (
+                        {result.metadata && 'department' in result.metadata && (
                           <>
                             <span>•</span>
-                            <span>{result.metadata.department}</span>
+                            <span>{String((result.metadata as Record<string, unknown>).department)}</span>
                           </>
                         )}
                       </div>
