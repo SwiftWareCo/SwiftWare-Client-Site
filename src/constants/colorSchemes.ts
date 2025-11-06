@@ -49,9 +49,9 @@ export const serviceColorMap: Record<string, ColorSchemeKey> = {
   'ai-automation': 'automation',
   'custom-software': 'software',
   'crm': 'software',
-  'ai-rag': 'automation',
+  'ai-rag': 'software',  // Part of custom-software, uses software colors
   'golf': 'software',
-  'web-portals': 'marketing',
+  'web-portals': 'software',  // Part of custom-software, uses software colors
   'home': 'default',
   'case-studies': 'default',
   'about': 'default',

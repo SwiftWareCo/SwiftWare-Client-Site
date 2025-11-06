@@ -2,8 +2,10 @@
 
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
+import { useColorScheme } from '@/context/ColorSchemeContext';
 
 export function CTASection() {
+  const { colors } = useColorScheme();
   return (
     <div className='relative'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24'>
@@ -21,9 +23,13 @@ export function CTASection() {
             Let&apos;s talk about your goals and how we can help you achieve them.
           </p>
           <motion.button
-            whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(59, 130, 246, 0.4)' }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className='cursor-pointer relative inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium transition-all'
+            className='cursor-pointer relative inline-flex items-center gap-2 px-8 py-4 rounded-lg text-white font-medium transition-all'
+            style={{
+              background: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+              boxShadow: `0 20px 40px ${colors.primary}40`,
+            }}
           >
             <span>Schedule a Consultation</span>
             <motion.div animate={{ x: [0, 4, 0] }} transition={{ duration: 2, repeat: Infinity }}>

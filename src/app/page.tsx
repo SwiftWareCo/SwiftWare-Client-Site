@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { FAQSection } from '@/components/sections/FAQSection';
 import { HeroSection } from '@/components/home/HeroSection';
 import { ServicesGrid } from '@/components/home/ServicesGrid';
-import { CaseStudySection } from '@/components/home/CaseStudySection';
+import { ScrollTriggeredImpactSection } from '@/components/home/ScrollTriggeredImpactSection';
 import { PackagesGrid } from '@/components/home/PackagesGrid';
 import { CompanyStorySection } from '@/components/home/CompanyStorySection';
 import { CTASection } from '@/components/home/CTASection';
@@ -102,7 +102,7 @@ export default function Home() {
 
       <ServicesGrid services={services} />
 
-      <CaseStudySection />
+      <ScrollTriggeredImpactSection />
 
       <PackagesGrid packages={packages} />
 

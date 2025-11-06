@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
+import { useColorScheme } from '@/context/ColorSchemeContext';
 
 interface Package {
   name: string;
@@ -13,6 +14,7 @@ interface PackagesGridProps {
 }
 
 export function PackagesGrid({ packages }: PackagesGridProps) {
+  const { colors } = useColorScheme();
   return (
     <div className='relative'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24'>
@@ -42,7 +44,9 @@ export function PackagesGrid({ packages }: PackagesGridProps) {
               <ul className='space-y-2 mb-6'>
                 {pkg.services.map((svc, i) => (
                   <li key={i} className='text-sm text-zinc-300 flex items-start gap-2'>
-                    <span className='text-blue-400 mt-0.5'>✓</span>
+                    <span className='mt-0.5' style={{ color: colors.primary }}>
+                      ✓
+                    </span>
                     <span>{svc}</span>
                   </li>
                 ))}

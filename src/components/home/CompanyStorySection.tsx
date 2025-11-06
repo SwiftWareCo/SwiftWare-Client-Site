@@ -1,8 +1,10 @@
 'use client';
 
 import { motion } from 'motion/react';
+import { useColorScheme } from '@/context/ColorSchemeContext';
 
 export function CompanyStorySection() {
+  const { colors } = useColorScheme();
   return (
     <div className='relative'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24'>
@@ -32,7 +34,10 @@ export function CompanyStorySection() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className='bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl p-8 h-96 flex items-center justify-center border border-zinc-800'
+            className='rounded-xl p-8 h-96 flex items-center justify-center border border-zinc-800'
+            style={{
+              background: `linear-gradient(to bottom right, ${colors.primary}10, ${colors.secondary}10)`,
+            }}
           >
             <div className='text-center'>
               <p className='text-zinc-400'>Team Section</p>

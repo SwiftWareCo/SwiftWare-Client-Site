@@ -2,13 +2,21 @@
 
 import { motion } from 'motion/react';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { useColorScheme } from '@/context/ColorSchemeContext';
 
 export function HeroSection() {
+  const { colors } = useColorScheme();
+
   return (
     <div className='relative overflow-hidden pt-20 sm:pt-32 pb-16 sm:pb-24'>
       {/* Gradient background */}
       <div className='absolute inset-0 -z-10'>
-        <div className='absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent' />
+        <div
+          className='absolute inset-0'
+          style={{
+            background: `linear-gradient(to bottom, ${colors.primary}08, transparent, transparent)`,
+          }}
+        />
       </div>
 
       <div className='mx-auto max-w-7xl px-4 sm:px-6'>
@@ -42,7 +50,10 @@ export function HeroSection() {
             className='text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6'
           >
             <motion.span
-              className='bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent inline-block'
+              className='bg-clip-text text-transparent inline-block'
+              style={{
+                backgroundImage: `linear-gradient(to right, white, ${colors.primary}40)`,
+              }}
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             >
@@ -50,7 +61,10 @@ export function HeroSection() {
             </motion.span>
             <br />
             <motion.span
-              className='bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent inline-block'
+              className='bg-clip-text text-transparent inline-block'
+              style={{
+                backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+              }}
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
             >
@@ -74,9 +88,13 @@ export function HeroSection() {
             className='flex flex-col sm:flex-row gap-4 justify-center items-center'
           >
             <motion.button
-              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3)' }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className='cursor-pointer relative inline-flex items-center gap-2 overflow-hidden rounded-lg px-8 py-4 text-base font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 transition-shadow'
+              className='cursor-pointer relative inline-flex items-center gap-2 overflow-hidden rounded-lg px-8 py-4 text-base font-medium text-white transition-shadow'
+              style={{
+                background: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+                boxShadow: `0 20px 40px ${colors.primary}40`,
+              }}
             >
               <span>Start Your Transformation</span>
               <motion.div animate={{ x: [0, 4, 0] }} transition={{ duration: 2, repeat: Infinity }}>

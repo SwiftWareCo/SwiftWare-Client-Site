@@ -216,7 +216,6 @@ Most businesses need multiple services but work with disconnected agencies. Swif
 - `npm run dev` - Start development server with Turbopack
 - `npm run lint` - Check for linting errors
 - `npm run lint:types` - Check TypeScript errors
-- `npm run build` - Build for production (after linting passes)
 - `npm run start` - Start production server
 
 ### Code Quality
