@@ -3,7 +3,8 @@ import UnifiedHeader from "./UnifiedHeader";
 import Footer from "./Footer";
 import { motion } from "motion/react";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { initCalendlyScripts } from "@/lib/calendly";
 
 const SplashScreen = dynamic(() => import("./SplashScreen"), { ssr: false });
 
@@ -13,6 +14,10 @@ interface ClientAppProps {
 
 export default function ClientApp({ children }: ClientAppProps) {
   const [splashDone, setSplashDone] = useState(false);
+
+  useEffect(() => {
+    initCalendlyScripts();
+  }, []);
 
   return (
     <>

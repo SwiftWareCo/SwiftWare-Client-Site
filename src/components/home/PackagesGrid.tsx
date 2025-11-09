@@ -16,13 +16,13 @@ interface PackagesGridProps {
 export function PackagesGrid({ packages }: PackagesGridProps) {
   const { colors } = useColorScheme();
   return (
-    <div className='relative'>
-      <div className='mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24'>
+    <section className='relative py-16 sm:py-24 bg-purple-100 dark:bg-zinc-800'>
+      <div className='mx-auto max-w-7xl px-6'>
         <div className='text-center mb-12 sm:mb-16'>
-          <h2 className='text-3xl sm:text-4xl font-bold mb-4 text-white'>
+          <h2 className='text-3xl sm:text-4xl font-bold mb-4 text-purple-900 dark:text-zinc-100'>
             Service Packages
           </h2>
-          <p className='text-lg text-zinc-400 max-w-2xl mx-auto'>
+          <p className='text-lg max-w-2xl mx-auto text-purple-700 dark:text-zinc-300'>
             Bundled solutions designed for different business goals
           </p>
         </div>
@@ -35,15 +35,15 @@ export function PackagesGrid({ packages }: PackagesGridProps) {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className='p-6 rounded-lg border border-zinc-800 bg-zinc-900/30 hover:bg-zinc-900/50 transition-colors'
+              className='p-6 rounded-lg border border-purple-300 dark:border-zinc-700 bg-white/40 dark:bg-zinc-900/40 hover:bg-white/60 dark:hover:bg-zinc-900/60 transition-colors'
             >
-              <h3 className='text-lg font-semibold mb-2 text-white'>
+              <h3 className='text-lg font-semibold mb-2 text-purple-900 dark:text-zinc-100'>
                 {pkg.name}
               </h3>
-              <p className='text-sm text-zinc-400 mb-4'>{pkg.description}</p>
+              <p className='text-sm mb-4 text-purple-700 dark:text-zinc-300'>{pkg.description}</p>
               <ul className='space-y-2 mb-6'>
                 {pkg.services.map((svc, i) => (
-                  <li key={i} className='text-sm text-zinc-300 flex items-start gap-2'>
+                  <li key={i} className='text-sm flex items-start gap-2 text-purple-800 dark:text-zinc-200'>
                     <span className='mt-0.5' style={{ color: colors.primary }}>
                       ✓
                     </span>
@@ -51,13 +51,15 @@ export function PackagesGrid({ packages }: PackagesGridProps) {
                   </li>
                 ))}
               </ul>
-              <button className='w-full py-2 px-4 rounded-lg border border-zinc-700 hover:bg-zinc-800 transition-colors text-sm font-medium text-white'>
+              <button
+                className='cursor-pointer w-full py-2 px-4 rounded-lg border border-purple-400 dark:border-zinc-600 hover:bg-purple-200 dark:hover:bg-zinc-700 transition-colors text-sm font-medium text-purple-900 dark:text-zinc-100'
+              >
                 Learn More
               </button>
             </motion.div>
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

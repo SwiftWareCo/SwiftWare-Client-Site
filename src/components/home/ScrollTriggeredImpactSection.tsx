@@ -188,14 +188,20 @@ function SocialMediaIconWithTooltip({ item }: SocialMediaIconProps) {
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
       >
         <div
-          className='flex items-center justify-center w-16 h-16 rounded-lg bg-zinc-800 border border-zinc-700 hover:border-zinc-600 transition-colors'
+          className='flex items-center justify-center w-16 h-16 rounded-lg border transition-colors'
           dangerouslySetInnerHTML={{
             __html: item.simpleIcon!.svg.replace(
               '<svg',
               `<svg width="32" height="32" fill="currentColor"`
             ),
           }}
-          style={{ color: '#ffffff' }}
+          style={{
+            backgroundColor: 'var(--gray-a3)',
+            borderColor: 'var(--gray-a6)',
+            color: `${item.id.includes('vhd') ? '#0891B2' : item.id.includes('beacon') ? '#7C3AED' : '#3B82F6'}`,
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--gray-a8)'}
+          onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--gray-a6)'}
         />
       </motion.div>
 
@@ -207,20 +213,22 @@ function SocialMediaIconWithTooltip({ item }: SocialMediaIconProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: -5 }}
             transition={{ duration: 0.15 }}
-            className='fixed px-3 py-2 bg-zinc-900/95 backdrop-blur-sm border border-zinc-700 rounded-md shadow-lg pointer-events-none z-50'
+            className='fixed px-3 py-2 backdrop-blur-sm rounded-md shadow-lg pointer-events-none z-50 border'
             style={{
               top: tooltipPosition.top,
               left: tooltipPosition.left,
               transform: 'translateX(-50%)',
               width: 'auto',
               whiteSpace: 'nowrap',
+              borderColor: 'var(--gray-a6)',
+              backgroundColor: 'var(--color-panel-solid)',
             }}
           >
-            <p className='text-xs text-zinc-200 font-semibold'>
+            <p className='text-xs font-semibold' style={{ color: 'var(--gray-12)' }}>
               {item.platformName}
             </p>
             {item.stat && (
-              <p className='text-xs text-zinc-400 font-medium'>{item.stat}</p>
+              <p className='text-xs font-medium' style={{ color: 'var(--gray-11)' }}>{item.stat}</p>
             )}
           </motion.div>,
           document.body
@@ -336,7 +344,13 @@ function LogoBox({ item, index }: LogoBoxProps) {
         translateY: '-50%',
       }}
     >
-      <div className='relative shrink-0 rounded-2xl overflow-hidden shadow-lg w-28 h-28 flex items-center justify-center bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700'>
+      <div
+        className='relative shrink-0 rounded-2xl overflow-hidden shadow-lg w-28 h-28 flex items-center justify-center border'
+        style={{
+          borderColor: 'var(--gray-a6)',
+          backgroundColor: 'var(--gray-a3)',
+        }}
+      >
         {item.imagePath && (
           <Image
             src={item.imagePath}
@@ -376,19 +390,11 @@ export function ScrollTriggeredImpactSection() {
   const statYs = [stat1Y, stat2Y, stat3Y];
 
   return (
-    <div ref={containerRef} className='relative w-full'>
+    <section ref={containerRef} className='relative w-full bg-blue-100 dark:bg-zinc-900'>
       {/* Desktop: Full version with particles */}
       <div className='hidden md:block h-[250vh]'>
-        <section className='sticky top-0 h-screen w-full overflow-hidden'>
-          {/* Background gradient */}
-          <div className='absolute inset-0 -z-10'>
-            <div
-              className='absolute inset-0 opacity-10'
-              style={{
-                background: `radial-gradient(circle at center, ${colors.primary}, transparent)`,
-              }}
-            />
-          </div>
+        <div className='sticky top-0 h-screen w-full overflow-hidden bg-blue-100 dark:bg-zinc-900'>
+
 
           {/* Logo scatter container */}
           <div className='absolute inset-0'>
@@ -423,22 +429,22 @@ export function ScrollTriggeredImpactSection() {
                   }}
                   className='flex items-center justify-center'
                 >
-                  <p className='text-2xl md:text-3xl font-bold text-white'>
+                  <p className='text-2xl md:text-3xl font-bold text-blue-900 dark:text-zinc-100'>
                     {stat.text}
                   </p>
                 </motion.div>
               ))}
             </div>
           </div>
-        </section>
+        </div>
       </div>
 
       {/* Mobile: Simplified version */}
       <div className='md:hidden py-24'>
-        <div className='mx-auto max-w-7xl px-4'>
+        <div className='mx-auto max-w-7xl px-6'>
           <div className='text-center mb-16'>
-            <h2 className='text-4xl font-bold text-white mb-4'>Our Impact</h2>
-            <p className='text-zinc-400'>See the results we deliver</p>
+            <h2 className='text-4xl font-bold mb-4 text-blue-900 dark:text-zinc-100'>Our Impact</h2>
+            <p className='text-blue-700 dark:text-zinc-300'>See the results we deliver</p>
           </div>
 
           {/* Logo grid for mobile */}
@@ -450,7 +456,11 @@ export function ScrollTriggeredImpactSection() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
-                className='relative rounded-lg overflow-hidden bg-gradient-to-br from-zinc-800 to-zinc-900 aspect-square flex items-center justify-center border border-zinc-700'
+                className='relative rounded-lg overflow-hidden aspect-square flex items-center justify-center border'
+                style={{
+                  borderColor: 'var(--gray-a6)',
+                  backgroundColor: 'var(--gray-a3)',
+                }}
               >
                 {item.imagePath && (
                   <Image
@@ -475,18 +485,22 @@ export function ScrollTriggeredImpactSection() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 viewport={{ once: true }}
-                className='flex items-start gap-3 p-4 rounded-lg bg-zinc-900/50 border border-zinc-800'
+                className='flex items-start gap-3 p-4 rounded-lg border'
+                style={{
+                  borderColor: 'var(--gray-a6)',
+                  backgroundColor: 'var(--gray-a2)',
+                }}
               >
                 <div
                   className='w-2 h-2 rounded-full flex-shrink-0 mt-2'
                   style={{ backgroundColor: colors.primary }}
                 />
-                <p className='text-sm text-zinc-300'>{stat.text}</p>
+                <p className='text-sm text-blue-800 dark:text-zinc-300'>{stat.text}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

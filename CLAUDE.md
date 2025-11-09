@@ -230,15 +230,6 @@ Most businesses need multiple services but work with disconnected agencies. Swif
 - **Client components**: Use `'use client'` directive for components with animations (motion), state, or event handlers
 - **Server components**: Pages remain as server components for better SEO when they don't require client interactivity
 
-### Adding New Service Pages
-1. Create route folder (e.g., `/new-service`)
-2. Create `page.tsx` using **ServicePageTemplate**
-3. Add color scheme to `colorSchemes.ts`
-4. Update `serviceColorMap` in `colorSchemes.ts`
-5. Link from homepage and navigation
-6. Add FAQ and process data
-7. Run linting and type checks
-
 ## Performance Considerations
 
 - Dynamic imports for code splitting
@@ -246,18 +237,6 @@ Most businesses need multiple services but work with disconnected agencies. Swif
 - Turbopack for faster development builds
 - Animations use Motion/Framer Motion (optimized)
 - Lazy loading of below-fold content
-
-## Removed Features
-
-The following were removed in Phase 1 transformation:
-- **FocusContext.tsx** - Focus state management system
-- **useFocus.ts** - Focus persistence utilities
-- **FocusHero.tsx** - Focus-based hero routing
-- **FocusAwareHome.tsx** - Focus-based content switching
-- **ThemedFocusDropdown.tsx** - Focus selector UI
-- **focusContent.ts** - Focus-based content loader
-- **Splash screen choices** - User selection UI
-- **localStorage focus key** - `swiftware.focus.v1`
 
 ---
 

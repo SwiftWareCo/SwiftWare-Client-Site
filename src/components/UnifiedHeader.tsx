@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowRight, Menu, X } from 'lucide-react';
+import { ModeToggle } from '@/components/ui/mode-toggle';
 
 const navigationLinks = [
   { label: 'Brand Design', href: '/brand-design' },
@@ -66,19 +67,18 @@ export default function UnifiedHeader() {
           >
             <motion.div
               animate={{
-                borderColor: scrolled
-                  ? 'rgb(63 63 70 / 0.8)'
-                  : 'rgb(63 63 70 / 0.4)',
-                backgroundColor: scrolled
-                  ? 'rgb(9 9 11 / 0.9)'
-                  : 'rgb(9 9 11 / 0.7)',
-                boxShadow: scrolled
-                  ? '0 16px 40px rgba(59, 130, 246, 0.2), 0 0 0 1px rgba(168, 85, 247, 0.1)'
-                  : '0 8px 32px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(168, 85, 247, 0.05)',
                 scale: scrolled ? 0.985 : 1,
               }}
               transition={{ duration: 0.25, ease: [0.25, 0.8, 0.25, 1] }}
-              className='rounded-2xl border backdrop-blur-xl overflow-hidden'
+              className='rounded-2xl border backdrop-blur-xl overflow-hidden
+                         bg-blue-50/85 dark:bg-zinc-900/85
+                         border-blue-300/50 dark:border-zinc-700/50
+                         shadow-lg shadow-blue-500/10 dark:shadow-purple-500/10'
+              style={{
+                boxShadow: scrolled
+                  ? '0 16px 40px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(168, 85, 247, 0.1)'
+                  : '0 8px 32px rgba(59, 130, 246, 0.1), 0 0 0 1px rgba(168, 85, 247, 0.05)',
+              }}
             >
               <motion.div
                 className='absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 pointer-events-none'
@@ -94,7 +94,7 @@ export default function UnifiedHeader() {
                 <div className='flex items-center justify-between sm:hidden'>
                   <Link
                     href='/'
-                    className='group/logo relative flex items-center gap-2 text-base font-bold tracking-wide text-white'
+                    className='group/logo relative flex items-center gap-2 text-base font-bold tracking-wide'
                   >
                     <div className='relative'>
                       <motion.div
@@ -119,25 +119,28 @@ export default function UnifiedHeader() {
                       </motion.div>
                     </div>
                     <div className='leading-tight'>
-                      <span className='bg-gradient-to-r from-white to-zinc-200 bg-clip-text text-transparent text-sm'>
+                      <span className='bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent text-sm'>
                         Swiftware
                       </span>
-                      <div className='text-[10px] text-zinc-400'>
+                      <div className='text-[10px] text-blue-600 dark:text-blue-400'>
                         Digital Excellence
                       </div>
                     </div>
                   </Link>
 
-                  <button
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className='cursor-pointer p-2 text-zinc-300 hover:text-white transition-colors'
-                  >
-                    {mobileMenuOpen ? (
-                      <X className='size-5' />
-                    ) : (
-                      <Menu className='size-5' />
-                    )}
-                  </button>
+                  <div className='flex items-center gap-3'>
+                    <ModeToggle />
+                    <button
+                      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                      className='cursor-pointer p-2 text-blue-700 dark:text-zinc-300 hover:text-blue-900 dark:hover:text-white transition-colors'
+                    >
+                      {mobileMenuOpen ? (
+                        <X className='size-5' />
+                      ) : (
+                        <Menu className='size-5' />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 {/* Mobile Menu */}
@@ -146,13 +149,13 @@ export default function UnifiedHeader() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className='mt-4 flex flex-col gap-2 border-t border-zinc-700/50 pt-4'
+                    className='mt-4 flex flex-col gap-2 border-t border-blue-300/50 dark:border-zinc-700/50 pt-4'
                   >
                     {navigationLinks.map((link) => (
                       <Link
                         key={link.href}
                         href={link.href}
-                        className='cursor-pointer px-3 py-2 text-sm text-zinc-300 hover:text-white hover:bg-zinc-800/50 rounded-lg transition-colors'
+                        className='cursor-pointer px-3 py-2 text-sm text-blue-800 dark:text-zinc-300 hover:text-blue-900 dark:hover:text-white hover:bg-blue-200/50 dark:hover:bg-zinc-800/50 rounded-lg transition-colors'
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {link.label}
@@ -175,7 +178,7 @@ export default function UnifiedHeader() {
                 <div className='hidden sm:flex sm:items-center sm:justify-between'>
                   <Link
                     href='/'
-                    className='group/logo relative flex items-center gap-3 text-lg font-bold tracking-wide text-white'
+                    className='group/logo relative flex items-center gap-3 text-lg font-bold tracking-wide'
                   >
                     <div className='relative'>
                       <motion.div
@@ -201,10 +204,10 @@ export default function UnifiedHeader() {
                     </div>
 
                     <div className='leading-tight'>
-                      <span className='bg-gradient-to-r from-white to-zinc-200 bg-clip-text text-transparent text-base'>
+                      <span className='bg-gradient-to-r from-blue-900 to-blue-700 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent text-base'>
                         Swiftware
                       </span>
-                      <div className='text-xs text-zinc-400'>
+                      <div className='text-xs text-blue-600 dark:text-blue-400'>
                         Digital Excellence
                       </div>
                     </div>
@@ -216,15 +219,17 @@ export default function UnifiedHeader() {
                       <Link
                         key={link.href}
                         href={link.href}
-                        className='cursor-pointer text-sm text-zinc-300 hover:text-white transition-colors'
+                        className='cursor-pointer text-sm text-blue-800 dark:text-zinc-300 hover:text-blue-900 dark:hover:text-white transition-colors'
                       >
                         {link.label}
                       </Link>
                     ))}
                   </nav>
 
-                  {/* CTA Button */}
-                  <motion.div
+                  {/* Theme Toggle & CTA Button */}
+                  <div className='flex items-center gap-4'>
+                    <ModeToggle />
+                    <motion.div
                     initial='rest'
                     animate='rest'
                     whileHover='hover'
@@ -255,6 +260,7 @@ export default function UnifiedHeader() {
                       </motion.span>
                     </button>
                   </motion.div>
+                  </div>
                 </div>
               </div>
 
@@ -262,8 +268,8 @@ export default function UnifiedHeader() {
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ duration: 0.9, delay: 0.4, ease: 'easeOut' }}
-                className='absolute bottom-0 inset-x-4 sm:inset-x-6 h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent'
-                style={{ opacity: scrolled ? 0.8 : 0.5 }}
+                className='absolute bottom-0 inset-x-4 sm:inset-x-6 h-[1px] bg-gradient-to-r from-transparent via-purple-400 dark:via-blue-500 to-transparent'
+                style={{ opacity: scrolled ? 0.6 : 0.4 }}
               />
             </motion.div>
           </motion.div>

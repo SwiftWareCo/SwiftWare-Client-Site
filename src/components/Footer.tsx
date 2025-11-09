@@ -6,23 +6,24 @@ import { motion } from "motion/react";
 
 export default function Footer() {
   return (
-    <footer className="relative mt-16 md:mt-32">
+    <footer className="relative bg-gray-50 dark:bg-zinc-900">
       {/* Gradient separator */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="mx-auto max-w-7xl px-6">
         <div className="relative h-px w-full">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-zinc-700 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-transparent" style={{ backgroundImage: 'linear-gradient(to right, transparent, var(--gray-a6), transparent)' }} />
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/20 to-transparent blur-sm" />
         </div>
       </div>
 
       {/* Footer content */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        className="mx-auto max-w-7xl px-4 sm:px-6 py-8 md:py-16"
-      >
+      <div className="mx-auto max-w-7xl px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="py-8 md:py-16"
+        >
         <div className="grid gap-8 md:gap-12 md:grid-cols-1 lg:grid-cols-2">
           {/* Brand section */}
           <div>
@@ -38,23 +39,23 @@ export default function Footer() {
                   />
                 </div>
               </div>
-              <h3 className="text-lg md:text-xl font-bold bg-gradient-to-r from-white to-zinc-300 bg-clip-text text-transparent">
+              <h3 className="text-lg md:text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-zinc-300 bg-clip-text text-transparent">
                 Swiftware
               </h3>
             </div>
-            <p className="text-zinc-400 max-w-md leading-relaxed">
+            <p className="max-w-md leading-relaxed text-gray-700 dark:text-zinc-400">
               Building tomorrow&apos;s software today. We craft bespoke solutions that scale with your vision and exceed your expectations.
             </p>
           </div>
 
           {/* Contact info */}
           <div>
-            <h4 className="text-sm font-semibold text-zinc-300 mb-4 uppercase tracking-wider">Contact</h4>
-            <div className="space-y-3 text-zinc-400">
-              <p className="hover:text-white transition-colors cursor-pointer">
+            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider text-gray-900 dark:text-zinc-300">Contact</h4>
+            <div className="space-y-3 text-gray-600 dark:text-zinc-400">
+              <p className="hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer">
                 support@swiftware.ca
               </p>
-              <p className="hover:text-white transition-colors cursor-pointer">
+              <p className="hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer">
                 +1 (604) 862-5038
               </p>
               <p className="text-sm">
@@ -65,16 +66,16 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-zinc-800/60">
-          <div className="flex flex-col gap-4 text-sm text-zinc-500 md:flex-row md:items-center md:justify-between">
+        <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-gray-200 dark:border-zinc-800/60">
+          <div className="flex flex-col gap-4 text-sm text-gray-500 dark:text-zinc-500 md:flex-row md:items-center md:justify-between">
             <p>© {new Date().getFullYear()} Swiftware. All rights reserved.</p>
 
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
               <div className="flex items-center gap-6">
-                <Link href="/privacy" className="hover:text-zinc-300 transition-colors">
+                <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-zinc-300 transition-colors">
                   Privacy
                 </Link>
-                <Link href="/terms" className="hover:text-zinc-300 transition-colors">
+                <Link href="/terms" className="hover:text-gray-900 dark:hover:text-zinc-300 transition-colors">
                   Terms
                 </Link>
               </div>
@@ -85,6 +86,7 @@ export default function Footer() {
           </div>
         </div>
       </motion.div>
+      </div>
 
       {/* Footer ambient glow */}
       <div className="absolute inset-0 -z-10 pointer-events-none">

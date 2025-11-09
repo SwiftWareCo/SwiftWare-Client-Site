@@ -6,6 +6,7 @@ import { ScrollTriggeredImpactSection } from '@/components/home/ScrollTriggeredI
 import { PackagesGrid } from '@/components/home/PackagesGrid';
 import { CompanyStorySection } from '@/components/home/CompanyStorySection';
 import { CTASection } from '@/components/home/CTASection';
+import { WavyDivider } from '@/components/WavyDivider';
 
 export const metadata: Metadata = {
   title: 'Swiftware — Software Development & Digital Services',
@@ -99,27 +100,34 @@ export default function Home() {
   return (
     <main className='relative'>
       <HeroSection />
+      <WavyDivider direction="down" fromColor="blue" toColor="purple" />
 
       <ServicesGrid services={services} />
+      <WavyDivider direction="down" fromColor="purple" toColor="blue" />
 
       <ScrollTriggeredImpactSection />
+      <WavyDivider direction="down" fromColor="blue" toColor="purple" />
 
       <PackagesGrid packages={packages} />
+      <WavyDivider direction="down" fromColor="purple" toColor="blue" />
 
       <CompanyStorySection />
+      <WavyDivider direction="down" fromColor="blue" toColor="purple" />
 
       {/* FAQ */}
-      <div className='relative'>
-        <div className='mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24'>
+      <section className='relative py-16 sm:py-24 bg-purple-100 dark:bg-zinc-800'>
+        <div className='mx-auto max-w-7xl px-6'>
           <FAQSection
             title="Frequently Asked Questions"
             description="Got questions? We&apos;ve got answers."
             items={faqs}
           />
         </div>
-      </div>
+      </section>
+      <WavyDivider direction="down" fromColor="purple" toColor="blue" />
 
       <CTASection />
+      
     </main>
   );
 }
