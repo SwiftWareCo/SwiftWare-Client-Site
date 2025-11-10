@@ -1,36 +1,25 @@
 'use client';
 
-import { useTheme } from 'next-themes';
-
 interface WavyDividerProps {
   direction?: 'down' | 'up';
-  fromColor?: 'blue' | 'purple';
-  toColor?: 'blue' | 'purple';
+  fromColor?: 'background' | 'secondary';
+  toColor?: 'background' | 'secondary';
   className?: string;
 }
 
 const colorMap = {
-  light: {
-    blue: 'rgb(219, 234, 254)', // bg-blue-100
-    purple: 'rgb(243, 232, 255)', // bg-purple-100
-  },
-  dark: {
-    blue: 'rgb(24, 24, 27)', // bg-zinc-900
-    purple: 'rgb(39, 39, 42)', // bg-zinc-800
-  },
+  background: 'var(--background)',
+  secondary: 'var(--secondary)',
 };
 
 export function WavyDivider({
   direction = 'down',
-  fromColor = 'blue',
-  toColor = 'purple',
+  fromColor = 'background',
+  toColor = 'secondary',
   className = ''
 }: WavyDividerProps) {
-  const { resolvedTheme } = useTheme();
-  const theme = resolvedTheme as 'light' | 'dark';
-
-  const backgroundColor = colorMap[theme][fromColor];
-  const waveColor = colorMap[theme][toColor];
+  const backgroundColor = colorMap[fromColor];
+  const waveColor = colorMap[toColor];
 
   return (
     <div

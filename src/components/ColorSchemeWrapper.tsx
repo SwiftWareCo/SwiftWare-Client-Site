@@ -21,6 +21,9 @@ export function ColorSchemeWrapper({
     // Determine scheme from path or override
     const schemeToUse = overrideScheme || getColorSchemeForPath(pathname);
     setScheme(schemeToUse);
+
+    // Apply scheme via data attribute for CSS variable selection
+    document.documentElement.setAttribute('data-scheme', schemeToUse);
   }, [pathname, overrideScheme, setScheme]);
 
   return <>{children}</>;

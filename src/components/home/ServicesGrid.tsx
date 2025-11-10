@@ -18,7 +18,7 @@ interface ServicesGridProps {
 
 export function ServicesGrid({ services }: ServicesGridProps) {
   return (
-    <section className='relative py-16 sm:py-24 bg-purple-100 dark:bg-zinc-800'>
+    <section className='relative py-16 sm:py-24 bg-purple-100 dark:bg-zinc-700'>
       <div className='mx-auto max-w-7xl px-6'>
         <div className='text-center mb-12 sm:mb-16'>
           <h2 className='text-3xl sm:text-4xl font-bold mb-4 text-purple-900 dark:text-zinc-100'>

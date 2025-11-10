@@ -100,19 +100,19 @@ export default function Home() {
   return (
     <main className='relative'>
       <HeroSection />
-      <WavyDivider direction="down" fromColor="blue" toColor="purple" />
+      <WavyDivider direction="down" />
 
       <ServicesGrid services={services} />
-      <WavyDivider direction="down" fromColor="purple" toColor="blue" />
+      <WavyDivider direction="down" fromColor="secondary" toColor="background" />
 
       <ScrollTriggeredImpactSection />
-      <WavyDivider direction="down" fromColor="blue" toColor="purple" />
+      <WavyDivider direction="down" fromColor="background" toColor="secondary" />
 
       <PackagesGrid packages={packages} />
-      <WavyDivider direction="down" fromColor="purple" toColor="blue" />
+      <WavyDivider direction="down" fromColor="secondary" toColor="background" />
 
       <CompanyStorySection />
-      <WavyDivider direction="down" fromColor="blue" toColor="purple" />
+      <WavyDivider direction="down" fromColor="background" toColor="secondary" />
 
       {/* FAQ */}
       <section className='relative py-16 sm:py-24 bg-purple-100 dark:bg-zinc-800'>
@@ -124,7 +124,7 @@ export default function Home() {
           />
         </div>
       </section>
-      <WavyDivider direction="down" fromColor="purple" toColor="blue" />
+      <WavyDivider direction="down" fromColor="secondary" toColor="background" />
 
       <CTASection />
       

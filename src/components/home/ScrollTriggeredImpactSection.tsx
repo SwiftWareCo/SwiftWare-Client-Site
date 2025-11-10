@@ -493,7 +493,6 @@ export function ScrollTriggeredImpactSection() {
               >
                 <div
                   className='w-2 h-2 rounded-full flex-shrink-0 mt-2'
-                  style={{ backgroundColor: colors.primary }}
                 />
                 <p className='text-sm text-blue-800 dark:text-zinc-300'>{stat.text}</p>
               </motion.div>
