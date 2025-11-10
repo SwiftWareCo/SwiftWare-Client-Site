@@ -28,6 +28,15 @@
   --color-primary-service: #3B82F6;    /* Blue */
   --color-secondary-service: #8B5CF6;  /* Purple */
 
+  /* RGB versions for gradients and overlays */
+  --color-primary-service-rgb: 59, 130, 246;
+  --color-secondary-service-rgb: 139, 92, 246;
+
+  /* Header styling variables */
+  --header-border: rgba(59, 130, 246, 0.2);
+  --header-shadow-scrolled: 0 16px 40px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(139, 92, 246, 0.1);
+  --header-shadow-default: 0 8px 32px rgba(59, 130, 246, 0.1), 0 0 0 1px rgba(139, 92, 246, 0.05);
+
   --radius: 0.5rem;
 }
 
@@ -56,6 +65,15 @@
   /* Service colors in dark mode (same as light for now) */
   --color-primary-service: #3B82F6;    /* Blue */
   --color-secondary-service: #8B5CF6;  /* Purple */
+
+  /* RGB versions for gradients and overlays */
+  --color-primary-service-rgb: 59, 130, 246;
+  --color-secondary-service-rgb: 139, 92, 246;
+
+  /* Header styling variables */
+  --header-border: rgba(59, 130, 246, 0.2);
+  --header-shadow-scrolled: 0 16px 40px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(139, 92, 246, 0.1);
+  --header-shadow-default: 0 8px 32px rgba(59, 130, 246, 0.1), 0 0 0 1px rgba(139, 92, 246, 0.05);
 }
 
 /* Tailwind Theme Mapping */
@@ -87,24 +105,44 @@
 [data-scheme="brand"] {
   --color-primary-service: #06B6D4;
   --color-secondary-service: #0891B2;
+  --color-primary-service-rgb: 6, 182, 212;
+  --color-secondary-service-rgb: 8, 145, 178;
+  --header-border: rgba(6, 182, 212, 0.2);
+  --header-shadow-scrolled: 0 16px 40px rgba(6, 182, 212, 0.15), 0 0 0 1px rgba(8, 145, 178, 0.1);
+  --header-shadow-default: 0 8px 32px rgba(6, 182, 212, 0.1), 0 0 0 1px rgba(8, 145, 178, 0.05);
 }
 
 /* Digital Marketing - Emerald & Green */
 [data-scheme="marketing"] {
   --color-primary-service: #10B981;
   --color-secondary-service: #059669;
+  --color-primary-service-rgb: 16, 185, 129;
+  --color-secondary-service-rgb: 5, 150, 105;
+  --header-border: rgba(16, 185, 129, 0.2);
+  --header-shadow-scrolled: 0 16px 40px rgba(16, 185, 129, 0.15), 0 0 0 1px rgba(5, 150, 105, 0.1);
+  --header-shadow-default: 0 8px 32px rgba(16, 185, 129, 0.1), 0 0 0 1px rgba(5, 150, 105, 0.05);
 }
 
 /* AI Automation - Purple & Violet */
 [data-scheme="automation"] {
   --color-primary-service: #A855F7;
   --color-secondary-service: #7C3AED;
+  --color-primary-service-rgb: 168, 85, 247;
+  --color-secondary-service-rgb: 124, 58, 237;
+  --header-border: rgba(168, 85, 247, 0.2);
+  --header-shadow-scrolled: 0 16px 40px rgba(168, 85, 247, 0.15), 0 0 0 1px rgba(124, 58, 237, 0.1);
+  --header-shadow-default: 0 8px 32px rgba(168, 85, 247, 0.1), 0 0 0 1px rgba(124, 58, 237, 0.05);
 }
 
 /* Custom Software - Indigo & Blue */
 [data-scheme="software"] {
   --color-primary-service: #4F46E5;
   --color-secondary-service: #3B82F6;
+  --color-primary-service-rgb: 79, 70, 229;
+  --color-secondary-service-rgb: 59, 130, 246;
+  --header-border: rgba(79, 70, 229, 0.2);
+  --header-shadow-scrolled: 0 16px 40px rgba(79, 70, 229, 0.15), 0 0 0 1px rgba(59, 130, 246, 0.1);
+  --header-shadow-default: 0 8px 32px rgba(79, 70, 229, 0.1), 0 0 0 1px rgba(59, 130, 246, 0.05);
 }
 
 /* Hide scrollbar for all browsers */
