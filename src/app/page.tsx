@@ -14,37 +14,6 @@ export const metadata: Metadata = {
     'One partner. Four services. Brand Design, Digital Marketing & SEO, AI & Process Automation, and Custom Software Development.',
 };
 
-const services = [
-  {
-    title: 'Brand Strategy & Design',
-    description: 'Logo design, brand guidelines, and visual identity that builds trust.',
-    href: '/brand-design',
-    color: 'from-cyan-500 to-teal-500',
-    colorAccent: 'text-cyan-400',
-  },
-  {
-    title: 'Digital Marketing & SEO',
-    description: 'Visibility, traffic, and qualified leads through strategic marketing.',
-    href: '/digital-marketing-seo',
-    color: 'from-emerald-500 to-green-600',
-    colorAccent: 'text-emerald-400',
-  },
-  {
-    title: 'AI & Process Automation',
-    description: 'Automate blockers and unlock revenue with intelligent solutions.',
-    href: '/ai-automation',
-    color: 'from-purple-500 to-violet-600',
-    colorAccent: 'text-purple-400',
-  },
-  {
-    title: 'Custom Software Development',
-    description: 'CRM, AI solutions, golf management, and web portals built for you.',
-    href: '/custom-software',
-    color: 'from-indigo-600 to-blue-600',
-    colorAccent: 'text-indigo-400',
-  },
-];
-
 const packages = [
   {
     name: 'Build & Launch',
@@ -100,19 +69,19 @@ export default function Home() {
   return (
     <main className='relative'>
       <HeroSection />
-      <WavyDivider direction="down" />
+      <WavyDivider direction="up"  toColor="background" />
 
-      <ServicesGrid services={services} />
-      <WavyDivider direction="down" fromColor="secondary" toColor="background" />
+      <ServicesGrid />
+      <WavyDivider direction="down"  toColor="background" />
 
       <ScrollTriggeredImpactSection />
-      <WavyDivider direction="down" fromColor="background" toColor="secondary" />
+      <WavyDivider direction="down"  toColor="secondary" />
 
       <PackagesGrid packages={packages} />
-      <WavyDivider direction="down" fromColor="secondary" toColor="background" />
+      <WavyDivider direction="down"  toColor="background" />
 
       <CompanyStorySection />
-      <WavyDivider direction="down" fromColor="background" toColor="secondary" />
+      <WavyDivider direction="down" toColor="secondary" />
 
       {/* FAQ */}
       <section className='relative py-16 sm:py-24 bg-purple-100 dark:bg-zinc-800'>

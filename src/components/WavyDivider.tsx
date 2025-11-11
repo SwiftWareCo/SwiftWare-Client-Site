@@ -14,17 +14,14 @@ const colorMap = {
 
 export function WavyDivider({
   direction = 'down',
-  fromColor = 'background',
-  toColor = 'secondary',
-  className = ''
+  toColor = 'background',
+  className = '',
 }: WavyDividerProps) {
-  const backgroundColor = colorMap[fromColor];
   const waveColor = colorMap[toColor];
 
   return (
     <div
       className={`relative h-12 sm:h-16 md:h-24 overflow-hidden ${className}`}
-      style={{ backgroundColor }}
     >
       <svg
         className="absolute inset-0 w-full h-full"

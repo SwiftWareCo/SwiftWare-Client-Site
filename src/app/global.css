@@ -37,6 +37,16 @@
   --header-shadow-scrolled: 0 16px 40px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(139, 92, 246, 0.1);
   --header-shadow-default: 0 8px 32px rgba(59, 130, 246, 0.1), 0 0 0 1px rgba(139, 92, 246, 0.05);
 
+  /* Service Badge Colors (for convince/services components) */
+  --color-service-brand: #06B6D4;      /* Cyan - Brand Design */
+  --color-service-brand-dark: #0891B2; /* Teal */
+  --color-service-marketing: #10B981;  /* Emerald - Marketing */
+  --color-service-marketing-dark: #059669; /* Green */
+  --color-service-ai: #A855F7;         /* Purple - AI/Automation */
+  --color-service-ai-dark: #7C3AED;    /* Violet */
+  --color-service-software: #4F46E5;   /* Indigo - Custom Software */
+  --color-service-software-dark: #3B82F6; /* Blue */
+
   --radius: 0.5rem;
 }
 
@@ -97,6 +107,17 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  /* Service Colors - Enable Tailwind utility classes */
+  --color-service-brand: var(--color-service-brand);
+  --color-service-brand-dark: var(--color-service-brand-dark);
+  --color-service-marketing: var(--color-service-marketing);
+  --color-service-marketing-dark: var(--color-service-marketing-dark);
+  --color-service-ai: var(--color-service-ai);
+  --color-service-ai-dark: var(--color-service-ai-dark);
+  --color-service-software: var(--color-service-software);
+  --color-service-software-dark: var(--color-service-software-dark);
+
   --radius: var(--radius);
 }
 
