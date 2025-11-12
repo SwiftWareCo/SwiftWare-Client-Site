@@ -8,6 +8,7 @@ import { Menu, X, ChevronDown } from 'lucide-react';
 import { ModeToggle } from '@/components/ui/mode-toggle';
 import { RoundedSlideButton } from '@/components/ui/rounded-slide-button';
 import { CustomDropdown } from '@/components/ui/custom-dropdown';
+import { openCalendlyPopup } from '@/lib/calendly';
 
 interface NavLink {
   label: string;
@@ -271,7 +272,7 @@ export default function UnifiedHeader() {
                     <div className='mt-2 w-full'>
                       <RoundedSlideButton
                         onClick={() => {
-                          // TODO: Open contact modal
+                          openCalendlyPopup();
                           setMobileMenuOpen(false);
                         }}
                         autoAnimate={triggerButtonAnimation}
@@ -357,9 +358,7 @@ export default function UnifiedHeader() {
                   <div className='flex items-center gap-4'>
                     <ModeToggle />
                     <RoundedSlideButton
-                      onClick={() => {
-                        // TODO: Open contact modal
-                      }}
+                      onClick={() => openCalendlyPopup()}
                       autoAnimate={triggerButtonAnimation}
                     />
                   </div>

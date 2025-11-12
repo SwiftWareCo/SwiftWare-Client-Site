@@ -8,7 +8,7 @@ import { openCalendlyPopup } from '@/lib/calendly';
 export function CTASection() {
   const { colors } = useColorScheme();
   return (
-    <section className='relative py-16 sm:py-24 bg-blue-100 dark:bg-zinc-900'>
+    <section className='relative py-16 sm:py-24'>
       <div className='mx-auto max-w-7xl px-6'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -17,10 +17,10 @@ export function CTASection() {
           viewport={{ once: true }}
           className='text-center'
         >
-          <h2 className='text-3xl sm:text-4xl font-bold mb-6 text-blue-900 dark:text-white'>
+          <h2 className='text-3xl sm:text-4xl font-bold mb-6 text-foreground'>
             Ready to transform your business?
           </h2>
-          <p className='text-lg mb-8 max-w-2xl mx-auto text-blue-800 dark:text-zinc-300'>
+          <p className='text-lg mb-8 max-w-2xl mx-auto text-foreground/70'>
             Let&apos;s talk about your goals and how we can help you achieve them.
           </p>
           <motion.button

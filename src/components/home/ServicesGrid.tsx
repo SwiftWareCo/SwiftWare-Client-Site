@@ -39,7 +39,7 @@ export function ServicesGrid() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true, amount: 0.2 }}
-            className='mb-24'
+            className='mb-8'
           >
             {/* 2-COLUMN LAYOUT - VISUAL LEFT, TEXT+PAIN POINTS RIGHT */}
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 items-start'>
@@ -66,10 +66,10 @@ export function ServicesGrid() {
                 <div>
                   <span className='text-xs uppercase tracking-widest text-muted-foreground'>The Problem</span>
                   <h2 className='text-3xl sm:text-4xl font-bold text-foreground mt-2 mb-4'>
-                    The old way: <span className='text-destructive'>JUGGLING DISCONNECTED PARTNERS</span>
+                    The old way: <span className='text-destructive'>WEARING TOO MANY HATS</span>
                   </h2>
                   <p className='text-muted-foreground text-sm sm:text-base'>
-                    Most businesses need multiple services but work with disconnected agencies. Here&apos;s the chaos that creates:
+                    As a business owner, you&apos;re stretched thin—managing your brand, marketing, technology, and operations. When each service is disconnected, you become the bottleneck:
                   </p>
                 </div>
 
@@ -103,6 +103,29 @@ export function ServicesGrid() {
                 </div>
               </motion.div>
             </div>
+          </motion.div>
+
+          {/* FINAL MESSAGE BOX - FULL WIDTH */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true, amount: 0.2 }}
+            className='rounded-xl border-2 p-6 sm:p-8 mb-24'
+            style={{
+              borderColor: 'var(--color-primary-service)',
+              backgroundColor: 'var(--gray-a2)',
+            }}
+          >
+            <h3 className='text-xl sm:text-2xl font-bold text-foreground mb-4'>
+              Stop paying for friction. <span className='text-transparent bg-clip-text' style={{ backgroundImage: 'linear-gradient(to right, var(--color-primary-service), var(--color-secondary-service))' }}>Start investing in flow.</span>
+            </h3>
+            <p className='text-foreground/80 text-sm sm:text-base leading-relaxed mb-4'>
+              When your brand, marketing, and technology all speak the same language, you don&apos;t just look more professional. You become more efficient. You close more deals. You build a scalable asset, not just a collection of parts.
+            </p>
+            <p className='text-lg font-semibold' style={{ color: 'var(--color-primary-service)' }}>
+              That is the SwiftWare difference.
+            </p>
           </motion.div>
         </div>
       </section>

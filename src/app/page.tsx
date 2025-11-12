@@ -4,7 +4,6 @@ import { HeroSection } from '@/components/home/HeroSection';
 import { ServicesGrid } from '@/components/home/ServicesGrid';
 import { ScrollTriggeredImpactSection } from '@/components/home/ScrollTriggeredImpactSection';
 import { PackagesGrid } from '@/components/home/PackagesGrid';
-import { CompanyStorySection } from '@/components/home/CompanyStorySection';
 import { CTASection } from '@/components/home/CTASection';
 import { WavyDivider } from '@/components/WavyDivider';
 
@@ -51,7 +50,7 @@ const faqs = [
   {
     question: 'Do you work with new companies?',
     answer:
-      'Absolutely. Whether you\'re a startup or established company, we can help you build your brand, grow visibility, and develop custom solutions. We offer flexible packages for all budgets.',
+      "Absolutely. Whether you're a startup or established company, we can help you build your brand, grow visibility, and develop custom solutions. We offer flexible packages for all budgets.",
   },
   {
     question: 'What is your typical engagement length?',
@@ -69,34 +68,27 @@ export default function Home() {
   return (
     <main className='relative'>
       <HeroSection />
-      <WavyDivider direction="up"  toColor="background" />
+      <WavyDivider direction='up' toColor='background' />
 
       <ServicesGrid />
-      <WavyDivider direction="down"  toColor="background" />
+      <WavyDivider direction='down' toColor='background' />
 
       <ScrollTriggeredImpactSection />
-      <WavyDivider direction="down"  toColor="secondary" />
+      <WavyDivider direction='up' toColor='background' />
 
       <PackagesGrid packages={packages} />
-      <WavyDivider direction="down"  toColor="background" />
 
-      <CompanyStorySection />
-      <WavyDivider direction="down" toColor="secondary" />
+      <WavyDivider direction='down' toColor='background' />
 
-      {/* FAQ */}
-      <section className='relative py-16 sm:py-24 bg-purple-100 dark:bg-zinc-800'>
-        <div className='mx-auto max-w-7xl px-6'>
-          <FAQSection
-            title="Frequently Asked Questions"
-            description="Got questions? We&apos;ve got answers."
-            items={faqs}
-          />
-        </div>
-      </section>
-      <WavyDivider direction="down" fromColor="secondary" toColor="background" />
+      <FAQSection
+        title='Frequently Asked Questions'
+        description="Got questions? We've got answers."
+        items={faqs}
+      />
+
+      <WavyDivider direction='up' toColor='background' />
 
       <CTASection />
-      
     </main>
   );
 }

@@ -25,13 +25,13 @@ export function FAQSection({
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className='py-16 sm:py-24'>
+    <section className='py-16 sm:py-24 bg-background'>
       <div className='text-center mb-12 sm:mb-16'>
-        <h2 className='text-3xl sm:text-4xl font-bold mb-4 text-purple-900 dark:text-zinc-100'>
+        <h2 className='text-3xl sm:text-4xl font-bold mb-4 text-foreground'>
           {title}
         </h2>
         {description && (
-          <p className='text-lg text-purple-700 dark:text-zinc-300 max-w-2xl mx-auto'>
+          <p className='text-lg text-foreground/70 max-w-2xl mx-auto'>
             {description}
           </p>
         )}
@@ -45,13 +45,16 @@ export function FAQSection({
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.05 }}
             viewport={{ once: true }}
-            className='rounded-lg border border-purple-300 dark:border-zinc-700 overflow-hidden bg-white/40 dark:bg-zinc-900/40'
+            className='rounded-lg border border-border overflow-hidden'
+            style={{
+              backgroundColor: 'var(--gray-a3)',
+            }}
           >
             <button
               onClick={() =>
                 setOpenIndex(openIndex === index ? null : index)
               }
-              className='cursor-pointer w-full px-6 py-4 text-left flex items-center justify-between hover:bg-white/60 dark:hover:bg-zinc-900/60 transition-colors'
+              className='cursor-pointer w-full px-6 py-4 text-left flex items-center justify-between hover:bg-card transition-colors'
               style={{
                 borderBottom:
                   openIndex === index
@@ -59,7 +62,7 @@ export function FAQSection({
                     : 'none',
               }}
             >
-              <h3 className='text-lg font-semibold text-purple-900 dark:text-zinc-100 pr-4'>
+              <h3 className='text-lg font-semibold text-foreground pr-4'>
                 {item.question}
               </h3>
               <ChevronDown
@@ -79,9 +82,12 @@ export function FAQSection({
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3 }}
-                  className='border-t border-purple-300 dark:border-zinc-700 bg-purple-50/50 dark:bg-zinc-800/50'
+                  className='border-t border-border'
+                  style={{
+                    backgroundColor: 'var(--gray-a2)',
+                  }}
                 >
-                  <div className='px-6 py-4 text-purple-800 dark:text-zinc-300'>
+                  <div className='px-6 py-4 text-foreground/80'>
                     {item.answer}
                   </div>
                 </motion.div>

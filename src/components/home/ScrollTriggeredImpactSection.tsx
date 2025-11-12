@@ -390,10 +390,10 @@ export function ScrollTriggeredImpactSection() {
   const statYs = [stat1Y, stat2Y, stat3Y];
 
   return (
-    <section ref={containerRef} className='relative w-full bg-blue-100 dark:bg-zinc-900'>
+    <section ref={containerRef} className='relative w-full bg-background'>
       {/* Desktop: Full version with particles */}
       <div className='hidden md:block h-[250vh]'>
-        <div className='sticky top-0 h-screen w-full overflow-hidden bg-blue-100 dark:bg-zinc-900'>
+        <div className='sticky top-0 h-screen w-full overflow-hidden bg-background'>
 
 
           {/* Logo scatter container */}
