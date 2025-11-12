@@ -69,7 +69,7 @@ export function ServicesGrid() {
 
   return (
     <section className='relative py-16 sm:py-24'>
-      <div className='mx-auto max-w-7xl px-6'>
+      <div className='relative mx-auto max-w-7xl px-6'>
         {/* THE OLD WAY SECTION */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -328,7 +328,7 @@ export function ServicesGrid() {
                     <motion.div
                       whileHover={{ y: -4 }}
                       transition={{ duration: 0.3 }}
-                      className='relative p-5 rounded-lg border border-border bg-card hover:border-border transition-colors h-full'
+                      className='relative p-5 rounded-lg border border-border bg-card hover:border-border h-full'
                     >
                       {/* Step Number Badge */}
                       <motion.div

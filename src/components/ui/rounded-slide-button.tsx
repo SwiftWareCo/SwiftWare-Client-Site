@@ -47,7 +47,8 @@ export function RoundedSlideButton({
       <motion.div
         className='absolute inset-0 rounded-lg border-[1.5px]'
         animate={{
-          borderColor: isHovered ? 'var(--color-primary-service)' : 'transparent',
+          borderColor: isHovered ? 'var(--color-primary-service)' : 'rgba(0,0,0,0)',
+          opacity: isHovered ? 1 : 0,
         }}
         transition={{ duration: 0.4 }}
         style={{
@@ -59,7 +60,7 @@ export function RoundedSlideButton({
       <motion.div
         className='relative z-10 flex items-center gap-2'
         animate={{
-          color: isHovered ? 'var(--color-primary-service)' : 'white',
+          color: isHovered ? 'var(--color-primary-service)' : '#ffffff',
         }}
         transition={{ duration: 0.4 }}
       >

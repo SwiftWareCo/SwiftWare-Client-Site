@@ -27,7 +27,7 @@ export function CustomDropdown({ trigger, items, className = '' }: CustomDropdow
     >
       {/* Trigger Button */}
       <motion.button
-        className={`cursor-pointer flex items-center gap-1 text-sm text-foreground/80 hover:text-foreground transition-colors ${className}`}
+        className={`cursor-pointer flex items-center gap-1 text-sm text-foreground/80 hover:text-foreground ${className}`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <motion.span
