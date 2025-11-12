@@ -18,10 +18,10 @@ export function SpotlightButton({ onClick, className = '' }: SpotlightButtonProp
       if (!btnRef.current || !spanRef.current) return;
 
       const { width } = btnRef.current.getBoundingClientRect();
-      const offset = (e as any).offsetX;
+      const offset = e.offsetX;
       const left = `${(offset / width) * 100}%`;
 
-      spanRef.current.animate({ left }, { duration: 250, fill: 'forwards' } as any);
+      spanRef.current.animate({ left }, { duration: 250, fill: 'forwards' });
     };
 
     const handleMouseLeave = () => {
@@ -29,7 +29,7 @@ export function SpotlightButton({ onClick, className = '' }: SpotlightButtonProp
 
       spanRef.current.animate(
         { left: '50%' },
-        { duration: 100, fill: 'forwards' } as any
+        { duration: 100, fill: 'forwards' }
       );
     };
 
