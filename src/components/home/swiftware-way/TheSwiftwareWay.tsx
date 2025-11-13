@@ -6,7 +6,7 @@ import {
   useTransform,
   useInView,
   MotionValue,
-} from 'framer-motion';
+} from 'motion/react';
 import { SwiftwareWayVisuals } from './SwiftwareWayVisuals';
 import { Zap, Code, Search, LucideIcon } from 'lucide-react';
 import React from 'react';
