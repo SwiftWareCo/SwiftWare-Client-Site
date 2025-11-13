@@ -8,10 +8,8 @@ import { RotatingServiceKeywords } from './RotatingServiceKeywords';
 import { openCalendlyPopup } from '@/lib/calendly';
 
 export function HeroSection() {
-
   return (
     <section className='relative overflow-hidden pt-28 sm:pt-40 pb-16 sm:pb-24 bg-background'>
-
       <div className='absolute inset-0 -z-20'>
         <div className='absolute inset-0 bg-[radial-gradient(circle_at_16%_22%,rgba(var(--color-primary-service-rgb),0.16),transparent_68%)]' />
         <div className='absolute inset-0 bg-[radial-gradient(circle_at_82%_30%,rgba(var(--color-secondary-service-rgb),0.14),transparent_72%)]' />
@@ -30,12 +28,18 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0 }}
             className='mb-6'
           >
-            <Badge variant="secondary" className='inline-flex items-center bg-secondary gap-2'>
+            <Badge
+              variant='secondary'
+              className='inline-flex items-center bg-secondary gap-2'
+            >
               <motion.div
                 animate={{ rotate: [0, 20, -20, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
-                <Sparkles className='h-4 w-4' style={{ color: 'var(--color-primary-service)' }} />
+                <Sparkles
+                  className='h-4 w-4'
+                  style={{ color: 'var(--color-primary-service)' }}
+                />
               </motion.div>
               <span>Your all-in-one growth partner</span>
             </Badge>
@@ -80,7 +84,8 @@ export function HeroSection() {
             className='mb-8 max-w-3xl mx-auto'
           >
             <p className='text-lg sm:text-xl mb-3 text-foreground/80 dark:text-foreground/80'>
-              We specialize in <RotatingServiceKeywords /> for modern businesses.
+              We specialize in <RotatingServiceKeywords /> for modern
+              businesses.
             </p>
 
             <p className='text-xl sm:text-2xl text-foreground/75 dark:text-foreground/75'>
