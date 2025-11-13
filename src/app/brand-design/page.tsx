@@ -1,80 +1,16 @@
 import { Metadata } from 'next';
-import { ServicePageTemplate } from '@/components/ServicePageTemplate';
-import { FeaturesSection } from '@/components/sections/FeaturesSection';
-import { ProcessSection } from '@/components/sections/ProcessSection';
-import { FAQSection } from '@/components/sections/FAQSection';
+import { DiagonalDivider } from '@/components/sections/DiagonalDivider';
+import { BrandDesignHero } from '@/components/brand-design/BrandDesignHero';
+import { StickyCardsWrapper } from '@/components/brand-design/StickyCardsWrapper';
+import { UnifiedSystemConnector } from '@/components/brand-design/UnifiedSystemConnector';
+import { BrandDesignFAQs } from '@/components/brand-design/BrandDesignFAQs';
+import { ScheduleButton } from '@/components/ui/ScheduleButton';
 
 export const metadata: Metadata = {
   title: 'Brand Identity & Logo Design Agency | SwiftWare',
   description:
     'Professional brand identity design services. Logo design, brand guidelines, and visual identity that builds trust and credibility.',
 };
-
-const features = [
-  {
-    title: 'Logo Design & Visual Identity',
-    description:
-      'Memorable, scalable logos that represent your brand across all mediums.',
-    iconName: 'Palette',
-  },
-  {
-    title: 'Brand Guidelines',
-    description:
-      'Comprehensive brand systems that ensure consistency across all touchpoints.',
-    iconName: 'Layout',
-  },
-  {
-    title: 'Color & Typography Strategy',
-    description:
-      'Thoughtfully selected palettes and typefaces that convey your brand personality.',
-    iconName: 'Type',
-  },
-  {
-    title: 'Brand Messaging',
-    description:
-      'Clear, compelling messaging that communicates your unique value proposition.',
-    iconName: 'Zap',
-  },
-  {
-    title: 'Brand Positioning',
-    description:
-      'Strategic positioning that differentiates you from competitors in your market.',
-    iconName: 'Shield',
-  },
-  {
-    title: 'Stakeholder Collaboration',
-    description:
-      'We work closely with your team to ensure your brand vision is fully realized.',
-    iconName: 'Users',
-  },
-] as const;
-
-const processSteps = [
-  {
-    number: 1,
-    title: 'Discovery & Strategy',
-    description:
-      'We dive deep into understanding your business, values, target audience, and competitive landscape.',
-  },
-  {
-    number: 2,
-    title: 'Concept Development',
-    description:
-      'Multiple design directions explored to find the perfect visual representation of your brand.',
-  },
-  {
-    number: 3,
-    title: 'Refinement & Selection',
-    description:
-      'Collaborative feedback sessions to refine designs and select the strongest direction.',
-  },
-  {
-    number: 4,
-    title: 'Brand Guidelines',
-    description:
-      'Comprehensive documentation ensuring consistent implementation across all applications.',
-  },
-];
 
 const faqs = [
   {
@@ -106,30 +42,36 @@ const faqs = [
 
 export default function BrandDesignPage() {
   return (
-    <ServicePageTemplate
-      title='Build the Brand That Stands Out'
-      subtitle='Professional brand identity design that builds trust and wins customers'
-      heroDescription='Your brand is your first impression. We create visual identities that are memorable, scalable, and perfectly aligned with your business goals.'
-      ctaText='Start Your Brand'
-      ctaSecondary='View Our Process'
-    >
-      <FeaturesSection
-        title='What We Create For You'
-        description='A complete brand identity system that works across all platforms and mediums.'
-        features={features}
-      />
+    <main className='relative pt-20 min-h-screen'>
+      {/* Custom Hero */}
+      <BrandDesignHero />
 
-      <ProcessSection
-        title='Our Brand Design Process'
-        description='We follow a proven methodology to deliver brands that actually work.'
-        steps={processSteps}
-      />
+      {/* Sticky Cards Section - Problem/Solution, Deliverables, Features */}
+      <StickyCardsWrapper />
 
-      <FAQSection
-        title='Brand Design FAQs'
-        description='Common questions about our brand design services and process.'
-        items={faqs}
-      />
-    </ServicePageTemplate>
+      {/* Unified System Connector with CJS Logo Showcase */}
+      <div className='mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24'>
+        <UnifiedSystemConnector />
+      </div>
+
+      {/* Bottom CTA Section - with diagonal skew */}
+      <DiagonalDivider skewAngle={3} color='var(--background)'>
+        <div className='mx-auto max-w-7xl px-4 sm:px-6'>
+          <div className='text-center'>
+            <h2 className='text-3xl sm:text-4xl font-bold mb-6 text-white'>
+              Ready to Build Your Unforgettable Brand?
+            </h2>
+            <p className='text-lg text-zinc-400 mb-8 max-w-2xl mx-auto'>
+              Schedule your free, no-obligation consultation today and
+              let&apos;s discuss your vision.
+            </p>
+            <ScheduleButton text='Schedule a Consultation' />
+          </div>
+        </div>
+      </DiagonalDivider>
+
+      {/* FAQ Section - already has bg-background internally */}
+      <BrandDesignFAQs items={faqs} />
+    </main>
   );
 }

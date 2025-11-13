@@ -29,7 +29,6 @@ const customSoftwareLinks: NavLink[] = [
 ];
 
 const allNavLinks: NavLink[] = [
-  { label: 'Case Studies', href: '/case-studies' },
   { label: 'About', href: '/about' },
 ];
 

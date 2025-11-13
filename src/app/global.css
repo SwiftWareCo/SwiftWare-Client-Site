@@ -12,7 +12,7 @@
   --popover-foreground: hsl(0 0% 3.9%);
   --primary: hsl(0 0% 9%);              /* Dark color for buttons/text */
   --primary-foreground: hsl(0 0% 98%); /* Light text on dark background */
-  --secondary: hsl(280 65% 60%);        /* Purple */
+  --secondary: hsl(0, 0%, 7%);        
   --secondary-foreground: hsl(0 0% 100%);
   --muted: hsl(0 0% 96.1%);
   --muted-foreground: hsl(0 0% 45.1%);
@@ -60,7 +60,7 @@
   --popover-foreground: hsl(0 0% 98%);
   --primary: hsl(0 0% 9%);             /* zinc-900 */
   --primary-foreground: hsl(0 0% 98%);
-  --secondary: hsl(0 0% 11%);          /* zinc-800 */
+  --secondary: hsl(0, 0%, 7%);        /*  Secondary background (same as light) */
   --secondary-foreground: hsl(0 0% 98%);
   --muted: hsl(0 0% 14.9%);
   --muted-foreground: hsl(0 0% 63.9%);
@@ -176,19 +176,19 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--gray-a8);
+  background: var(--muted-foreground);
   border-radius: 5px;
   transition: background 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--gray-a10);
+  background: var(--muted);
 }
 
 /* Styled Scrollbar for Firefox */
 html {
   scrollbar-width: thin;
-  scrollbar-color: var(--gray-a8) transparent;
+  scrollbar-color: var(--muted-foreground) transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

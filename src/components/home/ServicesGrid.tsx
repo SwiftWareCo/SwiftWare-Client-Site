@@ -31,7 +31,7 @@ export function ServicesGrid() {
 
   return (
     <>
-      <section className='relative py-16 sm:py-24'>
+      <section className='relative py-16 bg-secondary sm:py-24'>
         <div className='mx-auto max-w-7xl px-6'>
           {/* THE OLD WAY SECTION */}
           <motion.div
@@ -114,7 +114,7 @@ export function ServicesGrid() {
             className='rounded-xl border-2 p-6 sm:p-8 mb-24'
             style={{
               borderColor: 'var(--color-primary-service)',
-              backgroundColor: 'var(--gray-a2)',
+              backgroundColor: 'var(--secondary)',
             }}
           >
             <h3 className='text-xl sm:text-2xl font-bold text-foreground mb-4'>
