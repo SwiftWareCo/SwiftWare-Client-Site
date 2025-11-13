@@ -28,9 +28,6 @@ const customSoftwareLinks: NavLink[] = [
   { label: 'Web Portals', href: '/custom-software/web-portals' },
 ];
 
-const allNavLinks: NavLink[] = [
-  { label: 'About', href: '/about' },
-];
 
 export default function UnifiedHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -255,17 +252,7 @@ export default function UnifiedHeader() {
                       </motion.div>
                     )}
 
-                    {/* Other Nav Links */}
-                    {allNavLinks.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className='cursor-pointer px-3 py-2 text-sm text-foreground/80 hover:text-foreground hover:bg-accent rounded-lg transition-colors'
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
+
 
                     {/* Mobile CTA Button */}
                     <div className='mt-2 w-full'>
@@ -330,32 +317,12 @@ export default function UnifiedHeader() {
                     {/* Custom Software Dropdown */}
                     <CustomDropdown trigger='Custom Software' items={customSoftwareLinks} />
 
-                    {/* Other Nav Links */}
-                    {allNavLinks.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className='cursor-pointer text-sm text-foreground/80 hover:text-foreground transition-colors group'
-                      >
-                        <motion.span
-                          className='inline-block'
-                          variants={{
-                            rest: { y: 0 },
-                            hover: { y: -2 },
-                          }}
-                          initial='rest'
-                          whileHover='hover'
-                          transition={{ type: 'spring', stiffness: 300 }}
-                        >
-                          {link.label}
-                        </motion.span>
-                      </Link>
-                    ))}
+         
                   </nav>
 
                   {/* Theme Toggle & CTA Button */}
                   <div className='flex items-center gap-4'>
-                    <ModeToggle />
+                    {/* <ModeToggle /> */}
                     <RoundedSlideButton
                       onClick={() => openCalendlyPopup()}
                       autoAnimate={triggerButtonAnimation}

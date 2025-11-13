@@ -1,51 +1,50 @@
 'use client';
-import { useRef, useEffect } from 'react';
+import { useRef, useMemo, useState } from 'react';
 import {
   motion,
   useScroll,
   useTransform,
   useInView,
   MotionValue,
+  useSpring,
+  useMotionValueEvent,
+  type Variants,
 } from 'motion/react';
 import { SwiftwareWayVisuals } from './SwiftwareWayVisuals';
 import { Zap, Code, Search, LucideIcon } from 'lucide-react';
-import React from 'react';
 
 // New: Floating Dots Background Component
 const FloatingDotsBackground = () => {
-  const dots = Array.from({ length: 50 }); // Create 50 dots
+  const dots = useMemo(
+    () =>
+      Array.from({ length: 42 }, () => {
+        const duration = Math.random() * 20 + 10;
+        return {
+          size: Math.random() * 3 + 1,
+          duration,
+          delay: Math.random() * -duration,
+          xStart: Math.random() * 100,
+          yStart: Math.random() * 100,
+        };
+      }),
+    []
+  );
 
   return (
     <div className='absolute inset-0 overflow-hidden'>
-      {dots.map((_, i) => {
-        const size = Math.random() * 3 + 1; // Random size between 1px and 4px
-        const duration = Math.random() * 20 + 10; // Random duration between 10s and 30s
-        const delay = Math.random() * -duration; // Random delay
-        const xStart = Math.random() * 100;
-        const yStart = Math.random() * 100;
-
-        const animation = `float ${duration}s ${delay}s infinite linear`;
-
-        return (
-          <motion.div
-            key={i}
-            className='absolute rounded-full bg-white/40'
-            style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              left: `${xStart}%`,
-              top: `${yStart}%`,
-              animation,
-              x: `${xStart}%`,
-              y: `${yStart}%`,
-            }}
-            initial={{
-              '--x-start': `${xStart}%`,
-              '--y-start': `${yStart}%`,
-            }}
-          />
-        );
-      })}
+      {dots.map((dot, index) => (
+        <motion.div
+          key={`floating-dot-${index}`}
+          className='absolute rounded-full bg-foreground opacity-20'
+          style={{
+            width: `${dot.size}px`,
+            height: `${dot.size}px`,
+            left: `${dot.xStart}%`,
+            top: `${dot.yStart}%`,
+            animation: `float ${dot.duration}s ${dot.delay}s infinite linear`,
+          }}
+        />
+      ))}
       <style jsx global>{`
         @keyframes float {
           0% {
@@ -117,16 +116,26 @@ const Scene = ({
   progress: MotionValue<number>;
   isActive: boolean;
 }) => {
-  const opacity = useTransform(progress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const y = useTransform(progress, [0, 0.2, 0.8, 1], [20, 0, 0, -20]);
+  const opacity = useTransform(progress, [0, 0.25, 0.75, 1], [0, 1, 1, 0]);
+  const y = useTransform(progress, [0, 0.25, 0.75, 1], [24, 0, 0, -24]);
+  const blur = useTransform(
+    progress,
+    [0, 0.25, 0.75, 1],
+    ['blur(12px)', 'blur(0px)', 'blur(0px)', 'blur(12px)']
+  );
 
   return (
     <motion.div
-      style={{ opacity, y, pointerEvents: isActive ? 'auto' : 'none' }}
+      style={{
+        opacity,
+        y,
+        filter: blur,
+        pointerEvents: isActive ? 'auto' : 'none',
+      }}
       className='absolute inset-0 flex flex-col justify-center p-8 lg:p-12'
     >
       <div
-        className='inline-flex items-center justify-center w-12 h-12 rounded-full mb-4 text-white font-bold text-lg'
+        className='inline-flex items-center justify-center w-12 h-12 rounded-full mb-4 font-bold text-lg text-background'
         style={{ background: `var(${step.colorVar})` }}
       >
         {step.number}
@@ -155,42 +164,60 @@ const TextScene = ({
   start: number;
   end: number;
 }) => {
-  const progress = useTransform(scrollYProgress, [start, end], [0, 1]);
-  const isActive = useTransform(progress, (p) => p > 0 && p < 1);
+  const rawProgress = useTransform(scrollYProgress, [start, end], [0, 1]);
+  const progress = useSpring(rawProgress, {
+    stiffness: 120, // Sets responsiveness for the scroll-driven transition.
+    damping: 32, // Softens the handoff between steps to avoid snapping.
+    restDelta: 0.0005, // Prevents subtle jitter once motion settles.
+  });
 
-  // We need to subscribe to the motion value to get a boolean
-  const [isActiveBool, setIsActiveBool] = React.useState(false);
-  useEffect(() => {
-    return isActive.on('change', (v) => setIsActiveBool(v));
-  }, [isActive]);
+  const [isActiveBool, setIsActiveBool] = useState(false);
+
+  useMotionValueEvent(progress, 'change', (value) => {
+    // Treat the scene as interactive only while the spring is mid-flight.
+    const isActive = value > 0.02 && value < 0.98;
+    setIsActiveBool((prev) => (prev === isActive ? prev : isActive));
+  });
 
   return <Scene step={step} progress={progress} isActive={isActiveBool} />;
 };
 
 const titleWords = 'The Swiftware Way'.split(' ');
 
-const titleContainerVariants = {
+const titleContainerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2, // Controls spacing between each word reveal.
+      delayChildren: 0.08, // Gives the underline glow a head start.
+      staggerChildren: 0.14, // Spaces out word reveals for readability.
     },
   },
 };
 
-const wordVariants = {
-  hidden: { opacity: 0, y: 30, rotateX: -90, filter: 'blur(10px)' },
+const titleWordVariants: Variants = {
+  hidden: { opacity: 0, y: 36, rotateX: -70, filter: 'blur(14px)' },
   visible: {
     opacity: 1,
     y: 0,
     rotateX: 0,
     filter: 'blur(0px)',
     transition: {
-      type: 'spring' as const,
-      damping: 15, // Higher values reduce bounce for each word.
-      stiffness: 100, // Governs how snappy the spring motion feels.
-      duration: 0.5, // Upper bound on how long the word animation runs.
+      type: 'spring', // Adds a lively ease to each word entrance.
+      damping: 18, // Dampens bounce to avoid overshoot.
+      stiffness: 150, // Keeps the reveal punchy and quick.
+    },
+  },
+};
+
+const titleUnderlineVariants: Variants = {
+  hidden: { scaleX: 0.6, opacity: 0 },
+  visible: {
+    scaleX: 1,
+    opacity: 0.4,
+    transition: {
+      duration: 0.7, // Controls how fast the glow stretches across.
+      ease: 'easeOut', // Keeps the underline expansion smooth.
     },
   },
 };
@@ -200,23 +227,40 @@ const AnimatedTitle = () => {
   const isInView = useInView(ref, { once: true, amount: 0.5 });
 
   return (
-    <motion.h2
-      ref={ref}
-      className='text-6xl lg:text-8xl font-bold text-center py-4 from-blue-500 to-purple-700 bg-gradient-to-r bg-clip-text text-blue-500'
-      variants={titleContainerVariants}
-      initial='hidden'
-      animate={isInView ? 'visible' : 'hidden'}
-    >
-      {titleWords.map((word, i) => (
-        <motion.span
-          key={i}
-          variants={wordVariants}
-          className='inline-block mr-4'
-        >
-          {word}
-        </motion.span>
-      ))}
-    </motion.h2>
+    <div className='relative  flex flex-col items-center'>
+      <motion.h2
+        ref={ref}
+        className='text-balance text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-center tracking-tight bg-clip-text text-service-brand drop-shadow-[0_4px_24px_rgba(0,0,0,0.35)]'
+        style={{
+          backgroundImage:
+            'linear-gradient(90deg, var(--color-primary-service, var(--color-service-brand)), var(--color-secondary-service, var(--color-service-ai)))',
+        }}
+        variants={titleContainerVariants}
+        initial='hidden'
+        animate={isInView ? 'visible' : 'hidden'}
+      >
+        {titleWords.map((word) => (
+          <motion.span
+            key={word}
+            variants={titleWordVariants}
+            className='inline-block px-3'
+          >
+            {word}
+          </motion.span>
+        ))}
+      </motion.h2>
+      <motion.span
+        aria-hidden
+        className='pointer-events-none absolute inset-x-12 -bottom-2 h-2 rounded-full blur-xl'
+        style={{
+          background:
+            'radial-gradient(circle, var(--color-secondary-service, var(--color-service-ai)) 0%, transparent 70%)',
+        }}
+        variants={titleUnderlineVariants}
+        initial='hidden'
+        animate={isInView ? 'visible' : 'hidden'}
+      />
+    </div>
   );
 };
 
@@ -247,8 +291,6 @@ export const TheSwiftwareWay = () => {
           style={{
             opacity: useTransform(scrollYProgress, [0, 0.1], [1, 0]),
             y: useTransform(scrollYProgress, [0.1, 0.15], ['0%', '-100%']),
-            background:
-              'radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 70%)',
           }}
         >
           <div className='relative h-full w-full'>

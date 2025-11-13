@@ -3,6 +3,7 @@
 import { motion } from 'motion/react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { BackgroundLines } from '@/components/ui/background-lines';
 import { RotatingServiceKeywords } from './RotatingServiceKeywords';
 import { openCalendlyPopup } from '@/lib/calendly';
 
@@ -10,6 +11,16 @@ export function HeroSection() {
 
   return (
     <section className='relative overflow-hidden pt-28 sm:pt-40 pb-16 sm:pb-24 bg-background'>
+
+      <div className='absolute inset-0 -z-20'>
+        <div className='absolute inset-0 bg-[radial-gradient(circle_at_16%_22%,rgba(var(--color-primary-service-rgb),0.16),transparent_68%)]' />
+        <div className='absolute inset-0 bg-[radial-gradient(circle_at_82%_30%,rgba(var(--color-secondary-service-rgb),0.14),transparent_72%)]' />
+      </div>
+
+      <BackgroundLines
+        className='absolute inset-0 z-10 bg-transparent pointer-events-none'
+        svgOptions={{ duration: 14 }}
+      />
 
       <div className='mx-auto max-w-7xl px-6'>
         <div className='text-center'>
