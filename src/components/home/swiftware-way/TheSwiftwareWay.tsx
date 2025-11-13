@@ -6,7 +6,7 @@ import {
   useTransform,
   useInView,
   MotionValue,
-} from 'framer-motion';
+} from 'motion/react';
 import { SwiftwareWayVisuals } from './SwiftwareWayVisuals';
 import { Zap, Code, Search, LucideIcon } from 'lucide-react';
 import React from 'react';
@@ -174,7 +174,7 @@ const titleContainerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2,
+      staggerChildren: 0.2, // Controls spacing between each word reveal.
     },
   },
 };
@@ -188,9 +188,9 @@ const wordVariants = {
     filter: 'blur(0px)',
     transition: {
       type: 'spring' as const,
-      damping: 15,
-      stiffness: 100,
-      duration: 0.5,
+      damping: 15, // Higher values reduce bounce for each word.
+      stiffness: 100, // Governs how snappy the spring motion feels.
+      duration: 0.5, // Upper bound on how long the word animation runs.
     },
   },
 };
