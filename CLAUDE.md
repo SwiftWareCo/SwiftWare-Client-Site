@@ -183,7 +183,7 @@ Target 40-50% text content on each page for SEO optimization
 - `npm run start` - Start production server
 
 ### Code Quality
-- Run `npm run lint` and `npm run lint:types` before building
+- Run `npm run lint` and `npm run lint:types`
 - Fix all linting and type errors before deployment
 - Use TypeScript for type safety
 - Follow established component patterns (ServicePageTemplate, sections)
