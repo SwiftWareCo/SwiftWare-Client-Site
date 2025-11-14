@@ -132,20 +132,20 @@ export default function AIMLHero() {
           variants={containerVariants}
           initial='hidden'
           animate='visible'
-            className='
+          className='
               relative mx-auto w-full max-w-[44rem] text-center
               md:mx-0 md:max-w-none md:text-left md:justify-self-start
               xl:flex xl:flex-col xl:justify-center
             '
         >
-            <motion.p
-              variants={itemVariants}
-              className='
+          <motion.p
+            variants={itemVariants}
+            className='
                 inline-flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.18em] text-muted
                 sm:text-xs md:justify-start
               '
-              onClick={() => openCalendlyPopup()}
-            >
+            onClick={() => openCalendlyPopup()}
+          >
             SwiftMind
             <span
               className='inline-block h-1 w-1 rounded-full'
@@ -179,8 +179,8 @@ export default function AIMLHero() {
           </motion.h1>
 
           {/* Key AI capabilities bullets */}
-             <motion.div variants={itemVariants} className='mt-6'>
-               <div className='space-y-3 text-center md:text-left'>
+          <motion.div variants={itemVariants} className='mt-6'>
+            <div className='space-y-3 text-center md:text-left'>
               {[
                 'AI-Powered Insights',
                 'Real-time Analytics',
@@ -191,7 +191,7 @@ export default function AIMLHero() {
                   initial={reduce ? { opacity: 1 } : { x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 1.4 + index * 0.1, duration: 0.4 }}
-                    className='
+                  className='
                       flex items-center justify-center gap-2 text-sm text-muted-foreground
                       md:justify-start
                     '
@@ -211,11 +211,11 @@ export default function AIMLHero() {
 
           <motion.div
             variants={itemVariants}
-              className='mt-8 flex flex-wrap items-center justify-center gap-3 md:justify-start'
+            className='mt-8 flex flex-wrap items-center justify-center gap-3 md:justify-start'
           >
             {/* Primary CTA */}
-               <button
-                 className='
+            <button
+              className='
                    relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl px-6 py-3 text-sm
                    font-medium text-primary-foreground ring-1 ring-[color:rgba(var(--color-primary-service-rgb),0.3)]
                  '
@@ -242,9 +242,9 @@ export default function AIMLHero() {
             </button>
 
             {/* Secondary CTA */}
-               <Link
-                 href='#'
-                 className='
+            <Link
+              href='#'
+              className='
                    group inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm text-muted-foreground
                    transition-all duration-300
                  '
