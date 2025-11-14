@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, Shield, Brain, Database, Zap } from 'lucide-react';
@@ -40,6 +42,22 @@ const FAQ_ITEMS: FAQItem[] = [
   },
 ];
 
+const PRIMARY_COLOR = 'var(--color-primary-service)';
+const PRIMARY_RGB_VAR = '--color-primary-service-rgb' as const;
+const SECONDARY_RGB_VAR = '--color-secondary-service-rgb' as const;
+
+const withAlpha = (cssVar: string, alpha: number) =>
+  `rgba(var(${cssVar}), ${alpha})`;
+
+const fadeVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6 },
+  },
+};
+
 export default function AIFAQ() {
   const [openItems, setOpenItems] = useState<Set<string>>(new Set());
 
@@ -54,25 +72,42 @@ export default function AIFAQ() {
   };
 
   return (
-    <section className='py-20 relative overflow-hidden'>
+    <section className='relative overflow-hidden py-20'>
       {/* Background effects */}
       <div className='absolute inset-0 -z-10'>
-        <div className='absolute top-1/4 left-1/4 size-96 bg-teal-500/3 rounded-full blur-3xl' />
-        <div className='absolute bottom-1/4 right-1/4 size-80 bg-blue-500/4 rounded-full blur-3xl' />
+        <div
+          className='absolute left-1/4 top-1/4 size-96 rounded-full blur-3xl'
+          style={{ backgroundColor: withAlpha(PRIMARY_RGB_VAR, 0.12) }}
+        />
+        <div
+          className='absolute bottom-1/4 right-1/4 size-80 rounded-full blur-3xl'
+          style={{ backgroundColor: withAlpha(SECONDARY_RGB_VAR, 0.1) }}
+        />
       </div>
 
-      <div className='max-w-4xl mx-auto px-4 sm:px-6'>
+      <div className='mx-auto max-w-4xl px-4 sm:px-6'>
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={fadeVariants}
+          initial='hidden'
+          whileInView='visible'
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className='text-center mb-16'
+          className='mb-16 text-center'
         >
-          <h2 className='text-4xl font-bold mb-6 bg-gradient-to-r from-white via-teal-100 to-blue-100 bg-clip-text text-transparent'>
+          <h2
+            className='mb-6 text-4xl font-bold text-transparent'
+            style={{
+              backgroundImage: `linear-gradient(90deg, rgba(255,255,255,1) 0%, ${withAlpha(
+                PRIMARY_RGB_VAR,
+                0.75
+              )} 50%, ${withAlpha(SECONDARY_RGB_VAR, 0.6)} 100%)`,
+              WebkitBackgroundClip: 'text',
+              backgroundClip: 'text',
+            }}
+          >
             Frequently Asked Questions
           </h2>
-          <p className='text-xl text-zinc-300 max-w-2xl mx-auto'>
+          <p className='mx-auto max-w-2xl text-xl text-muted-foreground'>
             Everything you need to know about our AI-powered business
             intelligence platform.
           </p>
@@ -86,24 +121,43 @@ export default function AIFAQ() {
             return (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                variants={fadeVariants}
+                initial='hidden'
+                whileInView='visible'
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className='group'
               >
                 <button
                   onClick={() => toggleItem(item.id)}
-                  className='w-full text-left p-6 rounded-2xl border border-zinc-800/50 bg-gradient-to-br from-teal-500/5 via-blue-500/3 to-zinc-900/40 backdrop-blur-sm hover:border-teal-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-teal-500/10 cursor-pointer'
+                  className='
+                    w-full cursor-pointer rounded-2xl border p-6 text-left transition-all duration-300
+                    border-[color:rgba(var(--color-primary-service-rgb),0.25)]
+                    bg-[linear-gradient(135deg,rgba(var(--color-primary-service-rgb),0.08),rgba(var(--color-secondary-service-rgb),0.05))]
+                    hover:border-[color:rgba(var(--color-primary-service-rgb),0.4)]
+                    hover:shadow-[0_20px_48px_rgba(var(--color-primary-service-rgb),0.18)]
+                  '
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${item.id}`}
                 >
                   <div className='flex items-center justify-between gap-4'>
                     <div className='flex items-center gap-4 flex-1'>
-                      <div className='flex-shrink-0 p-3 rounded-xl bg-gradient-to-br from-teal-500/20 to-blue-500/20 border border-teal-500/30 group-hover:scale-110 transition-transform duration-300'>
-                        <IconComponent className='w-5 h-5 text-teal-300' />
+                      <div
+                        className='
+                          flex-shrink-0 rounded-xl border p-3 transition-transform duration-300
+                          border-[color:rgba(var(--color-primary-service-rgb),0.25)]
+                          group-hover:scale-110
+                        '
+                        style={{
+                          background: `linear-gradient(135deg, ${withAlpha(
+                            PRIMARY_RGB_VAR,
+                            0.18
+                          )}, ${withAlpha(SECONDARY_RGB_VAR, 0.12)})`,
+                        }}
+                      >
+                        <IconComponent className='h-5 w-5 text-[color:var(--color-primary-service)]' />
                       </div>
-                      <h3 className='text-lg font-semibold text-white group-hover:text-teal-100 transition-colors duration-300'>
+                      <h3 className='text-lg font-semibold text-foreground transition-colors duration-300 group-hover:text-primary-foreground'>
                         {item.question}
                       </h3>
                     </div>
@@ -112,7 +166,13 @@ export default function AIFAQ() {
                       transition={{ duration: 0.3 }}
                       className='flex-shrink-0'
                     >
-                      <ChevronDown className='w-5 h-5 text-zinc-400 group-hover:text-teal-300 transition-colors duration-300' />
+                      <ChevronDown
+                        className={`h-5 w-5 transition-colors duration-300 ${
+                          isOpen
+                            ? 'text-[color:var(--color-primary-service)]'
+                            : 'text-muted-foreground'
+                        }`}
+                      />
                     </motion.div>
                   </div>
                 </button>
@@ -128,9 +188,13 @@ export default function AIFAQ() {
                     >
                       <div
                         id={`faq-answer-${item.id}`}
-                        className='p-6 rounded-2xl border border-zinc-800/30 bg-zinc-900/20 backdrop-blur-sm border-t-0 rounded-t-none'
+                        className='
+                          rounded-b-2xl border border-t-0 p-6 backdrop-blur-sm
+                          border-[color:rgba(var(--color-primary-service-rgb),0.2)]
+                          bg-[color:rgba(var(--color-secondary-service-rgb),0.08)]
+                        '
                       >
-                        <p className='text-zinc-300 leading-relaxed'>
+                        <p className='leading-relaxed text-muted-foreground'>
                           {item.answer}
                         </p>
                       </div>

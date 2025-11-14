@@ -184,7 +184,7 @@ export default function WebVideoShowcase() {
               </div>
 
               {/* Live Status Indicator - Desktop: Top left, Mobile: Bottom center */}
-              <div className="absolute md:top-6 md:left-6 bottom-3 left-1/2 md:left-auto -translate-x-1/2 md:translate-x-0 z-10">
+              <div className="absolute md:top-6 bottom-3 left-1/2 md:left-auto -translate-x-1/2 md:translate-x-0 z-10">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}

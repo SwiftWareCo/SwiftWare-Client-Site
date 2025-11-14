@@ -46,6 +46,14 @@ const DEMO_RESULTS: AISearchResult[] = [
   },
 ];
 
+const PRIMARY_COLOR = 'var(--color-primary-service)';
+const SECONDARY_COLOR = 'var(--color-secondary-service)';
+const PRIMARY_RGB_VAR = '--color-primary-service-rgb' as const;
+const SECONDARY_RGB_VAR = '--color-secondary-service-rgb' as const;
+
+const withAlpha = (cssVar: string, alpha: number) =>
+  `rgba(var(${cssVar}), ${alpha})`;
+
 export default function AISearchDemo() {
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -70,12 +78,12 @@ export default function AISearchDemo() {
   };
 
   return (
-    <div className='max-w-4xl mx-auto p-6'>
-      <div className='text-center mb-8'>
-        <h3 className='text-2xl font-bold text-white mb-4'>
+    <div className='mx-auto max-w-4xl p-6'>
+      <div className='mb-8 text-center'>
+        <h3 className='mb-4 text-2xl font-bold text-foreground'>
           Experience Hybrid AI Search
         </h3>
-        <p className='text-zinc-400'>
+        <p className='text-muted-foreground'>
           See how our AI combines semantic understanding with keyword precision
         </p>
       </div>
@@ -83,13 +91,19 @@ export default function AISearchDemo() {
       {/* Search Interface */}
       <div className='relative mb-8'>
         <div className='relative'>
-          <Search className='absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-zinc-400' />
+          <Search className='absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 transform text-muted-foreground' />
           <input
             type='text'
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder='Ask anything about your business data...'
-            className='w-full pl-12 pr-4 py-4 bg-white/[0.05] border border-white/20 rounded-xl text-white placeholder-zinc-400 focus:outline-none focus:border-teal-400/50 focus:bg-white/[0.08] transition-all duration-300'
+            className='
+              w-full rounded-xl border border-white/10 bg-white/[0.05] px-12 py-4 text-foreground
+              placeholder:text-muted-foreground focus:bg-white/[0.08] focus:outline-none
+              focus:border-[color:rgba(var(--color-primary-service-rgb),0.45)]
+              focus:shadow-[0_0_0_3px_rgba(var(--color-primary-service-rgb),0.15)]
+              transition-all duration-300
+            '
             onKeyPress={(e) =>
               e.key === 'Enter' && query && performSearch(query)
             }
@@ -98,13 +112,17 @@ export default function AISearchDemo() {
             <button
               onClick={() => performSearch(query)}
               disabled={isSearching}
-              className='absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-2 bg-gradient-to-r from-teal-600 to-blue-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 disabled:opacity-50 cursor-pointer'
+              className='absolute right-2 top-1/2 -translate-y-1/2 transform rounded-lg px-4 py-2 text-sm font-medium text-primary-foreground transition-all duration-300 disabled:opacity-50'
+              style={{
+                background: `linear-gradient(90deg, ${PRIMARY_COLOR}, ${SECONDARY_COLOR})`,
+                boxShadow: `0 12px 30px ${withAlpha(PRIMARY_RGB_VAR, 0.18)}`,
+              }}
             >
               {isSearching ? (
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                  className='w-4 h-4 border-2 border-white border-t-transparent rounded-full'
+                  className='h-4 w-4 rounded-full border-2 border-primary-foreground border-t-transparent'
                 />
               ) : (
                 'Search'
@@ -115,7 +133,7 @@ export default function AISearchDemo() {
 
         {/* Quick Query Suggestions */}
         <div className='mt-4'>
-          <p className='text-sm text-zinc-500 mb-3'>
+          <p className='mb-3 text-sm text-muted-foreground'>
             Try these sample queries:
           </p>
           <div className='flex flex-wrap gap-2'>
@@ -125,10 +143,10 @@ export default function AISearchDemo() {
                 onClick={() => handleQuickQuery(demoQuery)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`px-3 py-2 text-sm rounded-lg border transition-all duration-300 cursor-pointer ${
+                className={`cursor-pointer rounded-lg border px-3 py-2 text-sm transition-all duration-300 ${
                   selectedQuery === demoQuery
-                    ? 'bg-teal-500/20 border-teal-400/50 text-teal-300'
-                    : 'bg-white/[0.03] border-white/20 text-zinc-400 hover:border-teal-400/30 hover:text-teal-300'
+                    ? 'border-[color:rgba(var(--color-primary-service-rgb),0.35)] bg-[color:rgba(var(--color-primary-service-rgb),0.18)] text-[color:var(--color-primary-service)]'
+                    : 'border-white/15 bg-white/[0.03] text-muted-foreground hover:border-[color:rgba(var(--color-primary-service-rgb),0.3)] hover:text-[color:var(--color-primary-service)]'
                 }`}
               >
                 {demoQuery}
@@ -145,20 +163,27 @@ export default function AISearchDemo() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className='mb-8 p-6 rounded-xl bg-gradient-to-br from-teal-500/10 to-blue-500/10 border border-teal-400/20'
+            className='mb-8 rounded-xl border p-6'
+            style={{
+              background: `linear-gradient(135deg, ${withAlpha(
+                PRIMARY_RGB_VAR,
+                0.14
+              )}, ${withAlpha(SECONDARY_RGB_VAR, 0.1)})`,
+              borderColor: withAlpha(PRIMARY_RGB_VAR, 0.24),
+            }}
           >
-            <div className='flex items-center gap-4 mb-4'>
+            <div className='mb-4 flex items-center gap-4'>
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
               >
-                <Brain className='w-6 h-6 text-teal-400' />
+                <Brain className='h-6 w-6' style={{ color: PRIMARY_COLOR }} />
               </motion.div>
               <div>
-                <h4 className='text-white font-medium'>
+                <h4 className='font-medium text-foreground'>
                   AI Search in Progress
                 </h4>
-                <p className='text-zinc-400 text-sm'>
+                <p className='text-sm text-muted-foreground'>
                   Analyzing your query and searching knowledge base...
                 </p>
               </div>
@@ -176,13 +201,14 @@ export default function AISearchDemo() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.3, duration: 0.4 }}
-                  className='flex items-center gap-2 text-sm text-zinc-300'
+                  className='flex items-center gap-2 text-sm text-muted-foreground'
                 >
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ delay: index * 0.3 + 0.2 }}
-                    className='w-2 h-2 rounded-full bg-teal-400'
+                    className='h-2 w-2 rounded-full'
+                    style={{ backgroundColor: PRIMARY_COLOR }}
                   />
                   {step}
                 </motion.div>
@@ -201,9 +227,9 @@ export default function AISearchDemo() {
             exit={{ opacity: 0, y: -20 }}
             className='space-y-4'
           >
-            <div className='flex items-center gap-2 mb-6'>
-              <Zap className='w-5 h-5 text-teal-400' />
-              <span className='text-white font-medium'>
+            <div className='mb-6 flex items-center gap-2'>
+              <Zap className='h-5 w-5' style={{ color: PRIMARY_COLOR }} />
+              <span className='font-medium text-foreground'>
                 Found {results.length} relevant results in 0.3s
               </span>
             </div>
@@ -215,41 +241,73 @@ export default function AISearchDemo() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -2 }}
-                className='p-6 rounded-xl bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/10 hover:border-teal-400/30 transition-all duration-300 cursor-pointer group'
+                className='
+                  group cursor-pointer rounded-xl border p-6 transition-all duration-300
+                  border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.02]
+                  hover:border-[color:rgba(var(--color-primary-service-rgb),0.35)]
+                '
               >
                 <div className='flex items-start gap-4'>
-                  <div className='p-2 rounded-lg bg-teal-500/10 group-hover:bg-teal-500/20 transition-colors'>
-                    <FileText className='w-5 h-5 text-teal-400' />
+                  <div
+                    className='
+                      rounded-lg p-2 transition-colors
+                      group-hover:bg-[color:rgba(var(--color-primary-service-rgb),0.2)]
+                    '
+                    style={{
+                      backgroundColor: withAlpha(PRIMARY_RGB_VAR, 0.12),
+                    }}
+                  >
+                    <FileText
+                      className='h-5 w-5'
+                      style={{ color: PRIMARY_COLOR }}
+                    />
                   </div>
 
                   <div className='flex-1'>
-                    <div className='flex items-start justify-between mb-2'>
-                      <h4 className='text-white font-semibold group-hover:text-teal-100 transition-colors'>
+                    <div className='mb-2 flex items-start justify-between'>
+                      <h4 className='font-semibold text-foreground transition-colors group-hover:text-primary-foreground'>
                         {result.title}
                       </h4>
-                      <div className='flex items-center gap-1 px-2 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs'>
+                      <div
+                        className='flex items-center gap-1 rounded-full px-2 py-1 text-xs'
+                        style={{
+                          backgroundColor: withAlpha(PRIMARY_RGB_VAR, 0.18),
+                          color: PRIMARY_COLOR,
+                        }}
+                      >
                         <span>
                           {Math.round(result.relevanceScore * 100)}% match
                         </span>
                       </div>
                     </div>
 
-                    <p className='text-zinc-400 text-sm mb-3 leading-relaxed'>
+                    <p className='mb-3 text-sm leading-relaxed text-muted-foreground'>
                       {result.snippet}
                     </p>
 
                     <div className='flex items-center justify-between'>
-                      <div className='flex items-center gap-2 text-xs text-zinc-500'>
+                      <div className='flex items-center gap-2 text-xs text-muted-foreground'>
                         <span>{result.source}</span>
                         {result.metadata && 'department' in result.metadata && (
                           <>
                             <span>•</span>
-                            <span>{String((result.metadata as Record<string, unknown>).department)}</span>
+                            <span>
+                              {String(
+                                (result.metadata as Record<string, unknown>)
+                                  .department
+                              )}
+                            </span>
                           </>
                         )}
                       </div>
 
-                      <button className='text-xs text-teal-400 hover:text-teal-300 transition-colors cursor-pointer'>
+                      <button
+                        className='
+                          cursor-pointer text-xs transition-colors
+                          hover:text-[color:rgba(var(--color-primary-service-rgb),0.75)]
+                        '
+                        style={{ color: PRIMARY_COLOR }}
+                      >
                         View Document →
                       </button>
                     </div>

@@ -8,7 +8,25 @@ import { TrendingUp, ArrowUpRight, Zap } from 'lucide-react';
 const getIcon = (index: number) => {
   const icons = [TrendingUp, ArrowUpRight, Zap];
   const IconComponent = icons[index % icons.length];
-  return <IconComponent className='w-6 h-6' />;
+  return <IconComponent className='h-6 w-6' />;
+};
+
+const PRIMARY_COLOR = 'var(--color-primary-service)';
+const SECONDARY_COLOR = 'var(--color-secondary-service)';
+const PRIMARY_RGB_VAR = '--color-primary-service-rgb' as const;
+const SECONDARY_RGB_VAR = '--color-secondary-service-rgb' as const;
+
+const withAlpha = (cssVar: string, alpha: number) =>
+  `rgba(var(${cssVar}), ${alpha})`;
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.6 }, // Controls raise/fade timing for each card.
+  },
 };
 
 const AnimatedNumber = ({
@@ -92,61 +110,136 @@ interface AIOutcomesSectionProps {
 export default function AIOutcomesSection({ items }: AIOutcomesSectionProps) {
   return (
     <section id='outcomes' className='py-16'>
-      <div className='max-w-6xl mx-auto grid md:grid-cols-3 gap-8'>
-        {items.map((o, i) => (
+      <div className='mx-auto grid max-w-6xl gap-8 md:grid-cols-3'>
+        {items.map((o, index) => (
           <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 30, scale: 0.95 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            key={`outcome-${index}`}
+            variants={cardVariants}
+            initial='hidden'
+            whileInView='visible'
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: i * 0.15 }}
+            transition={{ delay: index * 0.15 }}
             className='group relative'
           >
             {/* Card */}
-            <div className='relative p-8 rounded-2xl border border-zinc-800/50 bg-gradient-to-br from-teal-500/5 via-blue-500/3 to-zinc-900/40 backdrop-blur-sm hover:border-teal-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-teal-500/10 overflow-hidden'>
+            <div
+              className='
+                relative overflow-hidden rounded-2xl border p-8 backdrop-blur-sm transition-all duration-500
+                border-[color:rgba(var(--color-primary-service-rgb),0.28)]
+                bg-[linear-gradient(135deg,rgba(var(--color-primary-service-rgb),0.08),rgba(var(--color-secondary-service-rgb),0.05))]
+                hover:border-[color:rgba(var(--color-primary-service-rgb),0.45)]
+                hover:shadow-[0_0_36px_rgba(var(--color-primary-service-rgb),0.15)]
+              '
+            >
               {/* Background gradient animation */}
-              <div className='absolute inset-0 bg-gradient-to-br from-teal-500/5 via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
-
-              {/* Floating particles */}
-              <div className='absolute top-4 right-4 w-2 h-2 bg-teal-400 rounded-full opacity-60 animate-pulse' />
               <div
-                className='absolute bottom-4 left-4 w-1.5 h-1.5 bg-blue-400 rounded-full opacity-40 animate-pulse'
-                style={{ animationDelay: '1s' }}
+                className='
+                  absolute inset-0 opacity-0 transition-opacity duration-500
+                  group-hover:opacity-100
+                '
+                style={{
+                  background: `linear-gradient(135deg, ${withAlpha(
+                    PRIMARY_RGB_VAR,
+                    0.18
+                  )}, ${withAlpha(SECONDARY_RGB_VAR, 0.1)})`,
+                }}
               />
 
-              <div className='relative z-10 text-center'>
+              {/* Floating particles */}
+              <div
+                className='absolute right-4 top-4 h-2 w-2 animate-pulse rounded-full opacity-60'
+                style={{ backgroundColor: PRIMARY_COLOR }}
+              />
+              <div
+                className='absolute bottom-4 left-4 h-1.5 w-1.5 animate-pulse rounded-full opacity-40'
+                style={{
+                  animationDelay: '1s',
+                  backgroundColor: SECONDARY_COLOR,
+                }}
+              />
+
+              <div className='relative z-10 text-center text-foreground'>
                 {/* Icon */}
-                <div className='inline-flex items-center justify-center w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br from-teal-500/20 to-blue-500/20 border border-teal-500/30 group-hover:scale-110 transition-transform duration-300'>
-                  {getIcon(i)}
+                <div
+                  className='
+                    mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl border text-primary-foreground transition-transform duration-300
+                    border-[color:rgba(var(--color-primary-service-rgb),0.24)]
+                    group-hover:scale-110
+                  '
+                  style={{
+                    background: `linear-gradient(135deg, ${withAlpha(
+                      PRIMARY_RGB_VAR,
+                      0.16
+                    )}, ${withAlpha(SECONDARY_RGB_VAR, 0.12)})`,
+                  }}
+                >
+                  {getIcon(index)}
                 </div>
 
                 {/* Metric */}
                 <div className='mb-2'>
-                  <div className='text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-teal-100 to-blue-100 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300'>
+                  <div
+                    className='
+                      text-4xl font-bold text-transparent transition-transform duration-300 md:text-5xl
+                      group-hover:scale-105
+                    '
+                    style={{
+                      backgroundImage: `linear-gradient(90deg, rgba(255,255,255,1) 0%, ${withAlpha(
+                        PRIMARY_RGB_VAR,
+                        0.75
+                      )} 50%, ${withAlpha(SECONDARY_RGB_VAR, 0.6)} 100%)`,
+                      WebkitBackgroundClip: 'text',
+                      backgroundClip: 'text',
+                    }}
+                  >
                     <AnimatedNumber value={o.metric} />
                   </div>
-                  <div className='text-sm font-medium text-teal-300 uppercase tracking-wider'>
+                  <div
+                    className='text-sm font-medium uppercase tracking-wider'
+                    style={{ color: PRIMARY_COLOR }}
+                  >
                     {o.unit}
                   </div>
                 </div>
 
                 {/* Description */}
-                <p className='text-zinc-300 leading-relaxed text-sm md:text-base group-hover:text-zinc-200 transition-colors duration-300'>
+                <p className='text-sm leading-relaxed text-muted-foreground transition-colors duration-300 group-hover:text-foreground md:text-base'>
                   {o.blurb}
                 </p>
               </div>
 
               {/* Hover effect border */}
-              <div className='absolute inset-0 rounded-2xl border border-transparent group-hover:border-teal-500/20 transition-all duration-500'>
-                <div className='absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-teal-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
+              <div className='absolute inset-0 rounded-2xl border border-transparent transition-all duration-500 group-hover:border-[color:rgba(var(--color-primary-service-rgb),0.28)]'>
+                <div
+                  className='
+                    absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500
+                    group-hover:opacity-100
+                  '
+                  style={{
+                    background: `linear-gradient(90deg, transparent, ${withAlpha(
+                      PRIMARY_RGB_VAR,
+                      0.14
+                    )}, transparent)`,
+                  }}
+                />
               </div>
 
               {/* Bottom accent */}
-              <div className='absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-500 to-blue-500 rounded-b-2xl transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left' />
+              <div
+                className='absolute bottom-0 left-0 right-0 h-1 origin-left scale-x-0 rounded-b-2xl transition-transform duration-500 group-hover:scale-x-100'
+                style={{
+                  background: `linear-gradient(90deg, ${PRIMARY_COLOR}, ${SECONDARY_COLOR})`,
+                }}
+              />
             </div>
 
             {/* Floating tooltip effect */}
-            <div className='absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-r from-teal-400 to-blue-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse' />
+            <div
+              className='absolute -right-2 -top-2 h-4 w-4 animate-pulse rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100'
+              style={{
+                background: `linear-gradient(135deg, ${PRIMARY_COLOR}, ${SECONDARY_COLOR})`,
+              }}
+            />
           </motion.div>
         ))}
       </div>

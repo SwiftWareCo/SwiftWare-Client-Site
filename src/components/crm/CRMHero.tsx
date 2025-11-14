@@ -2,12 +2,12 @@
 
 import { useMemo, useEffect } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import Link from "next/link";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import TypingHeadline from "@/components/hero/TypingHeadline";
 import DesktopBridgeShowcase from "@/components/hero/DesktopBridgeShowcase";
 import LaptopSyncTile from "@/components/hero/LaptopSyncTile";
+import { openCalendlyPopup } from "@/lib/calendly";
 
 const HEADLINE = "Software. Made to fit.";
 
@@ -117,6 +117,7 @@ export default function CRMHero() {
               className="relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-5 py-3 text-sm font-medium text-white ring-1 ring-zinc-800"
               style={{ background: "linear-gradient(90deg, rgb(59 130 246), rgb(168 85 247))" }}
               aria-label="Start your project"
+              onClick={() => openCalendlyPopup()}
             >
               <motion.span
                 aria-hidden
@@ -127,15 +128,6 @@ export default function CRMHero() {
               Start your project
               <ArrowRight className="size-4" />
             </button>
-
-            {/* Secondary CTA */}
-            <Link
-              href="/#"
-              className="group inline-flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/60 px-5 py-3 text-sm text-zinc-200 hover:bg-zinc-900"
-            >
-              See our work
-              <Play className="size-4 text-zinc-500 group-hover:text-zinc-300 transition-colors" />
-            </Link>
           </motion.div>
         </div>
 

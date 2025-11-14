@@ -1,16 +1,56 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+
+import AIMLHero from '@/components/ai-ml/AIMLHero';
+import AIProcessFlow from '@/components/ai-ml/sections/AIProcessFlow';
+import AIDemoSection from '@/components/ai-ml/sections/AIDemoSection';
+import AIOutcomesSection from '@/components/ai-ml/sections/AIOutcomesSection';
+import AIFAQ from '@/components/ai-ml/sections/AIFAQ';
+import type { Outcome } from '@/types/content';
 
 export const metadata: Metadata = {
-  title: 'AI & Process Automation | SwiftWare',
-  description: 'Automate your business blockers and unlock revenue with AI-powered solutions.',
+  title: 'AI & Process Automation Platform | SwiftWare',
+  description:
+    'Deploy AI agents, automate processes, and unlock real-time insight with SwiftMind—SwiftWare’s automation stack built for operations teams.',
 };
+
+const OUTCOMES: Outcome[] = [
+  {
+    metric: '-75%',
+    unit: 'search time',
+    blurb: 'Instant answers from enterprise knowledge bases and workflows.',
+  },
+  {
+    metric: '+3.2×',
+    unit: 'data insights',
+    blurb:
+      'AI-powered analytics that surface actionable patterns automatically.',
+  },
+  {
+    metric: '-60%',
+    unit: 'manual processing',
+    blurb: 'Automated document ingestion, classification, and alerting.',
+  },
+];
 
 export default function AIAutomationPage() {
   return (
-    <main className="min-h-screen pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-        <h1 className="text-4xl font-bold mb-4">AI & Process Automation</h1>
-        <p className="text-xl text-zinc-400">Coming soon...</p>
+    <main className='flex flex-col gap-0'>
+      <AIMLHero />
+
+      <div className='bg-background text-foreground'>
+        <AIProcessFlow />
+      </div>
+
+      <div className='bg-secondary text-secondary-foreground'>
+        <AIDemoSection />
+      </div>
+
+      <div className='bg-background text-foreground'>
+        <AIOutcomesSection items={OUTCOMES} />
+      </div>
+
+      <div className='bg-secondary text-secondary-foreground'>
+        <AIFAQ />
       </div>
     </main>
   );

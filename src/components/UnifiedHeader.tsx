@@ -23,7 +23,6 @@ const serviceLinks: NavLink[] = [
 
 const customSoftwareLinks: NavLink[] = [
   { label: 'CRM', href: '/custom-software/crm' },
-  { label: 'AI & Automation (AI/RAG)', href: '/custom-software/ai-rag' },
   { label: 'Golf Management', href: '/custom-software/golf' },
   { label: 'Web Portals', href: '/custom-software/web-portals' },
 ];
