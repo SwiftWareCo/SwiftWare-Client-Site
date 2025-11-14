@@ -3,6 +3,7 @@
 import { motion } from 'motion/react';
 import { Upload, Brain, Search, BarChart3, CheckCircle } from 'lucide-react';
 import { openCalendlyPopup } from '@/lib/calendly';
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 
 const PRIMARY_COLOR = 'var(--color-primary-service)';
 const SECONDARY_COLOR = 'var(--color-secondary-service)';
@@ -316,20 +317,13 @@ export default function AIProcessFlow() {
               Experience the full AI pipeline with your own data in a
               personalized demo.
             </p>
-            <div className='flex flex-col justify-center gap-4 sm:flex-row'>
-              <button
-                onClick={() =>
-                  openCalendlyPopup('https://calendly.com/swiftwareco/30min')
-                }
-                className='cursor-pointer rounded-xl px-6 py-3 text-sm font-medium text-primary-foreground transition-all duration-300'
-                style={{
-                  background: `linear-gradient(90deg, ${PRIMARY_COLOR}, ${SECONDARY_COLOR})`,
-                  boxShadow: `0 18px 36px ${withAlpha(PRIMARY_RGB_VAR, 0.18)}`,
-                }}
-              >
-                Book a Demo
-              </button>
-            </div>
+            <InteractiveHoverButton
+              text='Schedule Live Demo'
+              onClick={() =>
+                openCalendlyPopup('https://calendly.com/swiftwareco/30min')
+              }
+              className='mx-auto w-64'
+            />
           </div>
         </motion.div>
       </div>

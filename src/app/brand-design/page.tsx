@@ -4,7 +4,7 @@ import { BrandDesignHero } from '@/components/brand-design/BrandDesignHero';
 import { StickyCardsWrapper } from '@/components/brand-design/StickyCardsWrapper';
 import { UnifiedSystemConnector } from '@/components/brand-design/UnifiedSystemConnector';
 import { BrandDesignFAQs } from '@/components/brand-design/BrandDesignFAQs';
-import { ScheduleButton } from '@/components/ui/ScheduleButton';
+import CTASection from '@/components/CTASection';
 
 export const metadata: Metadata = {
   title: 'Brand Identity & Logo Design Agency | SwiftWare',
@@ -56,21 +56,15 @@ export default function BrandDesignPage() {
 
       {/* Bottom CTA Section - with diagonal skew */}
       <DiagonalDivider skewAngle={3} color='var(--background)'>
-        <div className='mx-auto max-w-7xl px-4 sm:px-6'>
-          <div className='text-center'>
-            <h2 className='text-3xl sm:text-4xl font-bold mb-6 text-white'>
-              Ready to Build Your Unforgettable Brand?
-            </h2>
-            <p className='text-lg text-zinc-400 mb-8 max-w-2xl mx-auto'>
-              Schedule your free, no-obligation consultation today and
-              let&apos;s discuss your vision.
-            </p>
-            <ScheduleButton text='Schedule a Consultation' />
-          </div>
-        </div>
+        <CTASection
+          heading='Ready to Build Your Unforgettable Brand?'
+          description="Schedule your free, no-obligation consultation today and let's discuss your vision."
+          buttons={[{ label: 'Schedule a Consultation' }]}
+          backgroundClassName='bg-transparent'
+          tone='secondary'
+        />
       </DiagonalDivider>
 
-      {/* FAQ Section - already has bg-background internally */}
       <BrandDesignFAQs items={faqs} />
     </main>
   );

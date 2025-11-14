@@ -5,7 +5,7 @@ import { ProblemSolutionSection } from '@/components/digital-marketing-seo/Probl
 import { WhatsIncludedSection } from '@/components/digital-marketing-seo/WhatsIncludedSection';
 import { UnifiedSystemConnector } from '@/components/digital-marketing-seo/UnifiedSystemConnector';
 import { ServiceSpecificFAQ } from '@/components/digital-marketing-seo/ServiceSpecificFAQ';
-import { FinalCTASection } from '@/components/digital-marketing-seo/FinalCTASection';
+import CTASection from '@/components/CTASection';
 import { SpikeDivider } from '@/components/sections/SpikeDivider';
 import { MacbookScroll } from '@/components/ui/macbook-scroll';
 
@@ -63,9 +63,13 @@ export default function DigitalMarketingPage() {
         </SpikeDivider>
       </section>
 
-      <section className='bg-secondary'>
-        <FinalCTASection tone='default' />
-      </section>
+      <CTASection
+        heading='Ready to Own Your Local Market?'
+        description='Book a free marketing consult and we’ll show you exactly what your competitors are doing—and the plan that puts you back on top.'
+        buttons={[{ label: 'Schedule a Consultation' }]}
+        backgroundClassName='bg-secondary'
+        tone='secondary'
+      />
     </>
   );
 }

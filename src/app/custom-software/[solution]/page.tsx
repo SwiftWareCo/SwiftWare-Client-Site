@@ -239,6 +239,14 @@ function ComingSoon({
           We&apos;re building this experience right now. Check back soon or
           reach out to start a tailored build.
         </p>
+        <div className='mt-10'>
+          <CTASection
+            heading='Need a tailored solution sooner?'
+            description='Book a build planning call and we’ll scope your custom platform while this experience ships.'
+            buttons={[{ label: 'Plan your project' }]}
+            backgroundClassName='bg-transparent'
+          />
+        </div>
         <div className='mt-8'>
           <InteractiveHoverButton
             type='button'

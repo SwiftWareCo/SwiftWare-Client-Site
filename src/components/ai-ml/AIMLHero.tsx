@@ -8,6 +8,7 @@ import TypingHeadline from '@/components/hero/TypingHeadline';
 import AIVisualization from '@/components/ai-ml/hero/AIVisualization';
 import { openCalendlyPopup } from '@/lib/calendly';
 import Link from 'next/link';
+import { InteractiveHoverButton } from '../ui/interactive-hover-button';
 
 const HEADLINE = 'SwiftMind. AI that works.';
 const heroEase = [0.22, 1, 0.36, 1] as const; // Smooth deceleration on hero entrance.
@@ -214,45 +215,22 @@ export default function AIMLHero() {
             className='mt-8 flex flex-wrap items-center justify-center gap-3 md:justify-start'
           >
             {/* Primary CTA */}
-            <button
-              className='
-                   relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl px-6 py-3 text-sm
-                   font-medium text-primary-foreground ring-1 ring-[color:rgba(var(--color-primary-service-rgb),0.3)]
-                 '
-              style={{
-                background: `linear-gradient(90deg, ${PRIMARY_COLOR}, ${SECONDARY_COLOR})`,
-                boxShadow: `0 16px 40px ${withAlpha(PRIMARY_RGB_VAR, 0.22)}`,
-              }}
-              aria-label='Contact Us'
-            >
-              <motion.span
-                aria-hidden
-                className='pointer-events-none absolute inset-0 -translate-x-full'
-                style={{
-                  background: `linear-gradient(90deg, transparent, ${withAlpha(
-                    PRIMARY_RGB_VAR,
-                    0.35
-                  )}, transparent)`,
-                }}
-                whileHover={{ x: '100%' }}
-                transition={{ duration: 0.7, ease: 'easeInOut' }}
-              />
-              Contact Us
-              <ArrowRight className='size-4' />
-            </button>
+       <InteractiveHoverButton
+            text='Contact Us'
+            onClick={() =>
+              openCalendlyPopup('https://calendly.com/swiftwareco/30min')
+            }
+            className='w-64'
+          />
 
             {/* Secondary CTA */}
             <Link
               href='#'
               className='
                    group inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm text-muted-foreground
-                   transition-all duration-300
+                   transition-all duration-300 cursor-pointer hover:-translate-y-0.5 bg-[color:var(--color-primary-service)]/50 hover:bg-background/70 
                  '
-              style={{
-                borderColor: withAlpha(PRIMARY_RGB_VAR, 0.35),
-                backgroundColor: withAlpha(PRIMARY_RGB_VAR, 0.14),
-                borderWidth: 1,
-              }}
+       
             >
               See Demo
               <Play

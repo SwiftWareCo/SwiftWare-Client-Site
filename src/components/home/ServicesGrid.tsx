@@ -1,33 +1,149 @@
 'use client';
 
-import { motion } from 'motion/react';
-import { AlertCircle} from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { motion, type Variants } from 'motion/react';
+import { AlertCircle } from 'lucide-react';
 import TheSwiftwareWay from './swiftware-way/TheSwiftwareWay';
-import  BlockFallAnimation from './BlockFallAnimation';
+import BlockFallAnimation from './BlockFallAnimation';
+
+const easingCurve: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+function useIsMobile(maxWidth = 1024) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia(`(max-width: ${maxWidth - 1}px)`);
+
+    const updateMatches = (matches: boolean) => {
+      setIsMobile(matches);
+    };
+
+    updateMatches(query.matches);
+
+    function handleChange(event: MediaQueryListEvent) {
+      updateMatches(event.matches);
+    }
+
+    if (typeof query.addEventListener === 'function') {
+      query.addEventListener('change', handleChange);
+      return () => query.removeEventListener('change', handleChange);
+    }
+
+    query.addListener(handleChange);
+    return () => query.removeListener(handleChange);
+  }, [maxWidth]);
+
+  return isMobile;
+}
 
 export function ServicesGrid() {
   const painPoints = [
     {
       icon: AlertCircle,
       title: 'Wasted Time',
-      description: "You're stuck playing project manager, trying to get your designer and your ad guy on the same page.",
+      description:
+        "You're stuck playing project manager, trying to get your designer and your ad guy on the same page.",
     },
     {
       icon: AlertCircle,
       title: 'Lost Leads',
-      description: 'Your website form  doesn\'t "talk" to your marketing campaign , so leads go cold before you even see them.',
+      description:
+        'Your website form  doesn\'t "talk" to your marketing campaign , so leads go cold before you even see them.',
     },
     {
       icon: AlertCircle,
       title: 'Broken Brand',
-      description: 'Your brand looks great on the website but is totally different in your email blasts, confusing customers.',
+      description:
+        'Your brand looks great on the website but is totally different in your email blasts, confusing customers.',
     },
     {
       icon: AlertCircle,
       title: 'Wasted Money',
-      description: 'You\'re paying four different teams who are all blaming each other when things don\'t work.',
+      description:
+        "You're paying four different teams who are all blaming each other when things don't work.",
     },
   ];
+
+  const isMobile = useIsMobile();
+
+  console.log(isMobile);
+
+  const sectionVariants = useMemo<Variants>(
+    () => ({
+      hidden: { opacity: 0, y: 24 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          duration: 0.6, // Controls how quickly the entire section fades upward
+          ease: easingCurve, // Keeps easing consistent with desktop animations
+          staggerChildren: 0.08, // Offsets child animations to avoid simultaneous motion
+        },
+      },
+    }),
+    []
+  );
+
+  const leftColumnVariants = useMemo<Variants>(
+    () => ({
+      hidden: isMobile ? { opacity: 0, y: 16 } : { opacity: 0 },
+      visible: {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        transition: {
+          duration: 0.6, // Matches the section reveal speed for cohesion
+          ease: easingCurve, // Smooths the entrance without overshooting
+        },
+      },
+    }),
+    [isMobile]
+  );
+
+  const rightColumnVariants = useMemo<Variants>(
+    () => ({
+      hidden: isMobile ? { opacity: 0, y: 16 } : { opacity: 0 },
+      visible: {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        transition: {
+          duration: 0.6, // Keeps timing aligned with left column reveal
+          ease: easingCurve, // Provides a gentle entrance for the text column
+        },
+      },
+    }),
+    [isMobile]
+  );
+
+  const painPointListVariants = useMemo<Variants>(
+    () => ({
+      hidden: {},
+      visible: {
+        transition: {
+          staggerChildren: isMobile ? 0.08 : 0.12, // Tunes the cascade so mobile reveals stay brisk
+          delayChildren: isMobile ? 0.06 : 0.1, // Slightly trims the initial pause on mobile to avoid sluggish starts
+        },
+      },
+    }),
+    [isMobile]
+  );
+
+  const painPointItemVariants = useMemo<Variants>(
+    () => ({
+      hidden: isMobile ? { opacity: 0, y: 12 } : { opacity: 0, x: 16 },
+      visible: {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        transition: {
+          duration: 0.45, // Keeps each bullet snappy for readability
+          ease: easingCurve, // Maintains the same easing profile across motions
+        },
+      },
+    }),
+    [isMobile]
+  );
 
   return (
     <>
@@ -35,9 +151,9 @@ export function ServicesGrid() {
         <div className='mx-auto max-w-7xl px-6'>
           {/* THE OLD WAY SECTION */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            variants={sectionVariants}
+            initial='hidden'
+            whileInView='visible'
             viewport={{ once: true, amount: 0.2 }}
             className='mb-8'
           >
@@ -45,62 +161,72 @@ export function ServicesGrid() {
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 items-start'>
               {/* LEFT: OVERWHELM ANIMATION IN CARD */}
               <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true, amount: 0.2 }}
-                className='relative h-full rounded-xl border border-border bg-zinc-900/50 p-8 overflow-hidden'
+                variants={leftColumnVariants}
+                className='relative h-full rounded-xl border border-border bg-card/80 p-8 overflow-hidden backdrop-blur-sm'
               >
                 <BlockFallAnimation />
               </motion.div>
 
               {/* RIGHT: TITLE + PAIN POINTS (NO BOXES) */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true, amount: 0.2 }}
-                className='space-y-8'
-              >
+              <motion.div variants={rightColumnVariants} className='space-y-8'>
                 {/* Title Section */}
                 <div>
-                  <span className='text-xs uppercase tracking-widest text-muted-foreground'>The Problem</span>
+                  <span className='text-xs uppercase tracking-widest text-muted-foreground'>
+                    The Problem
+                  </span>
                   <h2 className='text-3xl sm:text-4xl font-bold text-foreground mt-2 mb-4'>
-                    The old way: <span className='text-destructive'>WEARING TOO MANY HATS</span>
+                    The old way:{' '}
+                    <span className='text-destructive'>
+                      WEARING TOO MANY HATS
+                    </span>
                   </h2>
                   <p className='text-muted-foreground text-sm sm:text-base'>
-                    As a business owner, you&apos;re stretched thin—managing your brand, marketing, technology, and operations. When each service is disconnected, you become the bottleneck:
+                    As a business owner, you&apos;re stretched thin—managing
+                    your brand, marketing, technology, and operations. When each
+                    service is disconnected, you become the bottleneck:
                   </p>
                 </div>
 
                 {/* PAIN POINTS - SIMPLE LIST (NO BOXES) */}
-                <div className='space-y-4'>
+                <motion.div
+                  variants={painPointListVariants}
+                  className='space-y-4'
+                >
                   {painPoints.map((point, index) => {
                     const Icon = point.icon;
                     return (
                       <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        viewport={{ once: true, amount: 0.2 }}
+                        key={point.title}
+                        variants={painPointItemVariants}
                         className='flex gap-3'
                       >
                         <motion.div
-                          animate={{ scale: [1, 1.1, 1] }}
-                          transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
+                          animate={{
+                            scale: isMobile ? [1, 1.04, 1] : [1, 1.1, 1],
+                          }}
+                          transition={{
+                            duration: 2, // Keeps the pulse slow and gentle
+                            repeat: Infinity, // Loops the pulse for subtle emphasis
+                            repeatType: 'loop', // Avoids pausing between pulse cycles
+                            delay: index * (isMobile ? 0.08 : 0.2), // Staggers pulses so icons do not sync
+                            ease: 'easeInOut', // Smooth ease for the pulsing motion
+                          }}
                           className='flex-shrink-0 pt-0.5'
                         >
                           <Icon className='w-5 h-5 text-destructive' />
                         </motion.div>
                         <div>
-                          <h3 className='font-semibold text-destructive'>{point.title}</h3>
-                          <p className='text-sm text-muted-foreground leading-relaxed'>{point.description}</p>
+                          <h3 className='font-semibold text-destructive'>
+                            {point.title}
+                          </h3>
+                          <p className='text-sm text-muted-foreground leading-relaxed'>
+                            {point.description}
+                          </p>
                         </div>
                       </motion.div>
                     );
                   })}
-                </div>
+                </motion.div>
               </motion.div>
             </div>
           </motion.div>
@@ -118,12 +244,27 @@ export function ServicesGrid() {
             }}
           >
             <h3 className='text-xl sm:text-2xl font-bold text-foreground mb-4'>
-              Stop paying for friction. <span className='text-transparent bg-clip-text' style={{ backgroundImage: 'linear-gradient(to right, var(--color-primary-service), var(--color-secondary-service))' }}>Start investing in flow.</span>
+              Stop paying for friction.{' '}
+              <span
+                className='text-transparent bg-clip-text'
+                style={{
+                  backgroundImage:
+                    'linear-gradient(to right, var(--color-primary-service), var(--color-secondary-service))',
+                }}
+              >
+                Start investing in flow.
+              </span>
             </h3>
             <p className='text-foreground/80 text-sm sm:text-base leading-relaxed mb-4'>
-              When your brand, marketing, and technology all speak the same language, you don&apos;t just look more professional. You become more efficient. You close more deals. You build a scalable asset, not just a collection of parts.
+              When your brand, marketing, and technology all speak the same
+              language, you don&apos;t just look more professional. You become
+              more efficient. You close more deals. You build a scalable asset,
+              not just a collection of parts.
             </p>
-            <p className='text-lg font-semibold' style={{ color: 'var(--color-primary-service)' }}>
+            <p
+              className='text-lg font-semibold'
+              style={{ color: 'var(--color-primary-service)' }}
+            >
               That is the SwiftWare difference.
             </p>
           </motion.div>
@@ -133,4 +274,3 @@ export function ServicesGrid() {
     </>
   );
 }
-

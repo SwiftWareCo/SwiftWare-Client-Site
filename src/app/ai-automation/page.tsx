@@ -5,6 +5,7 @@ import AIProcessFlow from '@/components/ai-ml/sections/AIProcessFlow';
 import AIDemoSection from '@/components/ai-ml/sections/AIDemoSection';
 import AIOutcomesSection from '@/components/ai-ml/sections/AIOutcomesSection';
 import AIFAQ from '@/components/ai-ml/sections/AIFAQ';
+import CTASection from '@/components/CTASection';
 import type { Outcome } from '@/types/content';
 
 export const metadata: Metadata = {
@@ -52,6 +53,12 @@ export default function AIAutomationPage() {
       <div className='bg-secondary text-secondary-foreground'>
         <AIFAQ />
       </div>
+
+      <CTASection
+        heading='Ready to Launch Your Automation Roadmap?'
+        description='Book a free strategy session and we’ll map the highest-impact workflows to automate across your team.'
+        buttons={[{ label: 'Book Automation Audit' }]}
+      />
     </main>
   );
 }

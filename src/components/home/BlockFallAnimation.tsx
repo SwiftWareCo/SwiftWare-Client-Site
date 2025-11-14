@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion, type Variants } from 'motion/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Gravity, GravityRef, MatterBody } from '@/components/ui/gravity';
@@ -30,6 +30,42 @@ type BlockConfig = {
 
 const MOBILE_BREAKPOINT = 768;
 
+const revealCurve: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+const mobileSectionVariants: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.55, // Sets the reveal pace so the section glides upward smoothly
+      ease: revealCurve, // Mirrors desktop easing for consistency across breakpoints
+    },
+  },
+};
+
+const mobileListVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.08, // Staggers bullet cards so they cascade without overlapping motion
+      delayChildren: 0.12, // Gives the heading a moment before the task list animates in
+    },
+  },
+};
+
+const mobileItemVariants: Variants = {
+  hidden: { opacity: 0, y: 14 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4, // Keeps each card snappy so the list feels responsive
+      ease: revealCurve, // Uses the shared ease curve to avoid abrupt stops on mobile
+    },
+  },
+};
+
 // Waterfall controls: tune these constants without touching the component body
 const FALL_GRAVITY = 0.48; // Controls how quickly blocks sink downward
 const AIR_DRAG = 0.085; // Adds watery resistance to falling blocks
@@ -43,6 +79,7 @@ export default function BlockFallAnimation() {
   const gravityRef = useRef<GravityRef>(null);
   const faceTimeoutRefs = useRef<NodeJS.Timeout[]>([]);
   const hasActiveRunRef = useRef(false);
+  const hasTriggeredOnceRef = useRef(false); // Ensures the desktop animation only initializes on the first reveal
 
   const blockConfigs = useMemo<BlockConfig[]>(() => {
     const horizontalWobble = () => (Math.random() - 0.5) * 4;
@@ -125,16 +162,20 @@ export default function BlockFallAnimation() {
         const isVisible = entry.isIntersecting && entry.intersectionRatio > 0.2;
 
         if (isVisible) {
-          gravityRef.current?.stop();
-          clearFaceTimeouts();
-          setFaceStage(-1);
-          scheduleFaceUpdates();
-          gravityRef.current?.reset();
-          gravityRef.current?.start();
+          if (!hasTriggeredOnceRef.current) {
+            gravityRef.current?.stop();
+            clearFaceTimeouts();
+            setFaceStage(-1);
+            scheduleFaceUpdates();
+            gravityRef.current?.reset();
+            gravityRef.current?.start();
+            hasTriggeredOnceRef.current = true;
+          } else if (!hasActiveRunRef.current) {
+            gravityRef.current?.start();
+          }
           hasActiveRunRef.current = true;
         } else if (hasActiveRunRef.current && entry.intersectionRatio <= 0.05) {
           gravityRef.current?.stop();
-          clearFaceTimeouts();
           hasActiveRunRef.current = false;
         }
       },
@@ -168,28 +209,30 @@ export default function BlockFallAnimation() {
       <motion.div
         ref={containerRef}
         className='relative w-full rounded-xl border border-border bg-card/80 p-8'
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
+        variants={mobileSectionVariants}
+        initial='hidden'
+        whileInView='visible'
         viewport={{ once: true, amount: 0.3 }}
       >
         <div className='mx-auto max-w-2xl'>
           <h3 className='mb-6 text-center text-xl font-bold text-foreground'>
             Business Tasks you have to handle
           </h3>
-          <ul className='grid grid-cols-1 gap-3'>
-            {BLOCKS.map((block, index) => (
+          <motion.ul
+            className='grid grid-cols-1 gap-3'
+            variants={mobileListVariants}
+          >
+            {BLOCKS.map((block) => (
               <motion.li
                 key={block}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
+                variants={mobileItemVariants}
                 className='flex items-center gap-3 rounded-lg border border-border bg-card/90 p-3 text-sm text-muted-foreground'
               >
                 <span className='inline-block h-2 w-2 flex-shrink-0 rounded-full bg-service-brand' />
                 {block}
               </motion.li>
             ))}
-          </ul>
+          </motion.ul>
         </div>
       </motion.div>
     );

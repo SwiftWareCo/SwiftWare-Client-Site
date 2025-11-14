@@ -3,10 +3,9 @@
 import { useEffect, useMemo } from 'react';
 import { motion, easeOut } from 'motion/react';
 import { useColorScheme } from '@/context/ColorSchemeContext';
-import { ArrowRight } from 'lucide-react';
 import { initCalendlyScripts, openCalendlyPopup } from '@/lib/calendly';
 import { renderCanvas } from '@/components/ui/canvas';
-
+import { InteractiveHoverButton } from '../ui/interactive-hover-button';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -69,9 +68,6 @@ export function BrandDesignHero() {
     [dotPalette]
   );
 
-
-
-
   const ScatteredDots = () => (
     <>
       {dots.map((dot) => (
@@ -112,8 +108,7 @@ export function BrandDesignHero() {
         initial='hidden'
         animate='visible'
         className='pointer-events-none absolute inset-0 flex items-start justify-center'
-      >
-      </motion.div>
+      ></motion.div>
 
       <div className='relative z-10 mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24'>
         <motion.div
@@ -165,17 +160,10 @@ export function BrandDesignHero() {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <button
-              type='button'
+            <InteractiveHoverButton
               onClick={() => openCalendlyPopup()}
-              className='relative inline-flex items-center gap-2 overflow-hidden rounded-lg px-8 py-4 text-base font-medium text-primary-foreground transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background'
-              style={{
-                background: `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})`,
-              }}
-            >
-              <span>Schedule Brand Consultation</span>
-              <ArrowRight className='h-5 w-5' />
-            </button>
+              text='Schedule a Brand Consultation'
+            ></InteractiveHoverButton>
           </motion.div>
         </motion.div>
       </div>

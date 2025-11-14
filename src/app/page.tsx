@@ -4,7 +4,7 @@ import { HeroSection } from '@/components/home/HeroSection';
 import { ServicesGrid } from '@/components/home/ServicesGrid';
 import { ScrollTriggeredImpactSection } from '@/components/home/ScrollTriggeredImpactSection';
 import { PackagesGrid } from '@/components/home/PackagesGrid';
-import { CTASection } from '@/components/home/CTASection';
+import CTASection from '@/components/CTASection';
 import { WavyDivider } from '@/components/WavyDivider';
 
 export const metadata: Metadata = {
@@ -68,27 +68,47 @@ export default function Home() {
   return (
     <main className='relative'>
       <HeroSection />
-      <WavyDivider direction='up' toColor='background' />
+      <WavyDivider direction='up' fromColor='secondary' toColor='background' />
 
       <ServicesGrid />
-      <WavyDivider direction='down' toColor='background' />
+      <WavyDivider
+        direction='down'
+        fromColor='secondary'
+        toColor='background'
+      />
 
       <ScrollTriggeredImpactSection />
-      <WavyDivider direction='up' toColor='background' />
+      <WavyDivider
+        direction='down'
+        fromColor='background'
+        toColor='secondary'
+      />
 
       <PackagesGrid packages={packages} />
 
-      <WavyDivider direction='down' toColor='background' />
+      <WavyDivider
+        direction='down'
+        fromColor='secondary'
+        toColor='background'
+      />
 
       <FAQSection
         title='Frequently Asked Questions'
         description="Got questions? We've got answers."
         items={faqs}
       />
+      <WavyDivider
+        direction='down'
+        fromColor='background'
+        toColor='secondary'
+      />
 
-      <WavyDivider direction='up' toColor='background' />
-
-      <CTASection />
+      <CTASection
+        heading='Ready to Launch Your Automation Roadmap?'
+        description='Book a free strategy session and we’ll map the highest-impact workflows to automate across your team.'
+        buttons={[{ label: 'Book Automation Audit' }]}
+        backgroundClassName='bg-secondary'
+      />
     </main>
   );
 }

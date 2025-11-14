@@ -1,15 +1,16 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { BackgroundLines } from '@/components/ui/background-lines';
 import { RotatingServiceKeywords } from './RotatingServiceKeywords';
 import { openCalendlyPopup } from '@/lib/calendly';
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 
 export function HeroSection() {
   return (
-    <section className='relative overflow-hidden pt-28 sm:pt-40 pb-16 sm:pb-24 bg-background'>
+    <section className='relative min-h-[80vh] overflow-hidden pt-28 sm:pt-40 pb-16 sm:pb-24 bg-background'>
       <div className='absolute inset-0 -z-20'>
         <div className='absolute inset-0 bg-[radial-gradient(circle_at_16%_22%,rgba(var(--color-primary-service-rgb),0.16),transparent_68%)]' />
         <div className='absolute inset-0 bg-[radial-gradient(circle_at_82%_30%,rgba(var(--color-secondary-service-rgb),0.14),transparent_72%)]' />
@@ -84,14 +85,12 @@ export function HeroSection() {
             className='mb-8 max-w-3xl mx-auto'
           >
             <p className='text-lg sm:text-xl mb-3 text-foreground/80 dark:text-foreground/80'>
-              We specialize in <RotatingServiceKeywords /> for modern
-              businesses.
+              We specialize in <RotatingServiceKeywords />
             </p>
 
             <p className='text-xl sm:text-2xl text-foreground/75 dark:text-foreground/75'>
-              Stop juggling multiple agencies. We deliver brand design, digital
-              marketing, AI automation, and custom software—all working together
-              as one unified strategy.
+              Stop juggling multiple agencies. We deliver it all working
+              together as one unified strategy.
             </p>
           </motion.div>
 
@@ -101,24 +100,11 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 1.6 }}
             className='flex justify-center'
           >
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <InteractiveHoverButton
               onClick={() => openCalendlyPopup()}
-              className='cursor-pointer relative inline-flex items-center gap-2 overflow-hidden rounded-lg px-8 py-4 text-base font-medium text-white transition-shadow'
-              style={{
-                background: `linear-gradient(to right, var(--color-primary-service), var(--color-secondary-service))`,
-                boxShadow: `0 20px 40px rgba(59, 130, 246, 0.25)`,
-              }}
-            >
-              <span>Schedule a Consultation</span>
-              <motion.div
-                animate={{ x: [0, 4, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <ArrowRight className='h-5 w-5' />
-              </motion.div>
-            </motion.button>
+              text='Schedule a Consultation'
+              className='w-auto px-10 py-4 text-base'
+            />
           </motion.div>
         </div>
       </div>

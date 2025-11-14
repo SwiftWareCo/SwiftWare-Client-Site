@@ -16,9 +16,10 @@ function CalendlyButton({
   variant = 'primary',
   tone,
 }: CTAButtonConfig & { tone: CTATone }) {
-  const primaryBase = 'bg-service-software text-background border-transparent';
+  const primaryBase =
+    'bg-transparent text-white border-transparent shadow-[0_14px_40px_rgba(var(--color-primary-service-rgb),0.22)] hover:shadow-[0_18px_44px_rgba(var(--color-primary-service-rgb),0.3)]';
   const secondaryOnDefault =
-    'bg-transparent text-service-software border-service-software hover:bg-service-software hover:text-background';
+    'bg-transparent text-[color:var(--color-primary-service)] border-[color:var(--color-primary-service)] hover:bg-[color:var(--color-primary-service)]/10';
   const secondaryOnSecondary =
     'bg-transparent text-secondary-foreground border-secondary-foreground/40 hover:bg-secondary-foreground/10';
 

@@ -3,11 +3,10 @@
 import { motion } from 'motion/react';
 import AISearchDemo from '@/components/ai-ml/interactive/AISearchDemo';
 import { openCalendlyPopup } from '@/lib/calendly';
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 
 const PRIMARY_RGB_VAR = '--color-primary-service-rgb' as const;
 const SECONDARY_RGB_VAR = '--color-secondary-service-rgb' as const;
-const PRIMARY_COLOR = 'var(--color-primary-service)';
-const SECONDARY_COLOR = 'var(--color-secondary-service)';
 
 const withAlpha = (cssVar: string, alpha: number) =>
   `rgba(var(${cssVar}), ${alpha})`;
@@ -98,18 +97,13 @@ export default function AIDemoSection() {
           <p className='mb-6 text-muted-foreground'>
             Ready to see what SwiftMind can do with your data?
           </p>
-          <button
+          <InteractiveHoverButton
+            text='Schedule Live Demo'
             onClick={() =>
               openCalendlyPopup('https://calendly.com/swiftwareco/30min')
             }
-            className='cursor-pointer rounded-xl px-8 py-4 text-sm font-medium text-primary-foreground transition-all duration-300'
-            style={{
-              background: `linear-gradient(90deg, ${PRIMARY_COLOR}, ${SECONDARY_COLOR})`,
-              boxShadow: `0 18px 36px ${withAlpha(PRIMARY_RGB_VAR, 0.2)}`,
-            }}
-          >
-            Schedule Live Demo
-          </button>
+            className='mx-auto w-64'
+          />
         </motion.div>
       </div>
     </section>
