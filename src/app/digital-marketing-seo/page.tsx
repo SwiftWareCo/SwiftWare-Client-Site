@@ -1,87 +1,71 @@
 'use client';
 
-import { motion } from 'motion/react';
 import { DigitalMarketingHero } from '@/components/digital-marketing-seo/DigitalMarketingHero';
 import { ProblemSolutionSection } from '@/components/digital-marketing-seo/ProblemSolutionSection';
 import { WhatsIncludedSection } from '@/components/digital-marketing-seo/WhatsIncludedSection';
-import { CaseStudySection } from '@/components/digital-marketing-seo/CaseStudySection';
 import { UnifiedSystemConnector } from '@/components/digital-marketing-seo/UnifiedSystemConnector';
 import { ServiceSpecificFAQ } from '@/components/digital-marketing-seo/ServiceSpecificFAQ';
 import { FinalCTASection } from '@/components/digital-marketing-seo/FinalCTASection';
-
-const sectionEase = [0.25, 0.1, 0.25, 1] as const; // Consistent curve for all section reveals.
-
-const sectionVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8, // Controls how quickly sections fade/slide into view.
-      ease: sectionEase, // Smooths the finish so sections settle gently.
-    },
-  },
-};
-
-const gradientBackgroundStyle = {
-  backgroundImage: `linear-gradient(135deg, var(--color-primary-service), var(--color-secondary-service))`,
-};
+import { SpikeDivider } from '@/components/sections/SpikeDivider';
+import { MacbookScroll } from '@/components/ui/macbook-scroll';
 
 export default function DigitalMarketingPage() {
   return (
     <>
       <DigitalMarketingHero />
 
-      <ProblemSolutionSection />
+      <section className='bg-background'>
+        <ProblemSolutionSection className='bg-background' />
+      </section>
 
-      <motion.section
-        variants={sectionVariants}
-        initial='hidden'
-        whileInView='visible'
-        viewport={{ once: true, amount: 0.3 }}
-        className='bg-background'
-      >
-        <WhatsIncludedSection />
-      </motion.section>
+      <section className='bg-secondary text-secondary-foreground'>
+        <SpikeDivider
+          top
+          bottom
+          spikeColor='bg-background'
+          paddingClassName='py-0'
+        >
+          <WhatsIncludedSection className='bg-transparent' />
+        </SpikeDivider>
+      </section>
 
-      <motion.section
-        variants={sectionVariants}
-        initial='hidden'
-        whileInView='visible'
-        viewport={{ once: true, amount: 0.3 }}
-        style={gradientBackgroundStyle}
-      >
-        <CaseStudySection />
-      </motion.section>
+      <section className='bg-background text-secondary-foreground'>
+        <MacbookScroll
+          src='/images/SEOResults.png'
+          showGradient={false}
+          title={
+            <span className='text-secondary-foreground'>
+              Track the leads you earn—and the revenue you close.
+            </span>
+          }
+        />
+      </section>
 
-      <motion.section
-        variants={sectionVariants}
-        initial='hidden'
-        whileInView='visible'
-        viewport={{ once: true, amount: 0.3 }}
-        className='bg-background'
-      >
-        <UnifiedSystemConnector />
-      </motion.section>
+      <section className='bg-background'>
+        <SpikeDivider
+          top
+          bottom
+          spikeColor='bg-background'
+          paddingClassName='py-0'
+        >
+          <UnifiedSystemConnector className='bg-secondary' />
+        </SpikeDivider>
+      </section>
 
-      <motion.section
-        variants={sectionVariants}
-        initial='hidden'
-        whileInView='visible'
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <ServiceSpecificFAQ />
-      </motion.section>
+      <section className='bg-secondary text-secondary-foreground'>
+        <SpikeDivider
+          top
+          bottom
+          spikeColor='bg-background'
+          paddingClassName='py-0'
+        >
+          <ServiceSpecificFAQ className='bg-background' />
+        </SpikeDivider>
+      </section>
 
-      <motion.section
-        variants={sectionVariants}
-        initial='hidden'
-        whileInView='visible'
-        viewport={{ once: true, amount: 0.3 }}
-        className='bg-background'
-      >
-        <FinalCTASection />
-      </motion.section>
+      <section className='bg-secondary'>
+        <FinalCTASection tone='default' />
+      </section>
     </>
   );
 }

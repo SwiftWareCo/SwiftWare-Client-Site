@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 /* Light Mode Colors (Root Variables) */
 :root {
@@ -10,9 +10,9 @@
   --card-foreground: hsl(0 0% 3.9%);
   --popover: hsl(0 0% 100%);
   --popover-foreground: hsl(0 0% 3.9%);
-  --primary: hsl(0 0% 9%);              /* Dark color for buttons/text */
+  --primary: hsl(0 0% 9%); /* Dark color for buttons/text */
   --primary-foreground: hsl(0 0% 98%); /* Light text on dark background */
-  --secondary: hsl(0, 0%, 7%);        
+  --secondary: hsl(0, 0%, 7%);
   --secondary-foreground: hsl(0 0% 100%);
   --muted: hsl(0 0% 96.1%);
   --muted-foreground: hsl(0 0% 45.1%);
@@ -26,8 +26,8 @@
   --ring: hsl(0 0% 3.9%);
 
   /* Service-specific brand colors (defaults to software/blue+purple) */
-  --color-primary-service: #3B82F6;    /* Blue */
-  --color-secondary-service: #8B5CF6;  /* Purple */
+  --color-primary-service: #3b82f6; /* Blue */
+  --color-secondary-service: #8b5cf6; /* Purple */
 
   /* RGB versions for gradients and overlays */
   --color-primary-service-rgb: 59, 130, 246;
@@ -35,33 +35,47 @@
 
   /* Header styling variables */
   --header-border: rgba(59, 130, 246, 0.2);
-  --header-shadow-scrolled: 0 16px 40px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(139, 92, 246, 0.1);
-  --header-shadow-default: 0 8px 32px rgba(59, 130, 246, 0.1), 0 0 0 1px rgba(139, 92, 246, 0.05);
+  --header-shadow-scrolled:
+    0 16px 40px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(139, 92, 246, 0.1);
+  --header-shadow-default:
+    0 8px 32px rgba(59, 130, 246, 0.1), 0 0 0 1px rgba(139, 92, 246, 0.05);
 
   /* Service Badge Colors (for convince/services components) */
-  --color-service-brand: #06B6D4;      /* Cyan - Brand Design */
-  --color-service-brand-dark: #0891B2; /* Teal */
-  --color-service-marketing: #10B981;  /* Emerald - Marketing */
+  --color-service-brand: #06b6d4; /* Cyan - Brand Design */
+  --color-service-brand-dark: #0891b2; /* Teal */
+  --color-service-marketing: #10b981; /* Emerald - Marketing */
   --color-service-marketing-dark: #059669; /* Green */
-  --color-service-ai: #A855F7;         /* Purple - AI/Automation */
-  --color-service-ai-dark: #7C3AED;    /* Violet */
-  --color-service-software: #4F46E5;   /* Indigo - Custom Software */
-  --color-service-software-dark: #3B82F6; /* Blue */
+  --color-service-ai: #a855f7; /* Purple - AI/Automation */
+  --color-service-ai-dark: #7c3aed; /* Violet */
+  --color-service-software: #4f46e5; /* Indigo - Custom Software */
+  --color-service-software-dark: #3b82f6; /* Blue */
+
+  /* Macbook Scroll component palette */
+  --macbook-shell: #050505;
+  --macbook-shell-highlight: #171717;
+  --macbook-screen: #1f1f22;
+  --macbook-base: #24262c;
+  --macbook-key: #0f0f12;
+  --macbook-key-backlight: rgba(255, 255, 255, 0.12);
+  --macbook-key-outline: rgba(255, 255, 255, 0.18);
+  --macbook-speaker-dot: rgba(15, 23, 42, 0.85);
+  --macbook-trackpad: rgba(15, 23, 42, 0.22);
+  --macbook-shell-overlay: rgba(15, 23, 42, 0.55);
 
   --radius: 0.5rem;
 }
 
 /* Dark Mode Colors */
 .dark {
-  --background: hsl(0 0% 9%);          /* zinc-900 */
+  --background: hsl(0 0% 9%); /* zinc-900 */
   --foreground: hsl(0 0% 98%);
   --card: hsl(0 0% 3.9%);
   --card-foreground: hsl(0 0% 98%);
   --popover: hsl(0 0% 3.9%);
   --popover-foreground: hsl(0 0% 98%);
-  --primary: hsl(0 0% 9%);             /* zinc-900 */
+  --primary: hsl(0 0% 9%); /* zinc-900 */
   --primary-foreground: hsl(0 0% 98%);
-  --secondary: hsl(0, 0%, 7%);        /*  Secondary background (same as light) */
+  --secondary: hsl(0, 0%, 7%); /*  Secondary background (same as light) */
   --secondary-foreground: hsl(0 0% 98%);
   --muted: hsl(0 0% 14.9%);
   --muted-foreground: hsl(0 0% 63.9%);
@@ -75,8 +89,8 @@
   --ring: hsl(0 0% 83.1%);
 
   /* Service colors in dark mode (same as light for now) */
-  --color-primary-service: #3B82F6;    /* Blue */
-  --color-secondary-service: #8B5CF6;  /* Purple */
+  --color-primary-service: #3b82f6; /* Blue */
+  --color-secondary-service: #8b5cf6; /* Purple */
 
   /* RGB versions for gradients and overlays */
   --color-primary-service-rgb: 59, 130, 246;
@@ -84,8 +98,21 @@
 
   /* Header styling variables */
   --header-border: rgba(59, 130, 246, 0.2);
-  --header-shadow-scrolled: 0 16px 40px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(139, 92, 246, 0.1);
-  --header-shadow-default: 0 8px 32px rgba(59, 130, 246, 0.1), 0 0 0 1px rgba(139, 92, 246, 0.05);
+  --header-shadow-scrolled:
+    0 16px 40px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(139, 92, 246, 0.1);
+  --header-shadow-default:
+    0 8px 32px rgba(59, 130, 246, 0.1), 0 0 0 1px rgba(139, 92, 246, 0.05);
+
+  --macbook-shell: #050505;
+  --macbook-shell-highlight: #171717;
+  --macbook-screen: #1f1f22;
+  --macbook-base: #24262c;
+  --macbook-key: #0f0f12;
+  --macbook-key-backlight: rgba(255, 255, 255, 0.12);
+  --macbook-key-outline: rgba(255, 255, 255, 0.18);
+  --macbook-speaker-dot: rgba(148, 163, 184, 0.85);
+  --macbook-trackpad: rgba(148, 163, 184, 0.22);
+  --macbook-shell-overlay: rgba(15, 23, 42, 0.55);
 }
 
 /* Tailwind Theme Mapping */
@@ -125,47 +152,55 @@
 
 /* Service-specific theme overrides (for route-based theming) */
 /* Brand Design - Cyan & Teal */
-[data-scheme="brand"] {
-  --color-primary-service: #06B6D4;
-  --color-secondary-service: #0891B2;
+[data-scheme='brand'] {
+  --color-primary-service: #06b6d4;
+  --color-secondary-service: #0891b2;
   --color-primary-service-rgb: 6, 182, 212;
   --color-secondary-service-rgb: 8, 145, 178;
   --header-border: rgba(6, 182, 212, 0.2);
-  --header-shadow-scrolled: 0 16px 40px rgba(6, 182, 212, 0.15), 0 0 0 1px rgba(8, 145, 178, 0.1);
-  --header-shadow-default: 0 8px 32px rgba(6, 182, 212, 0.1), 0 0 0 1px rgba(8, 145, 178, 0.05);
+  --header-shadow-scrolled:
+    0 16px 40px rgba(6, 182, 212, 0.15), 0 0 0 1px rgba(8, 145, 178, 0.1);
+  --header-shadow-default:
+    0 8px 32px rgba(6, 182, 212, 0.1), 0 0 0 1px rgba(8, 145, 178, 0.05);
 }
 
 /* Digital Marketing - Emerald & Green */
-[data-scheme="marketing"] {
-  --color-primary-service: #10B981;
+[data-scheme='marketing'] {
+  --color-primary-service: #10b981;
   --color-secondary-service: #059669;
   --color-primary-service-rgb: 16, 185, 129;
   --color-secondary-service-rgb: 5, 150, 105;
   --header-border: rgba(16, 185, 129, 0.2);
-  --header-shadow-scrolled: 0 16px 40px rgba(16, 185, 129, 0.15), 0 0 0 1px rgba(5, 150, 105, 0.1);
-  --header-shadow-default: 0 8px 32px rgba(16, 185, 129, 0.1), 0 0 0 1px rgba(5, 150, 105, 0.05);
+  --header-shadow-scrolled:
+    0 16px 40px rgba(16, 185, 129, 0.15), 0 0 0 1px rgba(5, 150, 105, 0.1);
+  --header-shadow-default:
+    0 8px 32px rgba(16, 185, 129, 0.1), 0 0 0 1px rgba(5, 150, 105, 0.05);
 }
 
 /* AI Automation - Purple & Violet */
-[data-scheme="automation"] {
-  --color-primary-service: #A855F7;
-  --color-secondary-service: #7C3AED;
+[data-scheme='automation'] {
+  --color-primary-service: #a855f7;
+  --color-secondary-service: #7c3aed;
   --color-primary-service-rgb: 168, 85, 247;
   --color-secondary-service-rgb: 124, 58, 237;
   --header-border: rgba(168, 85, 247, 0.2);
-  --header-shadow-scrolled: 0 16px 40px rgba(168, 85, 247, 0.15), 0 0 0 1px rgba(124, 58, 237, 0.1);
-  --header-shadow-default: 0 8px 32px rgba(168, 85, 247, 0.1), 0 0 0 1px rgba(124, 58, 237, 0.05);
+  --header-shadow-scrolled:
+    0 16px 40px rgba(168, 85, 247, 0.15), 0 0 0 1px rgba(124, 58, 237, 0.1);
+  --header-shadow-default:
+    0 8px 32px rgba(168, 85, 247, 0.1), 0 0 0 1px rgba(124, 58, 237, 0.05);
 }
 
 /* Custom Software - Indigo & Blue */
-[data-scheme="software"] {
-  --color-primary-service: #4F46E5;
-  --color-secondary-service: #3B82F6;
+[data-scheme='software'] {
+  --color-primary-service: #4f46e5;
+  --color-secondary-service: #3b82f6;
   --color-primary-service-rgb: 79, 70, 229;
   --color-secondary-service-rgb: 59, 130, 246;
   --header-border: rgba(79, 70, 229, 0.2);
-  --header-shadow-scrolled: 0 16px 40px rgba(79, 70, 229, 0.15), 0 0 0 1px rgba(59, 130, 246, 0.1);
-  --header-shadow-default: 0 8px 32px rgba(79, 70, 229, 0.1), 0 0 0 1px rgba(59, 130, 246, 0.05);
+  --header-shadow-scrolled:
+    0 16px 40px rgba(79, 70, 229, 0.15), 0 0 0 1px rgba(59, 130, 246, 0.1);
+  --header-shadow-default:
+    0 8px 32px rgba(79, 70, 229, 0.1), 0 0 0 1px rgba(59, 130, 246, 0.05);
 }
 
 /* Styled Scrollbar for Webkit Browsers (Chrome, Safari, Edge) */

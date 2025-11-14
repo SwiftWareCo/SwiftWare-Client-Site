@@ -1,67 +1,70 @@
-"use client";
-import { motion } from "motion/react";
+'use client';
+import { motion } from 'motion/react';
 
 const pulseAnimations = [
   {
-    size: "200px",
-    color: "bg-blue-500",
-    delay: 1,
-    position: { top: "10%", left: "15%" },
+    size: 240,
+    opacity: 0.24,
+    delay: 4,
+    position: { top: '12%', left: '16%' },
+    color: 'rgba(var(--color-primary-service-rgb), 0.28)',
   },
   {
-    size: "150px",
-    color: "bg-teal-400",
-    delay: 2,
-    position: { bottom: "20%", right: "10%" },
+    size: 180,
+    opacity: 0.2,
+    delay: 5.5,
+    position: { bottom: '18%', right: '12%' },
+    color: 'rgba(var(--color-secondary-service-rgb), 0.22)',
   },
   {
-    size: "100px",
-    color: "bg-purple-500",
-    delay: 3,
-    position: { top: "30%", right: "20%" },
+    size: 140,
+    opacity: 0.16,
+    delay: 6.5,
+    position: { top: '36%', right: '22%' },
+    color: 'rgba(var(--color-primary-service-rgb), 0.18)',
   },
   {
-    size: "180px",
-    color: "bg-yellow-400",
-    delay: 1.5,
-    position: { bottom: "5%", left: "30%" },
-  },
-  {
-    size: "120px",
-    color: "bg-red-500",
-    delay: 2.5,
-    position: { top: "50%", left: "5%" },
-  },
-  {
-    size: "90px",
-    color: "bg-green-400",
-    delay: 3.5,
-    position: { top: "10%", right: "5%" },
-  },
-  {
-    size: "160px",
-    color: "bg-indigo-500",
-    delay: 0.5,
-    position: { bottom: "10%", left: "50%" },
+    size: 210,
+    opacity: 0.22,
+    delay: 4.5,
+    position: { bottom: '8%', left: '28%' },
+    color: 'rgba(var(--color-secondary-service-rgb), 0.2)',
   },
 ];
 
+const pulseVariants = {
+  initial: { scale: 0.6, opacity: 0 },
+  // Slow breathing to keep the hero background calm yet alive.
+  animate: (opacity: number) => ({
+    scale: [0.6, 1.25, 0.9],
+    opacity: [0, opacity, 0],
+  }),
+};
+
 export const ClickAnimation = () => {
   return (
-    <div className="absolute inset-0 pointer-events-none">
+    <div className='pointer-events-none absolute inset-0 overflow-hidden'>
+      <div className='absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(var(--color-primary-service-rgb),0.18)_0%,transparent_55%)]' />
       {pulseAnimations.map((animation, index) => (
         <motion.div
           key={index}
-          initial={{ scale: 0.5, opacity: 0, ...animation.position }}
-          animate={{ scale: [0.5, 1.2, 1], opacity: [0, 0.8, 0] }}
+          variants={pulseVariants}
+          initial='initial'
+          animate='animate'
+          custom={animation.opacity}
           transition={{
-            duration: 2,
-            ease: "easeOut",
+            duration: 7,
+            ease: 'easeInOut',
             repeat: Infinity,
             repeatDelay: animation.delay,
           }}
-          className={`absolute rounded-full ${animation.color}`}
-          style={{ width: animation.size, height: animation.size }}
+          className='absolute rounded-full blur-xl'
+          style={{
+            width: animation.size,
+            height: animation.size,
+            backgroundColor: animation.color,
+            ...animation.position,
+          }}
         />
       ))}
     </div>
