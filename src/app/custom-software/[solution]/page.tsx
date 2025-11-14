@@ -28,18 +28,13 @@ interface SolutionPageProps {
   };
 }
 
-const SUPPORTED_SOLUTIONS = ['crm', 'ai-rag', 'golf', 'web-portals'] as const;
+const SUPPORTED_SOLUTIONS = ['crm', 'golf', 'web-portals'] as const;
 type SupportedSolution = (typeof SUPPORTED_SOLUTIONS)[number];
 
 const FALLBACK_METADATA: Record<
   Exclude<SupportedSolution, 'crm'>,
   { title: string; description: string }
 > = {
-  'ai-rag': {
-    title: 'AI & Retrieval-Augmented Generation | SwiftWare',
-    description:
-      'Launch custom AI copilots, knowledge search, and automation tuned to your data.',
-  },
   golf: {
     title: 'Golf Course Management Software | SwiftWare',
     description:
