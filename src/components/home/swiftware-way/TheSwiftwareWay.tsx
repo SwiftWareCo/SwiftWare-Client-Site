@@ -107,6 +107,33 @@ const swiftwareSteps: SwiftwareStep[] = [
   },
 ];
 
+const useSequentialReveal = (
+  progress: MotionValue<number>,
+  delay: number
+) => {
+  const appearStart = Math.min(0.08 + delay, 0.92);
+  const appearPeak = Math.min(appearStart + 0.18, 0.96);
+  const exitStart = 0.92;
+
+  const opacity = useTransform(
+    progress,
+    [0, appearStart, appearPeak, exitStart, 1],
+    [0, 0, 1, 1, 0]
+  );
+  const y = useTransform(
+    progress,
+    [0, appearStart, appearPeak, 1],
+    [20, 20, 0, 0]
+  );
+  const scale = useTransform(
+    progress,
+    [0, appearStart, appearPeak],
+    [0.96, 0.96, 1]
+  );
+
+  return { opacity, y, scale };
+};
+
 const Scene = ({
   step,
   progress,
@@ -124,6 +151,10 @@ const Scene = ({
     ['blur(12px)', 'blur(0px)', 'blur(0px)', 'blur(12px)']
   );
 
+  const badgeMotion = useSequentialReveal(progress, 0);
+  const titleMotion = useSequentialReveal(progress, 0.07);
+  const bodyMotion = useSequentialReveal(progress, 0.14);
+
   return (
     <motion.div
       style={{
@@ -134,21 +165,26 @@ const Scene = ({
       }}
       className='absolute inset-0 flex flex-col justify-center p-8 lg:p-12'
     >
-      <div
+      <motion.div
         className='inline-flex items-center justify-center w-12 h-12 rounded-full mb-4 font-bold text-lg text-background'
         style={{ background: `var(${step.colorVar})` }}
+        {...badgeMotion}
       >
         {step.number}
-      </div>
-      <h3
+      </motion.div>
+      <motion.h3
         className='text-2xl sm:text-3xl font-bold mb-3'
         style={{ color: `var(${step.colorVar})` }}
+        {...titleMotion}
       >
         {step.title}
-      </h3>
-      <p className='text-base sm:text-lg leading-relaxed text-muted-foreground'>
+      </motion.h3>
+      <motion.p
+        className='text-base sm:text-lg leading-relaxed text-muted-foreground'
+        {...bodyMotion}
+      >
         {step.description}
-      </p>
+      </motion.p>
     </motion.div>
   );
 };

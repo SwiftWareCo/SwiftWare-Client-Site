@@ -39,7 +39,7 @@ const LogoTile = ({
     [i, j, numTiles, tileSize]
   );
 
-  const animationProgress = useTransform(progress, [0.1, 0.8], [0, 1]);
+  const animationProgress = useTransform(progress, [0.05, 0.6], [0, 1]);
 
   useFrame(() => {
     const p = animationProgress.get();
@@ -256,8 +256,8 @@ const VisualScene = ({
 
 export const SwiftwareWayVisuals = ({ scrollYProgress }: { scrollYProgress: MotionValue<number> }) => {
   const smoothScrollYProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
+    stiffness: 160,
+    damping: 26,
     restDelta: 0.001,
   });
 

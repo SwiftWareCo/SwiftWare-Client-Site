@@ -66,8 +66,6 @@ export function ServicesGrid() {
 
   const isMobile = useIsMobile();
 
-  console.log(isMobile);
-
   const sectionVariants = useMemo<Variants>(
     () => ({
       hidden: { opacity: 0, y: 24 },
@@ -175,8 +173,8 @@ export function ServicesGrid() {
                     The Problem
                   </span>
                   <h2 className='text-3xl sm:text-4xl font-bold text-foreground mt-2 mb-4'>
-                    The old way:{' '}
-                    <span className='text-destructive'>
+                    The old way:
+                    <span className='block text-4xl sm:text-5xl text-destructive-bright leading-tight'>
                       WEARING TOO MANY HATS
                     </span>
                   </h2>
@@ -213,10 +211,10 @@ export function ServicesGrid() {
                           }}
                           className='flex-shrink-0 pt-0.5'
                         >
-                          <Icon className='w-5 h-5 text-destructive' />
+                          <Icon className='w-5 h-5 text-destructive-bright' />
                         </motion.div>
                         <div>
-                          <h3 className='font-semibold text-destructive'>
+                          <h3 className='font-semibold text-destructive-bright'>
                             {point.title}
                           </h3>
                           <p className='text-sm text-muted-foreground leading-relaxed'>
