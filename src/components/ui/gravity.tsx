@@ -311,7 +311,9 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
 
       if (isRunningRef.current) {
         const last = lastUpdateRef.current ?? now;
-        const delta = Math.min(now - last, 1000 / 30);
+        // Cap delta at 16.667ms (1000/60 for 60 FPS) to prevent Matter.js warnings
+        // Matter.js recommends delta ≤ 16.667ms for stable physics simulation
+        const delta = Math.min(now - last, 1000 / 60);
         Engine.update(engineRef.current, delta);
         lastUpdateRef.current = now;
       } else {
