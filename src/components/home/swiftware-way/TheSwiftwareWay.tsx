@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useMemo, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import {
   motion,
@@ -17,8 +17,18 @@ import { getColorsFromPath } from '@/lib/colors';
 
 // New: Floating Dots Background Component
 const FloatingDotsBackground = () => {
-  const dots = useMemo(
-    () =>
+  const [dots, setDots] = useState<
+    Array<{
+      size: number;
+      duration: number;
+      delay: number;
+      xStart: number;
+      yStart: number;
+    }>
+  >([]);
+
+  useEffect(() => {
+    setDots(
       Array.from({ length: 42 }, () => {
         const duration = Math.random() * 20 + 10;
         return {
@@ -28,41 +38,26 @@ const FloatingDotsBackground = () => {
           xStart: Math.random() * 100,
           yStart: Math.random() * 100,
         };
-      }),
-    []
-  );
+      })
+    );
+  }, []);
 
   return (
     <div className='absolute inset-0 overflow-hidden'>
-      {dots.map((dot, index) => (
-        <motion.div
-          key={`floating-dot-${index}`}
-          className='absolute rounded-full bg-foreground opacity-20'
-          style={{
-            width: `${dot.size}px`,
-            height: `${dot.size}px`,
-            left: `${dot.xStart}%`,
-            top: `${dot.yStart}%`,
-            animation: `float ${dot.duration}s ${dot.delay}s infinite linear`,
-          }}
-        />
-      ))}
-      <style jsx global>{`
-        @keyframes float {
-          0% {
-            transform: translate(0, 0);
-            opacity: 0.1;
-          }
-          50% {
-            transform: translate(10px, 20px);
-            opacity: 0.7;
-          }
-          100% {
-            transform: translate(0, 0);
-            opacity: 0.1;
-          }
-        }
-      `}</style>
+      {dots.length > 0 &&
+        dots.map((dot, index) => (
+          <motion.div
+            key={`floating-dot-${index}`}
+            className='absolute rounded-full bg-foreground opacity-20'
+            style={{
+              width: `${dot.size}px`,
+              height: `${dot.size}px`,
+              left: `${dot.xStart}%`,
+              top: `${dot.yStart}%`,
+              animation: `float ${dot.duration}s ${dot.delay}s infinite linear`,
+            }}
+          />
+        ))}
     </div>
   );
 };

@@ -25,34 +25,3 @@ export function openCalendlyPopup(
     window.open(url, '_blank');
   }
 }
-
-/**
- * Initialize Calendly scripts if they haven't been loaded yet
- */
-export function initCalendlyScripts(): void {
-  if (typeof window === 'undefined') return;
-
-  // Load Calendly widget script
-  if (
-    !document.querySelector(
-      'script[src*="calendly.com/assets/external/widget.js"]'
-    )
-  ) {
-    const script = document.createElement('script');
-    script.src = 'https://assets.calendly.com/assets/external/widget.js';
-    script.async = true;
-    document.head.appendChild(script);
-  }
-
-  // Load Calendly CSS
-  if (
-    !document.querySelector(
-      'link[href*="calendly.com/assets/external/widget.css"]'
-    )
-  ) {
-    const link = document.createElement('link');
-    link.href = 'https://assets.calendly.com/assets/external/widget.css';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-  }
-}

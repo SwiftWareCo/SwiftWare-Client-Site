@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { motion, easeOut } from 'motion/react';
 import { usePathname } from 'next/navigation';
 import { getColorsFromPath } from '@/lib/colors';
-import { initCalendlyScripts, openCalendlyPopup } from '@/lib/calendly';
+import { openCalendlyPopup } from '@/lib/calendly';
 import { renderCanvas } from '@/components/ui/canvas';
 import { InteractiveHoverButton } from '../ui/interactive-hover-button';
 
@@ -34,10 +34,6 @@ const itemVariants = {
 export function BrandDesignHero() {
   const pathname = usePathname();
   const { primary, secondary } = getColorsFromPath(pathname);
-
-  useEffect(() => {
-    initCalendlyScripts();
-  }, []);
 
   useEffect(() => {
     const cleanupCanvas = renderCanvas();

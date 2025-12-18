@@ -237,3 +237,19 @@ html {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
+
+/* Floating dots animation for SwiftwareWay background */
+@keyframes float {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.1;
+  }
+  50% {
+    transform: translate(10px, 20px);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.1;
+  }
+}

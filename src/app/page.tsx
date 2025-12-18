@@ -66,7 +66,7 @@ const faqs = [
 
 export default function Home() {
   return (
-    <main className='relative'>
+    <main className='relative' suppressHydrationWarning>
       <HeroSection />
       <WavyDivider direction='up' fromColor='secondary' toColor='background' />
 

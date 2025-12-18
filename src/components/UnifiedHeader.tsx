@@ -272,12 +272,11 @@ export default function UnifiedHeader() {
                         }}
                       >
                         <Image
-                          src='/images/swiftware-logo.png'
+                          src='/images/swiftware-logo-small.webp'
                           alt='Swiftware software development company logo'
-                          width={20}
-                          height={20}
-                          className='mix-blend-screen'
-                          unoptimized={process.env.NODE_ENV === 'development'}
+                          width={32}
+                          height={32}
+                          className='w-5 h-5 mix-blend-screen'
                         />
                       </motion.div>
                     </div>
@@ -465,12 +464,11 @@ export default function UnifiedHeader() {
                         }}
                       >
                         <Image
-                          src='/images/swiftware-logo.png'
+                          src='/images/swiftware-logo-small.webp'
                           alt='Swiftware software development company logo'
-                          width={22}
-                          height={22}
-                          className='mix-blend-screen'
-                          unoptimized={process.env.NODE_ENV === 'development'}
+                          width={32}
+                          height={32}
+                          className='w-5 h-5 mix-blend-screen'
                         />
                       </motion.div>
                     </div>
