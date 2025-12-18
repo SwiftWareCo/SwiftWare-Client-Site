@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useColorScheme } from '@/context/ColorSchemeContext';
+import { usePathname } from 'next/navigation';
+import { getColorsFromPath } from '@/lib/colors';
 import { ChevronDown } from 'lucide-react';
 
 interface FAQItem {
@@ -21,7 +22,8 @@ export function FAQSection({
   description,
   items,
 }: FAQSectionProps) {
-  const { colors } = useColorScheme();
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (

@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, Shield, Brain, Database, Zap } from 'lucide-react';
+import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
 
 interface FAQItem {
   id: string;
@@ -42,12 +44,7 @@ const FAQ_ITEMS: FAQItem[] = [
   },
 ];
 
-const PRIMARY_COLOR = 'var(--color-primary-service)';
-const PRIMARY_RGB_VAR = '--color-primary-service-rgb' as const;
-const SECONDARY_RGB_VAR = '--color-secondary-service-rgb' as const;
-
-const withAlpha = (cssVar: string, alpha: number) =>
-  `rgba(var(${cssVar}), ${alpha})`;
+const withAlpha = (rgb: string, alpha: number) => `rgba(${rgb}, ${alpha})`;
 
 const fadeVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -59,6 +56,8 @@ const fadeVariants = {
 };
 
 export default function AIFAQ() {
+  const pathname = usePathname();
+  const colorsRGB = getColorsRGBFromPath(pathname);
   const [openItems, setOpenItems] = useState<Set<string>>(new Set());
 
   const toggleItem = (id: string) => {
@@ -77,11 +76,11 @@ export default function AIFAQ() {
       <div className='absolute inset-0 -z-10'>
         <div
           className='absolute left-1/4 top-1/4 size-96 rounded-full blur-3xl'
-          style={{ backgroundColor: withAlpha(PRIMARY_RGB_VAR, 0.12) }}
+          style={{ backgroundColor: withAlpha(colorsRGB.primaryRGB, 0.12) }}
         />
         <div
           className='absolute bottom-1/4 right-1/4 size-80 rounded-full blur-3xl'
-          style={{ backgroundColor: withAlpha(SECONDARY_RGB_VAR, 0.1) }}
+          style={{ backgroundColor: withAlpha(colorsRGB.secondaryRGB, 0.1) }}
         />
       </div>
 
@@ -98,9 +97,9 @@ export default function AIFAQ() {
             className='mb-6 text-4xl font-bold text-transparent'
             style={{
               backgroundImage: `linear-gradient(90deg, rgba(255,255,255,1) 0%, ${withAlpha(
-                PRIMARY_RGB_VAR,
+                colorsRGB.primaryRGB,
                 0.75
-              )} 50%, ${withAlpha(SECONDARY_RGB_VAR, 0.6)} 100%)`,
+              )} 50%, ${withAlpha(colorsRGB.secondaryRGB, 0.6)} 100%)`,
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
             }}
@@ -130,13 +129,19 @@ export default function AIFAQ() {
               >
                 <button
                   onClick={() => toggleItem(item.id)}
-                  className='
-                    w-full cursor-pointer rounded-2xl border p-6 text-left transition-all duration-300
-                    border-[color:rgba(var(--color-primary-service-rgb),0.25)]
-                    bg-[linear-gradient(135deg,rgba(var(--color-primary-service-rgb),0.08),rgba(var(--color-secondary-service-rgb),0.05))]
-                    hover:border-[color:rgba(var(--color-primary-service-rgb),0.4)]
-                    hover:shadow-[0_20px_48px_rgba(var(--color-primary-service-rgb),0.18)]
-                  '
+                  className='w-full cursor-pointer rounded-2xl border p-6 text-left transition-all duration-300'
+                  style={{
+                    borderColor: `rgba(${colorsRGB.primaryRGB}, 0.25)`,
+                    background: `linear-gradient(135deg, rgba(${colorsRGB.primaryRGB}, 0.08), rgba(${colorsRGB.secondaryRGB}, 0.05))`,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = `rgba(${colorsRGB.primaryRGB}, 0.4)`;
+                    e.currentTarget.style.boxShadow = `0 20px 48px rgba(${colorsRGB.primaryRGB}, 0.18)`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = `rgba(${colorsRGB.primaryRGB}, 0.25)`;
+                    e.currentTarget.style.boxShadow = '';
+                  }}
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${item.id}`}
                 >
@@ -145,17 +150,20 @@ export default function AIFAQ() {
                       <div
                         className='
                           flex-shrink-0 rounded-xl border p-3 transition-transform duration-300
-                          border-[color:rgba(var(--color-primary-service-rgb),0.25)]
                           group-hover:scale-110
                         '
                         style={{
                           background: `linear-gradient(135deg, ${withAlpha(
-                            PRIMARY_RGB_VAR,
+                            colorsRGB.primaryRGB,
                             0.18
-                          )}, ${withAlpha(SECONDARY_RGB_VAR, 0.12)})`,
+                          )}, ${withAlpha(colorsRGB.secondaryRGB, 0.12)})`,
+                          borderColor: `rgba(${colorsRGB.primaryRGB}, 0.25)`,
                         }}
                       >
-                        <IconComponent className='h-5 w-5 text-[color:var(--color-primary-service)]' />
+                        <IconComponent
+                          className='h-5 w-5'
+                          style={{ color: `rgba(${colorsRGB.primaryRGB}, 1)` }}
+                        />
                       </div>
                       <h3 className='text-lg font-semibold text-foreground transition-colors duration-300 group-hover:text-primary-foreground'>
                         {item.question}
@@ -167,11 +175,12 @@ export default function AIFAQ() {
                       className='flex-shrink-0'
                     >
                       <ChevronDown
-                        className={`h-5 w-5 transition-colors duration-300 ${
-                          isOpen
-                            ? 'text-[color:var(--color-primary-service)]'
-                            : 'text-muted-foreground'
-                        }`}
+                        className='h-5 w-5 transition-colors duration-300'
+                        style={{
+                          color: isOpen
+                            ? `rgba(${colorsRGB.primaryRGB}, 1)`
+                            : undefined,
+                        }}
                       />
                     </motion.div>
                   </div>
@@ -188,11 +197,11 @@ export default function AIFAQ() {
                     >
                       <div
                         id={`faq-answer-${item.id}`}
-                        className='
-                          rounded-b-2xl border border-t-0 p-6 backdrop-blur-sm
-                          border-[color:rgba(var(--color-primary-service-rgb),0.2)]
-                          bg-[color:rgba(var(--color-secondary-service-rgb),0.08)]
-                        '
+                        className='rounded-b-2xl border border-t-0 p-6 backdrop-blur-sm'
+                        style={{
+                          borderColor: `rgba(${colorsRGB.primaryRGB}, 0.2)`,
+                          backgroundColor: `rgba(${colorsRGB.secondaryRGB}, 0.08)`,
+                        }}
                       >
                         <p className='leading-relaxed text-muted-foreground'>
                           {item.answer}

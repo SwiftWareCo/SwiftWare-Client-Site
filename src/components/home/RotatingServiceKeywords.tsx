@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { useColorScheme } from '@/context/ColorSchemeContext';
+import { usePathname } from 'next/navigation';
+import { getColorsFromPath } from '@/lib/colors';
 import { useEffect, useState } from 'react';
 
 const SERVICES = [
@@ -12,7 +13,8 @@ const SERVICES = [
 ];
 
 export function RotatingServiceKeywords() {
-  const { colors } = useColorScheme();
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
   const [displayedText, setDisplayedText] = useState('');
   const [currentServiceIndex, setCurrentServiceIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);

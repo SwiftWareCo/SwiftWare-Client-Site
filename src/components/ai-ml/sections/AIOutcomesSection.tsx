@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
 import type { Outcome } from '@/types/content';
 import { TrendingUp, ArrowUpRight, Zap } from 'lucide-react';
+import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
 
 const getIcon = (index: number) => {
   const icons = [TrendingUp, ArrowUpRight, Zap];
@@ -11,13 +13,7 @@ const getIcon = (index: number) => {
   return <IconComponent className='h-6 w-6' />;
 };
 
-const PRIMARY_COLOR = 'var(--color-primary-service)';
-const SECONDARY_COLOR = 'var(--color-secondary-service)';
-const PRIMARY_RGB_VAR = '--color-primary-service-rgb' as const;
-const SECONDARY_RGB_VAR = '--color-secondary-service-rgb' as const;
-
-const withAlpha = (cssVar: string, alpha: number) =>
-  `rgba(var(${cssVar}), ${alpha})`;
+const withAlpha = (rgb: string, alpha: number) => `rgba(${rgb}, ${alpha})`;
 
 const cardVariants = {
   hidden: { opacity: 0, y: 30, scale: 0.95 },
@@ -108,6 +104,9 @@ interface AIOutcomesSectionProps {
 }
 
 export default function AIOutcomesSection({ items }: AIOutcomesSectionProps) {
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+  const colorsRGB = getColorsRGBFromPath(pathname);
   return (
     <section id='outcomes' className='py-16'>
       <div className='mx-auto grid max-w-6xl gap-8 md:grid-cols-3'>
@@ -123,13 +122,19 @@ export default function AIOutcomesSection({ items }: AIOutcomesSectionProps) {
           >
             {/* Card */}
             <div
-              className='
-                relative overflow-hidden rounded-2xl border p-8 backdrop-blur-sm transition-all duration-500
-                border-[color:rgba(var(--color-primary-service-rgb),0.28)]
-                bg-[linear-gradient(135deg,rgba(var(--color-primary-service-rgb),0.08),rgba(var(--color-secondary-service-rgb),0.05))]
-                hover:border-[color:rgba(var(--color-primary-service-rgb),0.45)]
-                hover:shadow-[0_0_36px_rgba(var(--color-primary-service-rgb),0.15)]
-              '
+              className='relative overflow-hidden rounded-2xl border p-8 backdrop-blur-sm transition-all duration-500 group'
+              style={{
+                borderColor: `rgba(${colorsRGB.primaryRGB}, 0.28)`,
+                background: `linear-gradient(135deg, rgba(${colorsRGB.primaryRGB}, 0.08), rgba(${colorsRGB.secondaryRGB}, 0.05))`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colorsRGB.primaryRGB}, 0.45)`;
+                e.currentTarget.style.boxShadow = `0 0 36px rgba(${colorsRGB.primaryRGB}, 0.15)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colorsRGB.primaryRGB}, 0.28)`;
+                e.currentTarget.style.boxShadow = '';
+              }}
             >
               {/* Background gradient animation */}
               <div
@@ -139,22 +144,22 @@ export default function AIOutcomesSection({ items }: AIOutcomesSectionProps) {
                 '
                 style={{
                   background: `linear-gradient(135deg, ${withAlpha(
-                    PRIMARY_RGB_VAR,
+                    colorsRGB.primaryRGB,
                     0.18
-                  )}, ${withAlpha(SECONDARY_RGB_VAR, 0.1)})`,
+                  )}, ${withAlpha(colorsRGB.secondaryRGB, 0.1)})`,
                 }}
               />
 
               {/* Floating particles */}
               <div
                 className='absolute right-4 top-4 h-2 w-2 animate-pulse rounded-full opacity-60'
-                style={{ backgroundColor: PRIMARY_COLOR }}
+                style={{ backgroundColor: colors.primary }}
               />
               <div
                 className='absolute bottom-4 left-4 h-1.5 w-1.5 animate-pulse rounded-full opacity-40'
                 style={{
                   animationDelay: '1s',
-                  backgroundColor: SECONDARY_COLOR,
+                  backgroundColor: colors.secondary,
                 }}
               />
 
@@ -163,14 +168,14 @@ export default function AIOutcomesSection({ items }: AIOutcomesSectionProps) {
                 <div
                   className='
                     mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl border text-primary-foreground transition-transform duration-300
-                    border-[color:rgba(var(--color-primary-service-rgb),0.24)]
                     group-hover:scale-110
                   '
                   style={{
                     background: `linear-gradient(135deg, ${withAlpha(
-                      PRIMARY_RGB_VAR,
+                      colorsRGB.primaryRGB,
                       0.16
-                    )}, ${withAlpha(SECONDARY_RGB_VAR, 0.12)})`,
+                    )}, ${withAlpha(colorsRGB.secondaryRGB, 0.12)})`,
+                    borderColor: `rgba(${colorsRGB.primaryRGB}, 0.24)`,
                   }}
                 >
                   {getIcon(index)}
@@ -185,9 +190,9 @@ export default function AIOutcomesSection({ items }: AIOutcomesSectionProps) {
                     '
                     style={{
                       backgroundImage: `linear-gradient(90deg, rgba(255,255,255,1) 0%, ${withAlpha(
-                        PRIMARY_RGB_VAR,
+                        colorsRGB.primaryRGB,
                         0.75
-                      )} 50%, ${withAlpha(SECONDARY_RGB_VAR, 0.6)} 100%)`,
+                      )} 50%, ${withAlpha(colorsRGB.secondaryRGB, 0.6)} 100%)`,
                       WebkitBackgroundClip: 'text',
                       backgroundClip: 'text',
                     }}
@@ -196,7 +201,7 @@ export default function AIOutcomesSection({ items }: AIOutcomesSectionProps) {
                   </div>
                   <div
                     className='text-sm font-medium uppercase tracking-wider'
-                    style={{ color: PRIMARY_COLOR }}
+                    style={{ color: colors.primary }}
                   >
                     {o.unit}
                   </div>
@@ -209,7 +214,18 @@ export default function AIOutcomesSection({ items }: AIOutcomesSectionProps) {
               </div>
 
               {/* Hover effect border */}
-              <div className='absolute inset-0 rounded-2xl border border-transparent transition-all duration-500 group-hover:border-[color:rgba(var(--color-primary-service-rgb),0.28)]'>
+              <div
+                className='absolute inset-0 rounded-2xl border border-transparent transition-all duration-500'
+                style={{
+                  borderColor: 'transparent',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = `rgba(${colorsRGB.primaryRGB}, 0.28)`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'transparent';
+                }}
+              >
                 <div
                   className='
                     absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500
@@ -217,7 +233,7 @@ export default function AIOutcomesSection({ items }: AIOutcomesSectionProps) {
                   '
                   style={{
                     background: `linear-gradient(90deg, transparent, ${withAlpha(
-                      PRIMARY_RGB_VAR,
+                      colorsRGB.primaryRGB,
                       0.14
                     )}, transparent)`,
                   }}
@@ -228,7 +244,7 @@ export default function AIOutcomesSection({ items }: AIOutcomesSectionProps) {
               <div
                 className='absolute bottom-0 left-0 right-0 h-1 origin-left scale-x-0 rounded-b-2xl transition-transform duration-500 group-hover:scale-x-100'
                 style={{
-                  background: `linear-gradient(90deg, ${PRIMARY_COLOR}, ${SECONDARY_COLOR})`,
+                  background: `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})`,
                 }}
               />
             </div>
@@ -237,7 +253,7 @@ export default function AIOutcomesSection({ items }: AIOutcomesSectionProps) {
             <div
               className='absolute -right-2 -top-2 h-4 w-4 animate-pulse rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100'
               style={{
-                background: `linear-gradient(135deg, ${PRIMARY_COLOR}, ${SECONDARY_COLOR})`,
+                background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
               }}
             />
           </motion.div>

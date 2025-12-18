@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 import { openCalendlyPopup, initCalendlyScripts } from '@/lib/calendly';
+import { getColorsFromPath } from '@/lib/colors';
 
 interface ScheduleButtonProps {
   text?: string;
@@ -17,6 +19,9 @@ export function ScheduleButton({
   className = '',
   variant = 'primary',
 }: ScheduleButtonProps) {
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+
   useEffect(() => {
     initCalendlyScripts();
   }, []);
@@ -38,7 +43,7 @@ export function ScheduleButton({
       style={
         variant === 'primary'
           ? {
-              background: 'linear-gradient(90deg, var(--color-primary-service), var(--color-secondary-service))',
+              background: `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})`,
             }
           : undefined
       }

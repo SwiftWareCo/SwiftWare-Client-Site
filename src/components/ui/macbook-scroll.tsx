@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import {
   motion,
@@ -9,6 +10,7 @@ import {
   type MotionValue,
 } from 'motion/react';
 import { cn } from '@/lib/utils';
+import { getColorsRGBFromPath } from '@/lib/colors';
 import {
   IconBrightnessDown,
   IconBrightnessUp,
@@ -44,6 +46,8 @@ export const MacbookScroll = ({
   title,
   badge,
 }: MacbookScrollProps) => {
+  const pathname = usePathname();
+  const colorsRGB = getColorsRGBFromPath(pathname);
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -102,7 +106,12 @@ export const MacbookScroll = ({
         rotate={rotate}
         translate={translate}
       />
-      <div className='relative -z-10 h-[22rem] w-[32rem] overflow-hidden rounded-2xl bg-[color:var(--macbook-base)] shadow-[0_24px_70px_rgba(var(--color-primary-service-rgb),0.24)]'>
+      <div
+        className='relative -z-10 h-[22rem] w-[32rem] overflow-hidden rounded-2xl bg-[color:var(--macbook-base)]'
+        style={{
+          boxShadow: `0 24px 70px rgba(${colorsRGB.primaryRGB}, 0.24)`,
+        }}
+      >
         <div className='relative h-10 w-full'>
           <div className='absolute inset-x-0 mx-auto h-4 w-[80%] rounded-b-full bg-[color:var(--macbook-shell)]' />
         </div>

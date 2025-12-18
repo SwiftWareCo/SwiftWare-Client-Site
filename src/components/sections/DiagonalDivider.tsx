@@ -1,4 +1,8 @@
+'use client';
+
 import { ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
+import { getColorsFromPath } from '@/lib/colors';
 
 interface DiagonalDividerProps {
   children: ReactNode;
@@ -13,12 +17,15 @@ interface DiagonalDividerProps {
 export function DiagonalDivider({
   children,
   skewAngle = -5,
-  color = 'var(--color-primary-service)',
+  color,
   className = '',
   paddingClassName = 'py-16 sm:py-24',
   top = true,
   bottom = true,
 }: DiagonalDividerProps) {
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+  const dividerColor = color || colors.primary;
   // If both top and bottom are false, render nothing
   if (!top && !bottom) {
     return <>{children}</>;
@@ -38,9 +45,9 @@ export function DiagonalDivider({
           className='absolute inset-0 -z-10'
           style={{
             background:
-              color.includes('gradient') || color.includes(',')
-                ? color
-                : `linear-gradient(90deg, ${color}, ${color})`,
+              dividerColor.includes('gradient') || dividerColor.includes(',')
+                ? dividerColor
+                : `linear-gradient(90deg, ${dividerColor}, ${dividerColor})`,
             transform: `skewY(${skewAngle}deg)`,
             transformOrigin: 'right',
           }}
@@ -76,9 +83,9 @@ export function DiagonalDivider({
             bottom: !top && bottom ? '-100%' : 'auto',
             left: 0,
             background:
-              color.includes('gradient') || color.includes(',')
-                ? color
-                : `linear-gradient(90deg, ${color}, ${color})`,
+              dividerColor.includes('gradient') || dividerColor.includes(',')
+                ? dividerColor
+                : `linear-gradient(90deg, ${dividerColor}, ${dividerColor})`,
             transform: `skewY(${skewAngle}deg)`,
             transformOrigin: top ? 'right top' : 'right bottom',
           }}

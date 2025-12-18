@@ -2,7 +2,9 @@
 
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
+import { usePathname } from 'next/navigation';
 import { useMemo, useState } from 'react';
+import { getColorsFromPath } from '@/lib/colors';
 
 interface RoundedSlideButtonProps {
   onClick?: () => void;
@@ -57,20 +59,7 @@ const gradientVariants = {
   },
 };
 
-const borderVariants = {
-  idle: {
-    opacity: 0, // keep border invisible until hover
-    borderColor: 'rgba(0,0,0,0)', // transparent border when resting
-  },
-  hover: {
-    opacity: 1, // fade border in to outline the button
-    borderColor: 'var(--color-primary-service)', // use primary accent for the frame
-    transition: {
-      duration: 0.35, // match gradient timing for a cohesive reveal
-      ease: 'easeOut' as const, // soft fade for the outline
-    },
-  },
-};
+// borderVariants will be created dynamically with colors
 
 const sheenVariants = {
   rest: {
@@ -87,18 +76,7 @@ const sheenVariants = {
   },
 };
 
-const contentVariants = {
-  idle: {
-    color: 'var(--foreground)', // match the page's foreground colour by default
-  },
-  hover: {
-    color: 'var(--color-primary-service)', // switch to primary accent when gradient fades back
-    transition: {
-      duration: 0.35, // sync with gradient fade so the shift feels intentional
-      ease: 'easeOut' as const, // smooth hand-off between colors
-    },
-  },
-};
+// contentVariants will be created dynamically with colors
 
 const iconVariants = {
   idle: {
@@ -119,6 +97,8 @@ export function RoundedSlideButton({
   className = '',
   autoAnimate = false,
 }: RoundedSlideButtonProps) {
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
   const [isHovered, setIsHovered] = useState(false);
   const hoverOrFocus = () => setIsHovered(true);
   const relax = () => setIsHovered(false);
@@ -133,14 +113,56 @@ export function RoundedSlideButton({
   const surfaceState = isHovered || autoAnimate ? 'hover' : 'idle';
   const shouldSweep = isHovered || autoAnimate;
 
+  const borderVariants = useMemo(
+    () => ({
+      idle: {
+        opacity: 0, // keep border invisible until hover
+        borderColor: 'rgba(0,0,0,0)', // transparent border when resting
+      },
+      hover: {
+        opacity: 1, // fade border in to outline the button
+        borderColor: colors.primary, // use primary accent for the frame
+        transition: {
+          duration: 0.35, // match gradient timing for a cohesive reveal
+          ease: 'easeOut' as const, // soft fade for the outline
+        },
+      },
+    }),
+    [colors.primary]
+  );
+
+  const contentVariants = useMemo(
+    () => ({
+      idle: {
+        color: 'var(--foreground)', // match the page's foreground colour by default
+      },
+      hover: {
+        color: colors.primary, // switch to primary accent when gradient fades back
+        transition: {
+          duration: 0.35, // sync with gradient fade so the shift feels intentional
+          ease: 'easeOut' as const, // smooth hand-off between colors
+        },
+      },
+    }),
+    [colors.primary]
+  );
+
   return (
     <motion.button
-      className={`relative flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-background px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-foreground transition-colors duration-300 cursor-pointer overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary-service)] ${className}`}
+      className={`relative flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-background px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-foreground transition-colors duration-300 cursor-pointer overflow-hidden ${className}`}
       onClick={onClick}
       onMouseEnter={hoverOrFocus}
       onMouseLeave={relax}
-      onFocus={hoverOrFocus}
-      onBlur={relax}
+      onFocus={(e) => {
+        hoverOrFocus();
+        e.currentTarget.style.outline = `2px solid ${colors.primary}`;
+        e.currentTarget.style.outlineOffset = '2px';
+      }}
+      onBlur={(e) => {
+        relax();
+        e.currentTarget.style.outline = '';
+        e.currentTarget.style.outlineOffset = '';
+      }}
       variants={buttonVariants}
       initial='idle'
       animate={animationState}
@@ -150,7 +172,7 @@ export function RoundedSlideButton({
       <motion.span
         className='absolute inset-0 rounded-[inherit]'
         style={{
-          backgroundImage: `linear-gradient(135deg, var(--color-primary-service), var(--color-secondary-service))`,
+          backgroundImage: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
         }}
         variants={gradientVariants}
         initial='idle'

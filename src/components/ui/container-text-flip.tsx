@@ -8,8 +8,10 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
+import { getColorsRGBFromPath } from '@/lib/colors';
 
 export interface ContainerTextFlipProps {
   /** Array of words to cycle through in the animation */
@@ -31,6 +33,8 @@ export function ContainerTextFlip({
   textClassName,
   animationDuration = 700,
 }: ContainerTextFlipProps) {
+  const pathname = usePathname();
+  const colorsRGB = getColorsRGBFromPath(pathname);
   const id = useId();
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState<number | null>(null);
@@ -109,11 +113,14 @@ export function ContainerTextFlip({
       layout
       layoutId={`words-here-${id}`}
       animate={containerWidth ? { width: containerWidth } : undefined}
-      style={containerWidth ? { width: containerWidth } : undefined}
+      style={{
+        width: containerWidth ? containerWidth : undefined,
+        boxShadow: `0 18px 48px rgba(${colorsRGB.primaryRGB}, 0.18)`,
+      }}
       transition={{ duration: animationSeconds / 2 }}
       className={cn(
         'relative inline-block max-w-full whitespace-nowrap rounded-2xl px-6 py-4 text-center text-3xl font-bold md:text-6xl',
-        'bg-card text-card-foreground shadow-[0_18px_48px_rgba(var(--color-primary-service-rgb),0.18)]',
+        'bg-card text-card-foreground',
         className
       )}
       key={displayWord}

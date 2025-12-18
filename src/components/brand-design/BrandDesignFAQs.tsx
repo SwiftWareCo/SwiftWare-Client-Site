@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useColorScheme } from '@/context/ColorSchemeContext';
+import { usePathname } from 'next/navigation';
+import { getColorsFromPath } from '@/lib/colors';
 import { ChevronDown } from 'lucide-react';
 
 interface FAQItem {
@@ -15,7 +16,8 @@ interface BrandDesignFAQsProps {
 }
 
 export function BrandDesignFAQs({ items }: BrandDesignFAQsProps) {
-  const { colors } = useColorScheme();
+  const pathname = usePathname();
+  const { primary } = getColorsFromPath(pathname);
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
@@ -51,7 +53,7 @@ export function BrandDesignFAQs({ items }: BrandDesignFAQsProps) {
                 style={{
                   borderBottom:
                     openIndex === index
-                      ? `2px solid ${colors.primary}`
+                      ? `2px solid ${primary}`
                       : 'none',
                 }}
               >
@@ -61,7 +63,7 @@ export function BrandDesignFAQs({ items }: BrandDesignFAQsProps) {
                 <ChevronDown
                   className='h-5 w-5 flex-shrink-0 transition-transform'
                   style={{
-                    color: colors.primary,
+                    color: primary,
                     transform:
                       openIndex === index ? 'rotate(180deg)' : 'rotate(0deg)',
                   }}

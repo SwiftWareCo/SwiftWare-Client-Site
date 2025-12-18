@@ -1,19 +1,35 @@
 'use client';
 
 import { motion } from 'motion/react';
+import { usePathname } from 'next/navigation';
 import { Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { BackgroundLines } from '@/components/ui/background-lines';
 import { RotatingServiceKeywords } from './RotatingServiceKeywords';
 import { openCalendlyPopup } from '@/lib/calendly';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
+import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
 
 export function HeroSection() {
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+  const colorsRGB = getColorsRGBFromPath(pathname);
+
   return (
     <section className='relative min-h-[80vh] overflow-hidden pt-28 sm:pt-40 pb-16 sm:pb-24 bg-background'>
       <div className='absolute inset-0 -z-20'>
-        <div className='absolute inset-0 bg-[radial-gradient(circle_at_16%_22%,rgba(var(--color-primary-service-rgb),0.16),transparent_68%)]' />
-        <div className='absolute inset-0 bg-[radial-gradient(circle_at_82%_30%,rgba(var(--color-secondary-service-rgb),0.14),transparent_72%)]' />
+        <div
+          className='absolute inset-0'
+          style={{
+            background: `radial-gradient(circle at 16% 22%, rgba(${colorsRGB.primaryRGB}, 0.16), transparent 68%)`,
+          }}
+        />
+        <div
+          className='absolute inset-0'
+          style={{
+            background: `radial-gradient(circle at 82% 30%, rgba(${colorsRGB.secondaryRGB}, 0.14), transparent 72%)`,
+          }}
+        />
       </div>
 
       <BackgroundLines
@@ -39,7 +55,7 @@ export function HeroSection() {
               >
                 <Sparkles
                   className='h-4 w-4'
-                  style={{ color: 'var(--color-primary-service)' }}
+                  style={{ color: colors.primary }}
                 />
               </motion.div>
               <span>Your all-in-one growth partner</span>
@@ -55,7 +71,7 @@ export function HeroSection() {
             <motion.span
               className='bg-clip-text text-transparent inline-block'
               style={{
-                backgroundImage: `linear-gradient(to right, var(--color-primary-service), var(--color-primary-service))`,
+                backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.primary})`,
               }}
             >
               One Partner.
@@ -71,7 +87,7 @@ export function HeroSection() {
             <motion.span
               className='bg-clip-text text-transparent inline-block'
               style={{
-                backgroundImage: `linear-gradient(to right, var(--color-primary-service), var(--color-secondary-service))`,
+                backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
               }}
             >
               Four Services.

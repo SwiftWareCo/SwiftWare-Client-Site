@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { useColorScheme } from '@/context/ColorSchemeContext';
+import { usePathname } from 'next/navigation';
+import { getColorsFromPath } from '@/lib/colors';
 import * as LucideIcons from 'lucide-react';
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -94,7 +95,8 @@ const deliverables: Deliverable[] = [
 ];
 
 export function BrandDeliverablesShowcase() {
-  const { colors } = useColorScheme();
+  const pathname = usePathname();
+  const { primary, secondary } = getColorsFromPath(pathname);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
@@ -150,7 +152,7 @@ export function BrandDeliverablesShowcase() {
                       <div
                         className='absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none'
                         style={{
-                          background: `linear-gradient(135deg, ${colors.primary}10 0%, transparent 100%)`,
+                          background: `linear-gradient(135deg, ${primary}10 0%, transparent 100%)`,
                         }}
                       />
 
@@ -162,7 +164,7 @@ export function BrandDeliverablesShowcase() {
                           <div
                             className='mb-4 inline-flex items-center justify-center w-16 h-16 rounded-xl'
                             style={{
-                              background: `${colors.primary}20`,
+                              background: `${primary}20`,
                             }}
                           >
                             {(() => {
@@ -170,7 +172,7 @@ export function BrandDeliverablesShowcase() {
                               return (
                                 <IconComponent
                                   className='h-8 w-8'
-                                  style={{ color: colors.primary }}
+                                  style={{ color: primary }}
                                 />
                               );
                             })()}
@@ -198,7 +200,7 @@ export function BrandDeliverablesShowcase() {
                             >
                               <div
                                 className='h-1.5 w-1.5 rounded-full mt-1 flex-shrink-0'
-                                style={{ backgroundColor: colors.primary }}
+                                style={{ backgroundColor: primary }}
                               />
                               <span className='text-xs text-zinc-300 leading-snug'>{item}</span>
                             </motion.div>
@@ -234,7 +236,7 @@ export function BrandDeliverablesShowcase() {
                 width: currentIndex === idx ? '24px' : '8px',
                 height: '8px',
                 borderRadius: '4px',
-                backgroundColor: currentIndex === idx ? colors.primary : '#52525b',
+                backgroundColor: currentIndex === idx ? primary : '#52525b',
               }}
             />
           ))}
@@ -255,8 +257,8 @@ export function BrandDeliverablesShowcase() {
         <div
           className='inline-flex items-center rounded-full px-4 py-2 text-sm font-medium'
           style={{
-            background: `${colors.primary}15`,
-            color: colors.primary,
+            background: `${primary}15`,
+            color: primary,
           }}
         >
           Complete Brand Toolkit Included

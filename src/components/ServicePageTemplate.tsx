@@ -2,7 +2,8 @@
 
 import { ReactNode } from 'react';
 import { motion } from 'motion/react';
-import { useColorScheme } from '@/context/ColorSchemeContext';
+import { usePathname } from 'next/navigation';
+import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
 import { ArrowRight } from 'lucide-react';
 
 interface ServicePageTemplateProps {
@@ -22,7 +23,9 @@ export function ServicePageTemplate({
   ctaText = 'Get Started',
   ctaSecondary = 'Learn More',
 }: ServicePageTemplateProps) {
-  const { colors } = useColorScheme();
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+  const colorsRGB = getColorsRGBFromPath(pathname);
 
   return (
     <main className='relative pt-20 min-h-screen'>
@@ -33,7 +36,7 @@ export function ServicePageTemplate({
           <div
             className='absolute inset-0 opacity-30'
             style={{
-              background: `linear-gradient(135deg, ${colors.primary}20 0%, ${colors.secondary}20 100%)`,
+              background: `linear-gradient(135deg, rgba(${colorsRGB.primaryRGB}, 0.2) 0%, rgba(${colorsRGB.secondaryRGB}, 0.2) 100%)`,
             }}
           />
         </div>
@@ -58,7 +61,7 @@ export function ServicePageTemplate({
             <h1
               className='text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6'
               style={{
-                backgroundImage: `linear-gradient(135deg, white 0%, ${colors.primary}80 100%)`,
+                backgroundImage: `linear-gradient(135deg, white 0%, rgba(${colorsRGB.primaryRGB}, 0.8) 100%)`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',

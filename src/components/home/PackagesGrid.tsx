@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { useColorScheme } from '@/context/ColorSchemeContext';
+import { usePathname } from 'next/navigation';
+import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
 
 interface Package {
   name: string;
@@ -14,7 +15,9 @@ interface PackagesGridProps {
 }
 
 export function PackagesGrid({ packages }: PackagesGridProps) {
-  const { colors } = useColorScheme();
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+  const colorsRGB = getColorsRGBFromPath(pathname);
   return (
     <section className='relative py-16 sm:py-24'>
       <div className='mx-auto max-w-7xl px-6'>
@@ -58,13 +61,13 @@ export function PackagesGrid({ packages }: PackagesGridProps) {
                 className='cursor-pointer w-full py-2 px-4 rounded-lg border transition-all text-sm font-medium text-foreground'
                 style={{
                   borderColor: colors.primary,
-                  backgroundColor: `${colors.primary}10`,
+                  backgroundColor: `rgba(${colorsRGB.primaryRGB}, 0.1)`,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = `${colors.primary}20`;
+                  e.currentTarget.style.backgroundColor = `rgba(${colorsRGB.primaryRGB}, 0.2)`;
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = `${colors.primary}10`;
+                  e.currentTarget.style.backgroundColor = `rgba(${colorsRGB.primaryRGB}, 0.1)`;
                 }}
               >
                 Learn More

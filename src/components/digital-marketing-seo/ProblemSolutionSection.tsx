@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
 import {
   BarChart3,
@@ -9,6 +10,7 @@ import {
   XCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getColorsRGBFromPath } from '@/lib/colors';
 
 interface ProblemSolutionSectionProps {
   className?: string;
@@ -108,6 +110,9 @@ const kpiTiles = [
 export const ProblemSolutionSection = ({
   className,
 }: ProblemSolutionSectionProps) => {
+  const pathname = usePathname();
+  const colorsRGB = getColorsRGBFromPath(pathname);
+
   return (
     <motion.section
       className={cn('relative overflow-hidden py-20 sm:py-28', className)}
@@ -116,7 +121,12 @@ export const ProblemSolutionSection = ({
       whileInView='visible'
       viewport={{ once: true, amount: 0.1, margin: '0px 0px -10% 0px' }}
     >
-      <div className='absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(var(--color-primary-service-rgb),0.12),transparent_60%)]' />
+      <div
+        className='absolute inset-0'
+        style={{
+          background: `radial-gradient(circle at top right, rgba(${colorsRGB.primaryRGB}, 0.12), transparent 60%)`,
+        }}
+      />
       <motion.div
         className='relative mx-auto max-w-6xl px-6 lg:px-8'
         variants={cardVariants}
@@ -145,7 +155,10 @@ export const ProblemSolutionSection = ({
         <div className='mt-14 grid gap-10 lg:grid-cols-[1.05fr_1fr]'>
           <motion.article
             variants={cardVariants}
-            className='relative overflow-hidden rounded-2xl border border-border bg-card p-8 shadow-[0_18px_48px_rgba(var(--color-primary-service-rgb),0.1)]'
+            className='relative overflow-hidden rounded-2xl border border-border bg-card p-8'
+            style={{
+              boxShadow: `0 18px 48px rgba(${colorsRGB.primaryRGB}, 0.1)`,
+            }}
           >
             <div className='flex items-center gap-3'>
               <XCircle className='h-8 w-8 text-destructive' />
@@ -175,7 +188,10 @@ export const ProblemSolutionSection = ({
 
           <motion.article
             variants={cardVariants}
-            className='relative overflow-hidden rounded-2xl border border-service-marketing/40 bg-card p-8 shadow-[0_20px_54px_rgba(var(--color-secondary-service-rgb),0.16)]'
+            className='relative overflow-hidden rounded-2xl border border-service-marketing/40 bg-card p-8'
+            style={{
+              boxShadow: `0 20px 54px rgba(${colorsRGB.secondaryRGB}, 0.16)`,
+            }}
           >
             <div className='flex items-center gap-3'>
               <CheckCircle className='h-8 w-8 text-service-marketing-dark' />
@@ -220,7 +236,10 @@ export const ProblemSolutionSection = ({
               <motion.div
                 key={kpi.metric}
                 variants={statVariants}
-                className='rounded-xl bg-card p-5 text-center shadow-[0_12px_30px_rgba(var(--color-primary-service-rgb),0.12)]'
+                className='rounded-xl bg-card p-5 text-center'
+                style={{
+                  boxShadow: `0 12px 30px rgba(${colorsRGB.primaryRGB}, 0.12)`,
+                }}
               >
                 <p className='text-3xl font-bold text-service-marketing-dark'>
                   {kpi.metric}

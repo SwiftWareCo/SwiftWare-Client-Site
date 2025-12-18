@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, type Variants } from 'motion/react';
 import { AlertCircle } from 'lucide-react';
 import TheSwiftwareWay from './swiftware-way/TheSwiftwareWay';
 import BlockFallAnimation from './BlockFallAnimation';
+import { getColorsFromPath } from '@/lib/colors';
 
 const easingCurve: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -37,6 +39,9 @@ function useIsMobile(maxWidth = 1024) {
 }
 
 export function ServicesGrid() {
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+
   const painPoints = [
     {
       icon: AlertCircle,
@@ -237,7 +242,7 @@ export function ServicesGrid() {
             viewport={{ once: true, amount: 0.2 }}
             className='rounded-xl border-2 p-6 sm:p-8 mb-24'
             style={{
-              borderColor: 'var(--color-primary-service)',
+              borderColor: colors.primary,
               backgroundColor: 'var(--secondary)',
             }}
           >
@@ -246,8 +251,7 @@ export function ServicesGrid() {
               <span
                 className='text-transparent bg-clip-text'
                 style={{
-                  backgroundImage:
-                    'linear-gradient(to right, var(--color-primary-service), var(--color-secondary-service))',
+                  backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
                 }}
               >
                 Start investing in flow.
@@ -261,7 +265,7 @@ export function ServicesGrid() {
             </p>
             <p
               className='text-lg font-semibold'
-              style={{ color: 'var(--color-primary-service)' }}
+              style={{ color: colors.primary }}
             >
               That is the SwiftWare difference.
             </p>

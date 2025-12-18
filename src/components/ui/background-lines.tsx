@@ -2,9 +2,11 @@
 
 import type { ReactNode } from 'react';
 import { memo, useMemo } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, type Variants } from 'motion/react';
 
 import { cn } from '@/lib/utils';
+import { getColorsFromPath } from '@/lib/colors';
 
 type BackgroundLinesProps = {
   children?: ReactNode;
@@ -48,22 +50,28 @@ const svgPaths = [
   'M720 450C720 450 730.571 424.312 761.424 411.44C792.277 398.569 772.385 393.283 804.069 377.232C835.752 361.182 829.975 361.373 848.987 342.782C867.999 324.192 877.583 330.096 890.892 303.897C904.201 277.698 910.277 282.253 937.396 264.293C964.514 246.333 949.357 246.834 978.7 230.438C1008.04 214.042 990.424 217.952 1021.51 193.853C1052.6 169.753 1054.28 184.725 1065.97 158.075C1077.65 131.425 1087.76 139.068 1111.12 120.345C1134.49 101.622 1124.9 104.858 1151.67 86.3162C1178.43 67.7741 1167.09 66.2676 1197.53 47.2606C1227.96 28.2536 1225.78 23.2186 1239.27 12.9649C1252.76 2.7112 1269.32 -9.47929 1282.88 -28.5587C1296.44 -47.6381 1305.81 -41.3853 1323.82 -62.7027C1341.83 -84.0202 1340.32 -82.3794 1368.98 -98.9326',
 ];
 
-const colorPalette = [
-  'var(--color-primary-service)',
-  'var(--color-secondary-service)',
-  'color-mix(in srgb, var(--color-primary-service) 70%, transparent)',
-  'color-mix(in srgb, var(--color-secondary-service) 70%, transparent)',
-  'var(--color-service-brand)',
-  'var(--color-service-brand-dark)',
-  'var(--color-service-marketing)',
-  'var(--color-service-marketing-dark)',
-  'var(--color-service-ai)',
-  'var(--color-service-ai-dark)',
-  'var(--color-service-software)',
-  'var(--color-service-software-dark)',
-];
-
 const AnimatedSvg = memo(({ duration = 10 }: { duration?: number }) => {
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+
+  const colorPalette = useMemo(
+    () => [
+      colors.primary,
+      colors.secondary,
+      `color-mix(in srgb, ${colors.primary} 70%, transparent)`,
+      `color-mix(in srgb, ${colors.secondary} 70%, transparent)`,
+      'var(--color-service-brand)',
+      'var(--color-service-brand-dark)',
+      'var(--color-service-marketing)',
+      'var(--color-service-marketing-dark)',
+      'var(--color-service-ai)',
+      'var(--color-service-ai-dark)',
+      'var(--color-service-software)',
+      'var(--color-service-software-dark)',
+    ],
+    [colors.primary, colors.secondary]
+  );
+
   const pathSettings = useMemo(
     () =>
       svgPaths.map((d, index) => {
@@ -78,7 +86,7 @@ const AnimatedSvg = memo(({ duration = 10 }: { duration?: number }) => {
           repeatDelay,
         };
       }),
-    []
+    [colorPalette]
   );
 
   return (

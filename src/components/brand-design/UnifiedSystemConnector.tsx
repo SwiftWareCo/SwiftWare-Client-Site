@@ -1,14 +1,16 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { useColorScheme } from '@/context/ColorSchemeContext';
+import { usePathname } from 'next/navigation';
+import { getColorsFromPath } from '@/lib/colors';
 import Image from 'next/image';
 import { useState } from 'react';
 import { InteractiveHoverButton } from '../ui/interactive-hover-button';
 import { openCalendlyPopup } from '@/lib/calendly';
 
 export function UnifiedSystemConnector() {
-  const { colors } = useColorScheme();
+  const pathname = usePathname();
+  const { primary, secondary } = getColorsFromPath(pathname);
   const [showAfter, setShowAfter] = useState(false);
 
   const containerVariants = {
@@ -32,11 +34,11 @@ export function UnifiedSystemConnector() {
         {/* Decorative gradient background */}
         <div
           className='absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-20 pointer-events-none'
-          style={{ backgroundColor: colors.primary }}
+          style={{ backgroundColor: primary }}
         />
         <div
           className='absolute bottom-0 left-0 w-96 h-96 rounded-full blur-3xl opacity-20 pointer-events-none'
-          style={{ backgroundColor: colors.secondary }}
+          style={{ backgroundColor: secondary }}
         />
 
         <div className='relative z-10 p-8 sm:p-12 lg:p-16'>

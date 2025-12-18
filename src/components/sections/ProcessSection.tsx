@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { useColorScheme } from '@/context/ColorSchemeContext';
+import { usePathname } from 'next/navigation';
+import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
 import { ArrowRight } from 'lucide-react';
 
 interface ProcessStep {
@@ -21,7 +22,9 @@ export function ProcessSection({
   description,
   steps,
 }: ProcessSectionProps) {
-  const { colors } = useColorScheme();
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+  const colorsRGB = getColorsRGBFromPath(pathname);
 
   return (
     <section className='py-16 sm:py-24'>
@@ -55,7 +58,7 @@ export function ProcessSection({
                 className='flex items-center justify-center w-16 h-16 rounded-full text-white font-bold text-xl border-2 relative'
                 style={{
                   borderColor: colors.primary,
-                  background: `${colors.primary}20`,
+                  background: `rgba(${colorsRGB.primaryRGB}, 0.2)`,
                 }}
               >
                 {step.number}

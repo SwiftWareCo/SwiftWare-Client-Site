@@ -1,4 +1,3 @@
-'use client';
 
 import { DigitalMarketingHero } from '@/components/digital-marketing-seo/DigitalMarketingHero';
 import { ProblemSolutionSection } from '@/components/digital-marketing-seo/ProblemSolutionSection';

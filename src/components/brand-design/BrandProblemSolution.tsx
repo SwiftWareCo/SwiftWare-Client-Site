@@ -1,11 +1,9 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { useColorScheme } from '@/context/ColorSchemeContext';
 import { AlertCircle, CheckCircle2 } from 'lucide-react';
 
 export function BrandProblemSolution() {
-  useColorScheme();
 
   const containerVariants = {
     hidden: { opacity: 0 },

@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search, FileText, Brain, Zap } from 'lucide-react';
 import type { AISearchResult } from '@/types/ai-ml';
+import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
 
 const DEMO_QUERIES = [
   'What are our Q3 revenue projections?',
@@ -46,15 +48,12 @@ const DEMO_RESULTS: AISearchResult[] = [
   },
 ];
 
-const PRIMARY_COLOR = 'var(--color-primary-service)';
-const SECONDARY_COLOR = 'var(--color-secondary-service)';
-const PRIMARY_RGB_VAR = '--color-primary-service-rgb' as const;
-const SECONDARY_RGB_VAR = '--color-secondary-service-rgb' as const;
-
-const withAlpha = (cssVar: string, alpha: number) =>
-  `rgba(var(${cssVar}), ${alpha})`;
+const withAlpha = (rgb: string, alpha: number) => `rgba(${rgb}, ${alpha})`;
 
 export default function AISearchDemo() {
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+  const colorsRGB = getColorsRGBFromPath(pathname);
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [results, setResults] = useState<AISearchResult[]>([]);
@@ -97,13 +96,15 @@ export default function AISearchDemo() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder='Ask anything about your business data...'
-            className='
-              w-full rounded-xl border border-white/10 bg-white/[0.05] px-12 py-4 text-foreground
-              placeholder:text-muted-foreground focus:bg-white/[0.08] focus:outline-none
-              focus:border-[color:rgba(var(--color-primary-service-rgb),0.45)]
-              focus:shadow-[0_0_0_3px_rgba(var(--color-primary-service-rgb),0.15)]
-              transition-all duration-300
-            '
+            className='w-full rounded-xl border border-white/10 bg-white/[0.05] px-12 py-4 text-foreground placeholder:text-muted-foreground focus:bg-white/[0.08] focus:outline-none transition-all duration-300'
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = `rgba(${colorsRGB.primaryRGB}, 0.45)`;
+              e.currentTarget.style.boxShadow = `0 0 0 3px rgba(${colorsRGB.primaryRGB}, 0.15)`;
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = '';
+              e.currentTarget.style.boxShadow = '';
+            }}
             onKeyPress={(e) =>
               e.key === 'Enter' && query && performSearch(query)
             }
@@ -114,8 +115,8 @@ export default function AISearchDemo() {
               disabled={isSearching}
               className='absolute right-2 top-1/2 -translate-y-1/2 transform rounded-lg px-4 py-2 text-sm font-medium text-primary-foreground transition-all duration-300 disabled:opacity-50'
               style={{
-                background: `linear-gradient(90deg, ${PRIMARY_COLOR}, ${SECONDARY_COLOR})`,
-                boxShadow: `0 12px 30px ${withAlpha(PRIMARY_RGB_VAR, 0.18)}`,
+                background: `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})`,
+                boxShadow: `0 12px 30px ${withAlpha(colorsRGB.primaryRGB, 0.18)}`,
               }}
             >
               {isSearching ? (
@@ -143,11 +144,33 @@ export default function AISearchDemo() {
                 onClick={() => handleQuickQuery(demoQuery)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`cursor-pointer rounded-lg border px-3 py-2 text-sm transition-all duration-300 ${
-                  selectedQuery === demoQuery
-                    ? 'border-[color:rgba(var(--color-primary-service-rgb),0.35)] bg-[color:rgba(var(--color-primary-service-rgb),0.18)] text-[color:var(--color-primary-service)]'
-                    : 'border-white/15 bg-white/[0.03] text-muted-foreground hover:border-[color:rgba(var(--color-primary-service-rgb),0.3)] hover:text-[color:var(--color-primary-service)]'
-                }`}
+                className='cursor-pointer rounded-lg border px-3 py-2 text-sm transition-all duration-300'
+                style={{
+                  borderColor:
+                    selectedQuery === demoQuery
+                      ? `rgba(${colorsRGB.primaryRGB}, 0.35)`
+                      : 'rgba(255, 255, 255, 0.15)',
+                  backgroundColor:
+                    selectedQuery === demoQuery
+                      ? `rgba(${colorsRGB.primaryRGB}, 0.18)`
+                      : 'rgba(255, 255, 255, 0.03)',
+                  color:
+                    selectedQuery === demoQuery
+                      ? colors.primary
+                      : undefined,
+                }}
+                onMouseEnter={(e) => {
+                  if (selectedQuery !== demoQuery) {
+                    e.currentTarget.style.borderColor = `rgba(${colorsRGB.primaryRGB}, 0.3)`;
+                    e.currentTarget.style.color = colors.primary;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedQuery !== demoQuery) {
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                    e.currentTarget.style.color = '';
+                  }
+                }}
               >
                 {demoQuery}
               </motion.button>
@@ -166,10 +189,10 @@ export default function AISearchDemo() {
             className='mb-8 rounded-xl border p-6'
             style={{
               background: `linear-gradient(135deg, ${withAlpha(
-                PRIMARY_RGB_VAR,
+                colorsRGB.primaryRGB,
                 0.14
-              )}, ${withAlpha(SECONDARY_RGB_VAR, 0.1)})`,
-              borderColor: withAlpha(PRIMARY_RGB_VAR, 0.24),
+              )}, ${withAlpha(colorsRGB.secondaryRGB, 0.1)})`,
+              borderColor: withAlpha(colorsRGB.primaryRGB, 0.24),
             }}
           >
             <div className='mb-4 flex items-center gap-4'>
@@ -177,7 +200,7 @@ export default function AISearchDemo() {
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
               >
-                <Brain className='h-6 w-6' style={{ color: PRIMARY_COLOR }} />
+                <Brain className='h-6 w-6' style={{ color: colors.primary }} />
               </motion.div>
               <div>
                 <h4 className='font-medium text-foreground'>
@@ -208,7 +231,7 @@ export default function AISearchDemo() {
                     animate={{ scale: 1 }}
                     transition={{ delay: index * 0.3 + 0.2 }}
                     className='h-2 w-2 rounded-full'
-                    style={{ backgroundColor: PRIMARY_COLOR }}
+                    style={{ backgroundColor: colors.primary }}
                   />
                   {step}
                 </motion.div>
@@ -228,7 +251,7 @@ export default function AISearchDemo() {
             className='space-y-4'
           >
             <div className='mb-6 flex items-center gap-2'>
-              <Zap className='h-5 w-5' style={{ color: PRIMARY_COLOR }} />
+              <Zap className='h-5 w-5' style={{ color: colors.primary }} />
               <span className='font-medium text-foreground'>
                 Found {results.length} relevant results in 0.3s
               </span>
@@ -241,25 +264,33 @@ export default function AISearchDemo() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -2 }}
-                className='
-                  group cursor-pointer rounded-xl border p-6 transition-all duration-300
-                  border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.02]
-                  hover:border-[color:rgba(var(--color-primary-service-rgb),0.35)]
-                '
+                className='group cursor-pointer rounded-xl border p-6 transition-all duration-300 border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.02]'
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = `rgba(${colorsRGB.primaryRGB}, 0.35)`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                }}
               >
                 <div className='flex items-start gap-4'>
                   <div
-                    className='
-                      rounded-lg p-2 transition-colors
-                      group-hover:bg-[color:rgba(var(--color-primary-service-rgb),0.2)]
-                    '
+                    className='rounded-lg p-2 transition-colors'
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = `rgba(${colorsRGB.primaryRGB}, 0.2)`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = withAlpha(
+                        colorsRGB.primaryRGB,
+                        0.12
+                      );
+                    }}
                     style={{
-                      backgroundColor: withAlpha(PRIMARY_RGB_VAR, 0.12),
+                      backgroundColor: withAlpha(colorsRGB.primaryRGB, 0.12),
                     }}
                   >
                     <FileText
                       className='h-5 w-5'
-                      style={{ color: PRIMARY_COLOR }}
+                      style={{ color: colors.primary }}
                     />
                   </div>
 
@@ -271,8 +302,8 @@ export default function AISearchDemo() {
                       <div
                         className='flex items-center gap-1 rounded-full px-2 py-1 text-xs'
                         style={{
-                          backgroundColor: withAlpha(PRIMARY_RGB_VAR, 0.18),
-                          color: PRIMARY_COLOR,
+                          backgroundColor: withAlpha(colorsRGB.primaryRGB, 0.18),
+                          color: colors.primary,
                         }}
                       >
                         <span>
@@ -302,11 +333,14 @@ export default function AISearchDemo() {
                       </div>
 
                       <button
-                        className='
-                          cursor-pointer text-xs transition-colors
-                          hover:text-[color:rgba(var(--color-primary-service-rgb),0.75)]
-                        '
-                        style={{ color: PRIMARY_COLOR }}
+                        className='cursor-pointer text-xs transition-colors'
+                        style={{ color: colors.primary }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = `rgba(${colorsRGB.primaryRGB}, 0.75)`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = colors.primary;
+                        }}
                       >
                         View Document →
                       </button>

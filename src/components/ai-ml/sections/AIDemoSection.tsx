@@ -1,15 +1,13 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
 import AISearchDemo from '@/components/ai-ml/interactive/AISearchDemo';
 import { openCalendlyPopup } from '@/lib/calendly';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
+import { getColorsRGBFromPath } from '@/lib/colors';
 
-const PRIMARY_RGB_VAR = '--color-primary-service-rgb' as const;
-const SECONDARY_RGB_VAR = '--color-secondary-service-rgb' as const;
-
-const withAlpha = (cssVar: string, alpha: number) =>
-  `rgba(var(${cssVar}), ${alpha})`;
+const withAlpha = (rgb: string, alpha: number) => `rgba(${rgb}, ${alpha})`;
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -23,13 +21,16 @@ const sectionVariants = {
 };
 
 export default function AIDemoSection() {
+  const pathname = usePathname();
+  const colorsRGB = getColorsRGBFromPath(pathname);
+
   return (
     <section
       id='demo'
       className='py-20'
       style={{
         background: `linear-gradient(180deg, transparent 0%, ${withAlpha(
-          PRIMARY_RGB_VAR,
+          colorsRGB.primaryRGB,
           0.08
         )} 45%, transparent 100%)`,
       }}
@@ -44,9 +45,9 @@ export default function AIDemoSection() {
             className='mb-6 text-4xl font-bold text-transparent'
             style={{
               backgroundImage: `linear-gradient(90deg, rgba(255,255,255,1) 0%, ${withAlpha(
-                PRIMARY_RGB_VAR,
+                colorsRGB.primaryRGB,
                 0.75
-              )} 50%, ${withAlpha(SECONDARY_RGB_VAR, 0.6)} 100%)`,
+              )} 50%, ${withAlpha(colorsRGB.secondaryRGB, 0.6)} 100%)`,
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
             }}
@@ -75,9 +76,9 @@ export default function AIDemoSection() {
           transition={{ delay: 0.2 }}
           className='overflow-hidden rounded-2xl'
           style={{
-            border: `1px solid ${withAlpha(PRIMARY_RGB_VAR, 0.18)}`,
+            border: `1px solid ${withAlpha(colorsRGB.primaryRGB, 0.18)}`,
             background: `linear-gradient(135deg, rgba(255,255,255,0.04), ${withAlpha(
-              PRIMARY_RGB_VAR,
+              colorsRGB.primaryRGB,
               0.08
             )})`,
           }}

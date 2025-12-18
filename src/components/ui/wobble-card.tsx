@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
+import { getColorsFromPath } from '@/lib/colors';
 
 export interface WobbleCardProps {
   children: React.ReactNode;
@@ -15,6 +17,8 @@ export const WobbleCard = ({
   containerClassName,
   className,
 }: WobbleCardProps) => {
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
 
@@ -41,10 +45,11 @@ export const WobbleCard = ({
         transition: 'transform 0.12s ease-out',
       }}
       className={cn(
-        'relative mx-auto w-full overflow-hidden rounded-3xl bg-[color:var(--color-primary-service)] text-foreground',
+        'relative mx-auto w-full overflow-hidden rounded-3xl text-foreground',
         'shadow-[0_20px_60px_rgba(15,23,42,0.25)]',
         containerClassName
       )}
+      style={{ backgroundColor: colors.primary }}
     >
       <div
         className='relative h-full overflow-hidden sm:mx-0 sm:rounded-3xl'

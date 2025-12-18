@@ -11,9 +11,11 @@ import {
   useSpring,
 } from 'motion/react';
 import { Menu, X, ChevronDown } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { RoundedSlideButton } from '@/components/ui/rounded-slide-button';
 import { CustomDropdown } from '@/components/ui/custom-dropdown';
 import { openCalendlyPopup } from '@/lib/calendly';
+import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
 
 interface NavLink {
   label: string;
@@ -137,6 +139,10 @@ const chevronVariants = {
 };
 
 export default function UnifiedHeader() {
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+  const colorsRGB = getColorsRGBFromPath(pathname);
+
   const [scrolled, setScrolled] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -155,6 +161,11 @@ export default function UnifiedHeader() {
     damping: 30,
     mass: 0.7,
   });
+
+  // Generate box shadow dynamically based on colors
+  const headerShadowScrolled = scrolled
+    ? `0 16px 40px rgba(${colorsRGB.primaryRGB}, 0.15), 0 0 0 1px rgba(${colorsRGB.secondaryRGB}, 0.1)`
+    : 'none';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -201,8 +212,8 @@ export default function UnifiedHeader() {
           className='pointer-events-none absolute inset-x-0 -top-32 h-64 opacity-60'
           style={{
             background: `radial-gradient(80% 50% at 50% 0%,
-              rgba(var(--color-primary-service-rgb), 0.15),
-              rgba(var(--color-secondary-service-rgb), 0.1),
+              rgba(${colorsRGB.primaryRGB}, 0.15),
+              rgba(${colorsRGB.secondaryRGB}, 0.1),
               transparent 70%)`,
           }}
         />
@@ -216,9 +227,9 @@ export default function UnifiedHeader() {
               animate={scrolled ? 'scrolled' : 'rest'}
               style={{
                 borderColor: scrolled
-                  ? 'rgba(var(--color-primary-service-rgb), 0.28)'
+                  ? `rgba(${colorsRGB.primaryRGB}, 0.28)`
                   : 'rgba(255,255,255,0)',
-                boxShadow: scrolled ? 'var(--header-shadow-scrolled)' : 'none',
+                boxShadow: headerShadowScrolled,
                 backgroundColor: scrolled ? 'var(--background)' : 'transparent',
                 background: scrolled
                   ? 'color-mix(in srgb, var(--background) 96%, transparent)'
@@ -233,7 +244,7 @@ export default function UnifiedHeader() {
               <motion.div
                 className='absolute inset-0 rounded-[inherit] opacity-0 pointer-events-none'
                 style={{
-                  background: `radial-gradient(340px circle at ${mousePos.x}% ${mousePos.y}%, rgba(var(--color-primary-service-rgb),0.05), transparent 55%)`,
+                  background: `radial-gradient(340px circle at ${mousePos.x}% ${mousePos.y}%, rgba(${colorsRGB.primaryRGB},0.05), transparent 55%)`,
                 }}
                 variants={hoverHaloVariants}
                 initial='rest'
@@ -257,7 +268,7 @@ export default function UnifiedHeader() {
                         }}
                         className='size-7 rounded-lg shadow-brand-glow group-hover/logo:shadow-brand-intense transition-all duration-300 flex items-center justify-center p-1'
                         style={{
-                          backgroundImage: `linear-gradient(135deg, var(--color-primary-service), var(--color-secondary-service))`,
+                          backgroundImage: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
                         }}
                       >
                         <Image
@@ -274,14 +285,14 @@ export default function UnifiedHeader() {
                       <span
                         className='bg-clip-text text-transparent text-sm'
                         style={{
-                          backgroundImage: `linear-gradient(to right, var(--color-primary-service), var(--color-secondary-service))`,
+                          backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
                         }}
                       >
                         Swiftware
                       </span>
                       <div
                         className='text-[10px]'
-                        style={{ color: 'var(--color-primary-service)' }}
+                        style={{ color: colors.primary }}
                       >
                         Digital Excellence
                       </div>
@@ -450,7 +461,7 @@ export default function UnifiedHeader() {
                         }}
                         className='size-8 rounded-lg shadow-brand-glow group-hover/logo:shadow-brand-intense transition-all duration-300 flex items-center justify-center p-1'
                         style={{
-                          backgroundImage: `linear-gradient(135deg, var(--color-primary-service), var(--color-secondary-service))`,
+                          backgroundImage: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
                         }}
                       >
                         <Image
@@ -468,14 +479,14 @@ export default function UnifiedHeader() {
                       <span
                         className='bg-clip-text text-transparent text-base'
                         style={{
-                          backgroundImage: `linear-gradient(to right, var(--color-primary-service), var(--color-secondary-service))`,
+                          backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
                         }}
                       >
                         Swiftware
                       </span>
                       <div
                         className='text-xs'
-                        style={{ color: 'var(--color-primary-service)' }}
+                        style={{ color: colors.primary }}
                       >
                         Digital Excellence
                       </div>
@@ -512,7 +523,7 @@ export default function UnifiedHeader() {
                 animate='visible'
                 className='absolute bottom-0 inset-x-4 sm:inset-x-6 h-[1px]'
                 style={{
-                  backgroundImage: `linear-gradient(to right, transparent, var(--color-secondary-service), transparent)`,
+                  backgroundImage: `linear-gradient(to right, transparent, ${colors.secondary}, transparent)`,
                   opacity: scrolled ? 0.6 : 0.4,
                 }}
               />

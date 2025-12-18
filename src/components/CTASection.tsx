@@ -1,8 +1,10 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 import { openCalendlyPopup } from '@/lib/calendly';
 import { cn } from '@/lib/utils';
+import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
 
 type CTAButtonConfig = {
   label: string;
@@ -16,10 +18,12 @@ function CalendlyButton({
   variant = 'primary',
   tone,
 }: CTAButtonConfig & { tone: CTATone }) {
-  const primaryBase =
-    'bg-transparent text-white border-transparent shadow-[0_14px_40px_rgba(var(--color-primary-service-rgb),0.22)] hover:shadow-[0_18px_44px_rgba(var(--color-primary-service-rgb),0.3)]';
-  const secondaryOnDefault =
-    'bg-transparent text-[color:var(--color-primary-service)] border-[color:var(--color-primary-service)] hover:bg-[color:var(--color-primary-service)]/10';
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+  const colorsRGB = getColorsRGBFromPath(pathname);
+
+  const primaryBase = 'bg-transparent text-white border-transparent';
+  const secondaryOnDefault = 'bg-transparent';
   const secondaryOnSecondary =
     'bg-transparent text-secondary-foreground border-secondary-foreground/40 hover:bg-secondary-foreground/10';
 
@@ -30,6 +34,18 @@ function CalendlyButton({
         ? secondaryOnSecondary
         : secondaryOnDefault;
 
+  const style =
+    variant === 'primary'
+      ? {
+          boxShadow: `0 14px 40px rgba(${colorsRGB.primaryRGB}, 0.22)`,
+        }
+      : tone !== 'secondary'
+        ? {
+            color: colors.primary,
+            borderColor: colors.primary,
+          }
+        : undefined;
+
   return (
     <InteractiveHoverButton
       type='button'
@@ -39,6 +55,21 @@ function CalendlyButton({
         'w-full sm:w-auto px-8 py-3 text-sm font-semibold transition-transform duration-300 hover:-translate-y-0.5',
         variantClass
       )}
+      style={style}
+      onMouseEnter={(e) => {
+        if (variant === 'primary') {
+          e.currentTarget.style.boxShadow = `0 18px 44px rgba(${colorsRGB.primaryRGB}, 0.3)`;
+        } else if (tone !== 'secondary') {
+          e.currentTarget.style.backgroundColor = `${colors.primary}1a`;
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (variant === 'primary') {
+          e.currentTarget.style.boxShadow = `0 14px 40px rgba(${colorsRGB.primaryRGB}, 0.22)`;
+        } else if (tone !== 'secondary') {
+          e.currentTarget.style.backgroundColor = 'transparent';
+        }
+      }}
     />
   );
 }

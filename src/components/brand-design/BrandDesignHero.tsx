@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo } from 'react';
 import { motion, easeOut } from 'motion/react';
-import { useColorScheme } from '@/context/ColorSchemeContext';
+import { usePathname } from 'next/navigation';
+import { getColorsFromPath } from '@/lib/colors';
 import { initCalendlyScripts, openCalendlyPopup } from '@/lib/calendly';
 import { renderCanvas } from '@/components/ui/canvas';
 import { InteractiveHoverButton } from '../ui/interactive-hover-button';
@@ -31,7 +32,8 @@ const itemVariants = {
 };
 
 export function BrandDesignHero() {
-  const { colors } = useColorScheme();
+  const pathname = usePathname();
+  const { primary, secondary } = getColorsFromPath(pathname);
 
   useEffect(() => {
     initCalendlyScripts();
@@ -44,14 +46,14 @@ export function BrandDesignHero() {
 
   const dotPalette = useMemo(
     () => [
-      'var(--color-primary-service)',
-      'var(--color-secondary-service)',
+      primary,
+      secondary,
       'var(--color-service-brand)',
       'var(--color-service-brand-dark)',
       'var(--color-service-software)',
       'var(--color-service-ai)',
     ],
-    []
+    [primary, secondary]
   );
 
   const dots = useMemo(
@@ -121,7 +123,7 @@ export function BrandDesignHero() {
             <div className='mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-4 py-1.5 backdrop-blur-sm'>
               <div
                 className='h-2 w-2 rounded-full'
-                style={{ backgroundColor: colors.primary }}
+                style={{ backgroundColor: primary }}
               />
               <span className='text-sm font-medium text-muted-foreground'>
                 Professional Solutions
@@ -133,7 +135,7 @@ export function BrandDesignHero() {
             <h1
               className='mb-8 text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl'
               style={{
-                backgroundImage: `linear-gradient(135deg, white 0%, ${colors.primary}80 100%)`,
+                backgroundImage: `linear-gradient(135deg, white 0%, ${primary}80 100%)`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',

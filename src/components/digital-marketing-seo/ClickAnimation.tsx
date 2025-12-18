@@ -1,36 +1,7 @@
 'use client';
+import { usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
-
-const pulseAnimations = [
-  {
-    size: 240,
-    opacity: 0.24,
-    delay: 4,
-    position: { top: '12%', left: '16%' },
-    color: 'rgba(var(--color-primary-service-rgb), 0.28)',
-  },
-  {
-    size: 180,
-    opacity: 0.2,
-    delay: 5.5,
-    position: { bottom: '18%', right: '12%' },
-    color: 'rgba(var(--color-secondary-service-rgb), 0.22)',
-  },
-  {
-    size: 140,
-    opacity: 0.16,
-    delay: 6.5,
-    position: { top: '36%', right: '22%' },
-    color: 'rgba(var(--color-primary-service-rgb), 0.18)',
-  },
-  {
-    size: 210,
-    opacity: 0.22,
-    delay: 4.5,
-    position: { bottom: '8%', left: '28%' },
-    color: 'rgba(var(--color-secondary-service-rgb), 0.2)',
-  },
-];
+import { getColorsRGBFromPath } from '@/lib/colors';
 
 const pulseVariants = {
   initial: { scale: 0.6, opacity: 0 },
@@ -42,9 +13,48 @@ const pulseVariants = {
 };
 
 export const ClickAnimation = () => {
+  const pathname = usePathname();
+  const colorsRGB = getColorsRGBFromPath(pathname);
+
+  const pulseAnimations = [
+    {
+      size: 240,
+      opacity: 0.24,
+      delay: 4,
+      position: { top: '12%', left: '16%' },
+      color: `rgba(${colorsRGB.primaryRGB}, 0.28)`,
+    },
+    {
+      size: 180,
+      opacity: 0.2,
+      delay: 5.5,
+      position: { bottom: '18%', right: '12%' },
+      color: `rgba(${colorsRGB.secondaryRGB}, 0.22)`,
+    },
+    {
+      size: 140,
+      opacity: 0.16,
+      delay: 6.5,
+      position: { top: '36%', right: '22%' },
+      color: `rgba(${colorsRGB.primaryRGB}, 0.18)`,
+    },
+    {
+      size: 210,
+      opacity: 0.22,
+      delay: 4.5,
+      position: { bottom: '8%', left: '28%' },
+      color: `rgba(${colorsRGB.secondaryRGB}, 0.2)`,
+    },
+  ];
+
   return (
     <div className='pointer-events-none absolute inset-0 overflow-hidden'>
-      <div className='absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(var(--color-primary-service-rgb),0.18)_0%,transparent_55%)]' />
+      <div
+        className='absolute inset-0'
+        style={{
+          background: `radial-gradient(circle at top, rgba(${colorsRGB.primaryRGB}, 0.18) 0%, transparent 55%)`,
+        }}
+      />
       {pulseAnimations.map((animation, index) => (
         <motion.div
           key={index}

@@ -4,8 +4,6 @@ import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import ClientApp from '@/components/ClientApp';
 import SchemaMarkup from '@/components/SchemaMarkup';
-import { ColorSchemeProvider } from '@/context/ColorSchemeContext';
-import { ColorSchemeWrapper } from '@/components/ColorSchemeWrapper';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -48,7 +46,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -74,7 +72,6 @@ export default function RootLayout({
       >
         <SchemaMarkup />
 
-
         {/* Skip link */}
         <a
           href='#main'
@@ -84,22 +81,17 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-
         <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
+          attribute='class'
+          defaultTheme='system'
           enableSystem
           disableTransitionOnChange
         >
-          <ColorSchemeProvider>
-            <ColorSchemeWrapper>
-              <ClientApp>
-                <main id='main' tabIndex={-1} className='relative'>
-                  {children}
-                </main>
-              </ClientApp>
-            </ColorSchemeWrapper>
-          </ColorSchemeProvider>
+          <ClientApp>
+            <main id='main' tabIndex={-1} className='relative'>
+              {children}
+            </main>
+          </ClientApp>
         </ThemeProvider>
       </body>
     </html>

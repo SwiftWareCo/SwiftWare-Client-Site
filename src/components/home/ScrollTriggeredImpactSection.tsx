@@ -4,7 +4,8 @@ import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import Image from 'next/image';
 import { createPortal } from 'react-dom';
-import { useColorScheme } from '@/context/ColorSchemeContext';
+import { usePathname } from 'next/navigation';
+import { getColorsFromPath } from '@/lib/colors';
 import {
   siFacebook,
   siInstagram,
@@ -200,8 +201,12 @@ function SocialMediaIconWithTooltip({ item }: SocialMediaIconProps) {
             borderColor: 'var(--gray-a6)',
             color: `${item.id.includes('vhd') ? '#0891B2' : item.id.includes('beacon') ? '#7C3AED' : '#3B82F6'}`,
           }}
-          onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--gray-a8)'}
-          onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--gray-a6)'}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.borderColor = 'var(--gray-a8)')
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.borderColor = 'var(--gray-a6)')
+          }
         />
       </motion.div>
 
@@ -224,11 +229,19 @@ function SocialMediaIconWithTooltip({ item }: SocialMediaIconProps) {
               backgroundColor: 'var(--color-panel-solid)',
             }}
           >
-            <p className='text-xs font-semibold' style={{ color: 'var(--gray-12)' }}>
+            <p
+              className='text-xs font-semibold'
+              style={{ color: 'var(--gray-12)' }}
+            >
               {item.platformName}
             </p>
             {item.stat && (
-              <p className='text-xs font-medium' style={{ color: 'var(--gray-11)' }}>{item.stat}</p>
+              <p
+                className='text-xs font-medium'
+                style={{ color: 'var(--gray-11)' }}
+              >
+                {item.stat}
+              </p>
             )}
           </motion.div>,
           document.body
@@ -262,7 +275,9 @@ function LogoBox({ item, index }: LogoBoxProps) {
   const floatX = Math.sin(item.scatterLeft) * safeFloatX;
 
   // Stagger delay for scatter animation
-  const scatterDelay = isSocialMediaIcon ? index * 0.08 : Math.floor(index / 3) * 0.15;
+  const scatterDelay = isSocialMediaIcon
+    ? index * 0.08
+    : Math.floor(index / 3) * 0.15;
 
   if (isSocialMediaIcon) {
     return (
@@ -368,7 +383,8 @@ function LogoBox({ item, index }: LogoBoxProps) {
 
 export function ScrollTriggeredImpactSection() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { colors } = useColorScheme();
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
   const companyLogos = logoItems.filter((item) => !item.platformName);
 
   const { scrollYProgress } = useScroll({
@@ -394,8 +410,6 @@ export function ScrollTriggeredImpactSection() {
       {/* Desktop: Full version with particles */}
       <div className='hidden md:block h-[250vh]'>
         <div className='sticky top-0 h-screen w-full overflow-hidden bg-background'>
-
-
           {/* Logo scatter container */}
           <div className='absolute inset-0'>
             {logoItems.map((item, index) => (
@@ -443,8 +457,12 @@ export function ScrollTriggeredImpactSection() {
       <div className='md:hidden py-24'>
         <div className='mx-auto max-w-7xl px-6'>
           <div className='text-center mb-16'>
-            <h2 className='text-4xl font-bold mb-4 text-blue-900 dark:text-zinc-100'>Our Impact</h2>
-            <p className='text-blue-700 dark:text-zinc-300'>See the results we deliver</p>
+            <h2 className='text-4xl font-bold mb-4 text-blue-900 dark:text-zinc-100'>
+              Our Impact
+            </h2>
+            <p className='text-blue-700 dark:text-zinc-300'>
+              See the results we deliver
+            </p>
           </div>
 
           {/* Logo grid for mobile */}
@@ -491,10 +509,10 @@ export function ScrollTriggeredImpactSection() {
                   backgroundColor: 'var(--gray-a2)',
                 }}
               >
-                <div
-                  className='w-2 h-2 rounded-full flex-shrink-0 mt-2'
-                />
-                <p className='text-sm text-blue-800 dark:text-zinc-300'>{stat.text}</p>
+                <div className='w-2 h-2 rounded-full flex-shrink-0 mt-2' />
+                <p className='text-sm text-blue-800 dark:text-zinc-300'>
+                  {stat.text}
+                </p>
               </motion.div>
             ))}
           </div>

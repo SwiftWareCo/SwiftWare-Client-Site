@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { useColorScheme } from '@/context/ColorSchemeContext';
+import { usePathname } from 'next/navigation';
+import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
 import * as LucideIcons from 'lucide-react';
 
 interface Feature {
@@ -23,7 +24,9 @@ export function FeaturesSection({
   features,
   variant = 'grid',
 }: FeaturesSectionProps) {
-  const { colors } = useColorScheme();
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+  const colorsRGB = getColorsRGBFromPath(pathname);
 
   return (
     <section className='py-16 sm:py-24'>
@@ -55,11 +58,16 @@ export function FeaturesSection({
                 <div
                   className='mb-4 inline-flex items-center justify-center w-12 h-12 rounded-lg'
                   style={{
-                    background: `${colors.primary}20`,
+                    background: `rgba(${colorsRGB.primaryRGB}, 0.2)`,
                   }}
                 >
                   {(() => {
-                    const IconComponent = LucideIcons[feature.iconName] as React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+                    const IconComponent = LucideIcons[
+                      feature.iconName
+                    ] as React.ComponentType<{
+                      className?: string;
+                      style?: React.CSSProperties;
+                    }>;
                     return (
                       <IconComponent
                         className='h-6 w-6'
@@ -92,11 +100,16 @@ export function FeaturesSection({
                 <div
                   className='flex-shrink-0 mt-1 inline-flex items-center justify-center w-10 h-10 rounded-lg'
                   style={{
-                    background: `${colors.primary}20`,
+                    background: `rgba(${colorsRGB.primaryRGB}, 0.2)`,
                   }}
                 >
                   {(() => {
-                    const IconComponent = LucideIcons[feature.iconName] as React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+                    const IconComponent = LucideIcons[
+                      feature.iconName
+                    ] as React.ComponentType<{
+                      className?: string;
+                      style?: React.CSSProperties;
+                    }>;
                     return (
                       <IconComponent
                         className='h-5 w-5'

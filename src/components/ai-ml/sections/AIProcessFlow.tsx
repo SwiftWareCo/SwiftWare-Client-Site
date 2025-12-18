@@ -1,17 +1,13 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
 import { Upload, Brain, Search, BarChart3, CheckCircle } from 'lucide-react';
 import { openCalendlyPopup } from '@/lib/calendly';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
+import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
 
-const PRIMARY_COLOR = 'var(--color-primary-service)';
-const SECONDARY_COLOR = 'var(--color-secondary-service)';
-const PRIMARY_RGB_VAR = '--color-primary-service-rgb' as const;
-const SECONDARY_RGB_VAR = '--color-secondary-service-rgb' as const;
-
-const withAlpha = (cssVar: string, alpha: number) =>
-  `rgba(var(${cssVar}), ${alpha})`;
+const withAlpha = (rgb: string, alpha: number) => `rgba(${rgb}, ${alpha})`;
 
 const PROCESS_STEPS = [
   {
@@ -100,12 +96,16 @@ const detailVariants = {
 };
 
 export default function AIProcessFlow() {
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+  const colorsRGB = getColorsRGBFromPath(pathname);
+
   return (
     <section
       className='py-20'
       style={{
         background: `linear-gradient(180deg, transparent 0%, ${withAlpha(
-          PRIMARY_RGB_VAR,
+          colorsRGB.primaryRGB,
           0.08
         )} 45%, transparent 100%)`,
       }}
@@ -120,9 +120,9 @@ export default function AIProcessFlow() {
             className='mb-6 text-4xl font-bold text-transparent'
             style={{
               backgroundImage: `linear-gradient(90deg, rgba(255,255,255,1) 0%, ${withAlpha(
-                PRIMARY_RGB_VAR,
+                colorsRGB.primaryRGB,
                 0.75
-              )} 50%, ${withAlpha(SECONDARY_RGB_VAR, 0.6)} 100%)`,
+              )} 50%, ${withAlpha(colorsRGB.secondaryRGB, 0.6)} 100%)`,
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
             }}
@@ -147,7 +147,10 @@ export default function AIProcessFlow() {
         <div className='relative mx-auto max-w-6xl'>
           {/* Connection lines */}
           <div
-            className='absolute left-0 right-0 hidden h-px -translate-y-1/2 transform bg-[linear-gradient(90deg,rgba(0,0,0,0),rgba(var(--color-primary-service-rgb),0.3),rgba(0,0,0,0))] lg:block'
+            className='absolute left-0 right-0 hidden h-px -translate-y-1/2 transform lg:block'
+            style={{
+              background: `linear-gradient(90deg, rgba(0,0,0,0), rgba(${colorsRGB.primaryRGB}, 0.3), rgba(0,0,0,0))`,
+            }}
             style={{ top: '50%' }}
           />
 
@@ -169,7 +172,7 @@ export default function AIProcessFlow() {
                   <div
                     className='absolute -left-4 -top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-primary-foreground'
                     style={{
-                      background: `linear-gradient(135deg, ${PRIMARY_COLOR}, ${SECONDARY_COLOR})`,
+                      background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
                     }}
                   >
                     {index + 1}
@@ -177,26 +180,36 @@ export default function AIProcessFlow() {
 
                   {/* Main card */}
                   <div
-                    className='
-                      relative rounded-2xl border p-6 transition-all duration-500
-                      border-[color:rgba(var(--color-primary-service-rgb),0.24)]
-                      bg-[linear-gradient(135deg,rgba(var(--color-primary-service-rgb),0.08),rgba(var(--color-secondary-service-rgb),0.05))]
-                      hover:border-[color:rgba(var(--color-primary-service-rgb),0.4)]
-                      hover:shadow-[0_0_30px_rgba(var(--color-primary-service-rgb),0.14)]
-                      group-hover:scale-[1.02]
-                    '
+                    className='relative rounded-2xl border p-6 transition-all duration-500 group'
+                    style={{
+                      borderColor: `rgba(${colorsRGB.primaryRGB}, 0.24)`,
+                      background: `linear-gradient(135deg, rgba(${colorsRGB.primaryRGB}, 0.08), rgba(${colorsRGB.secondaryRGB}, 0.05))`,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = `rgba(${colorsRGB.primaryRGB}, 0.4)`;
+                      e.currentTarget.style.boxShadow = `0 0 30px rgba(${colorsRGB.primaryRGB}, 0.14)`;
+                      e.currentTarget.style.transform = 'scale(1.02)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = `rgba(${colorsRGB.primaryRGB}, 0.24)`;
+                      e.currentTarget.style.boxShadow = '';
+                      e.currentTarget.style.transform = '';
+                    }}
                   >
                     {/* Icon */}
                     <div
-                      className='
-                        mb-6 flex h-16 w-16 items-center justify-center rounded-2xl text-primary-foreground transition-all duration-300
-                        group-hover:shadow-[0_16px_32px_rgba(var(--color-primary-service-rgb),0.2)]
-                      '
+                      className='mb-6 flex h-16 w-16 items-center justify-center rounded-2xl text-primary-foreground transition-all duration-300'
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.boxShadow = `0 16px 32px rgba(${colorsRGB.primaryRGB}, 0.2)`;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.boxShadow = '';
+                      }}
                       style={{
                         background: `linear-gradient(135deg, ${withAlpha(
-                          PRIMARY_RGB_VAR,
+                          colorsRGB.primaryRGB,
                           step.highlightAlpha
-                        )}, ${withAlpha(SECONDARY_RGB_VAR, step.highlightAlpha - 0.05)})`,
+                        )}, ${withAlpha(colorsRGB.secondaryRGB, step.highlightAlpha - 0.05)})`,
                       }}
                     >
                       <Icon className='h-8 w-8' />
@@ -227,7 +240,7 @@ export default function AIProcessFlow() {
                         >
                           <CheckCircle
                             className='h-3 w-3 flex-shrink-0'
-                            style={{ color: PRIMARY_COLOR }}
+                            style={{ color: colors.primary }}
                           />
                           {detail}
                         </motion.li>
@@ -242,9 +255,9 @@ export default function AIProcessFlow() {
                       transition={{ duration: 0.3 }}
                       style={{
                         background: `linear-gradient(135deg, ${withAlpha(
-                          PRIMARY_RGB_VAR,
+                          colorsRGB.primaryRGB,
                           0.12
-                        )}, ${withAlpha(SECONDARY_RGB_VAR, 0.1)})`,
+                        )}, ${withAlpha(colorsRGB.secondaryRGB, 0.1)})`,
                       }}
                     />
 
@@ -261,7 +274,7 @@ export default function AIProcessFlow() {
                           delay: index * 0.5,
                         }}
                         className='h-2 w-2 rounded-full'
-                        style={{ backgroundColor: PRIMARY_COLOR }}
+                        style={{ backgroundColor: colors.primary }}
                       />
                     </div>
                   </div>
@@ -276,7 +289,7 @@ export default function AIProcessFlow() {
                         transition={{ duration: 0.5, delay: index * 0.1 + 0.5 }}
                         className='flex h-8 w-8 items-center justify-center rounded-full text-primary-foreground'
                         style={{
-                          background: `linear-gradient(135deg, ${PRIMARY_COLOR}, ${SECONDARY_COLOR})`,
+                          background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
                         }}
                       >
                         <motion.span
@@ -304,11 +317,11 @@ export default function AIProcessFlow() {
           className='mt-16 text-center'
         >
           <div
-            className='
-              mx-auto max-w-3xl rounded-2xl border p-8
-              border-[color:rgba(var(--color-primary-service-rgb),0.24)]
-              bg-[linear-gradient(135deg,rgba(var(--color-primary-service-rgb),0.12),rgba(var(--color-secondary-service-rgb),0.08))]
-            '
+            className='mx-auto max-w-3xl rounded-2xl border p-8'
+            style={{
+              borderColor: `rgba(${colorsRGB.primaryRGB}, 0.24)`,
+              background: `linear-gradient(135deg, rgba(${colorsRGB.primaryRGB}, 0.12), rgba(${colorsRGB.secondaryRGB}, 0.08))`,
+            }}
           >
             <h3 className='mb-4 text-2xl font-semibold text-foreground'>
               Ready to See Your Data Come Alive?

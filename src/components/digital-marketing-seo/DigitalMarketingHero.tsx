@@ -56,7 +56,7 @@ export const DigitalMarketingHero = () => {
                 'executive leads',
                 'predictable growth',
               ]}
-              className='mt-0 align-middle whitespace-nowrap bg-card text-card-foreground shadow-[0_16px_40px_rgba(var(--color-primary-service-rgb),0.28)]'
+              className='mt-0 align-middle whitespace-nowrap bg-card text-card-foreground'
               textClassName='text-balance tracking-tight whitespace-nowrap'
               interval={3200}
             />

@@ -1,8 +1,10 @@
 'use client';
+import { usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
 import Icon from '@/components/ui/Icon';
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
+import { getColorsRGBFromPath } from '@/lib/colors';
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 28 },
@@ -36,6 +38,9 @@ interface UnifiedSystemConnectorProps {
 export const UnifiedSystemConnector = ({
   className,
 }: UnifiedSystemConnectorProps) => {
+  const pathname = usePathname();
+  const colorsRGB = getColorsRGBFromPath(pathname);
+
   return (
     <motion.section
       className={cn('py-16 sm:py-24', className)}
@@ -88,8 +93,7 @@ export const UnifiedSystemConnector = ({
               <motion.div
                 className='flex flex-col items-center rounded-xl p-4 text-center'
                 style={{
-                  backgroundColor:
-                    'rgba(var(--color-primary-service-rgb), 0.18)',
+                  backgroundColor: `rgba(${colorsRGB.primaryRGB}, 0.18)`,
                 }}
                 variants={cardVariants}
               >
@@ -105,8 +109,7 @@ export const UnifiedSystemConnector = ({
               <motion.div
                 className='flex flex-col items-center rounded-xl p-4 text-center'
                 style={{
-                  backgroundColor:
-                    'rgba(var(--color-secondary-service-rgb), 0.12)',
+                  backgroundColor: `rgba(${colorsRGB.secondaryRGB}, 0.12)`,
                 }}
                 variants={cardVariants}
               >
@@ -119,8 +122,7 @@ export const UnifiedSystemConnector = ({
               <motion.div
                 className='flex flex-col items-center rounded-xl p-4 text-center'
                 style={{
-                  backgroundColor:
-                    'rgba(var(--color-secondary-service-rgb), 0.12)',
+                  backgroundColor: `rgba(${colorsRGB.secondaryRGB}, 0.12)`,
                 }}
                 variants={cardVariants}
               >

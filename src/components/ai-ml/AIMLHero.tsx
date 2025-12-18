@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, useReducedMotion } from 'motion/react';
 import { ArrowRight, Play } from 'lucide-react';
 
@@ -9,16 +10,12 @@ import AIVisualization from '@/components/ai-ml/hero/AIVisualization';
 import { openCalendlyPopup } from '@/lib/calendly';
 import Link from 'next/link';
 import { InteractiveHoverButton } from '../ui/interactive-hover-button';
+import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
 
 const HEADLINE = 'SwiftMind. AI that works.';
 const heroEase = [0.22, 1, 0.36, 1] as const; // Smooth deceleration on hero entrance.
-const PRIMARY_COLOR = 'var(--color-primary-service)';
-const SECONDARY_COLOR = 'var(--color-secondary-service)';
-const PRIMARY_RGB_VAR = '--color-primary-service-rgb' as const;
-const SECONDARY_RGB_VAR = '--color-secondary-service-rgb' as const;
 
-const withAlpha = (cssVar: string, alpha: number) =>
-  `rgba(var(${cssVar}), ${alpha})`;
+const withAlpha = (rgb: string, alpha: number) => `rgba(${rgb}, ${alpha})`;
 
 const containerVariants = {
   hidden: { opacity: 0, y: 26 },
@@ -46,6 +43,9 @@ const itemVariants = {
 };
 
 export default function AIMLHero() {
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+  const colorsRGB = getColorsRGBFromPath(pathname);
   const reduce = useReducedMotion();
   const stripes = useMemo(
     () => [4, 12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92],
@@ -65,9 +65,9 @@ export default function AIMLHero() {
           className='absolute inset-0'
           style={{
             background: `radial-gradient(900px 420px at 50% -10%, ${withAlpha(
-              PRIMARY_RGB_VAR,
+              colorsRGB.primaryRGB,
               0.14
-            )}, ${withAlpha(SECONDARY_RGB_VAR, 0.12)}, transparent 60%)`,
+            )}, ${withAlpha(colorsRGB.secondaryRGB, 0.12)}, transparent 60%)`,
             opacity: 0.7,
           }}
         />
@@ -80,9 +80,9 @@ export default function AIMLHero() {
                 style={{
                   left: `${left}%`,
                   background: `linear-gradient(180deg, transparent, ${withAlpha(
-                    PRIMARY_RGB_VAR,
+                    colorsRGB.primaryRGB,
                     0.22
-                  )}, ${withAlpha(SECONDARY_RGB_VAR, 0.22)}, transparent)`,
+                  )}, ${withAlpha(colorsRGB.secondaryRGB, 0.22)}, transparent)`,
                   opacity: 0.22,
                 }}
                 initial={{ y: 0 }}
@@ -100,11 +100,11 @@ export default function AIMLHero() {
                 style={{
                   left: `calc(${left}% - 3px)`,
                   background: `radial-gradient(circle, rgba(255,255,255,0.85) 0%, ${withAlpha(
-                    PRIMARY_RGB_VAR,
+                    colorsRGB.primaryRGB,
                     0.8
                   )} 40%, transparent 70%)`,
                   filter: `drop-shadow(0 0 8px ${withAlpha(
-                    PRIMARY_RGB_VAR,
+                    colorsRGB.primaryRGB,
                     0.7
                   )})`,
                 }}
@@ -151,8 +151,8 @@ export default function AIMLHero() {
             <span
               className='inline-block h-1 w-1 rounded-full'
               style={{
-                backgroundColor: PRIMARY_COLOR,
-                boxShadow: `0 0 10px ${withAlpha(PRIMARY_RGB_VAR, 0.8)}`,
+                backgroundColor: colors.primary,
+                boxShadow: `0 0 10px ${withAlpha(colorsRGB.primaryRGB, 0.8)}`,
               }}
             />
             AI-Powered Intelligence
@@ -163,9 +163,9 @@ export default function AIMLHero() {
               className='inline-block text-transparent'
               style={{
                 backgroundImage: `linear-gradient(90deg, rgba(255,255,255,1) 0%, ${withAlpha(
-                  PRIMARY_RGB_VAR,
+                  colorsRGB.primaryRGB,
                   0.75
-                )} 55%, ${withAlpha(SECONDARY_RGB_VAR, 0.65)} 100%)`,
+                )} 55%, ${withAlpha(colorsRGB.secondaryRGB, 0.65)} 100%)`,
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
               }}
@@ -200,8 +200,8 @@ export default function AIMLHero() {
                   <div
                     className='h-1.5 w-1.5 rounded-full'
                     style={{
-                      background: `linear-gradient(90deg, ${PRIMARY_COLOR}, ${SECONDARY_COLOR})`,
-                      boxShadow: `0 0 8px ${withAlpha(PRIMARY_RGB_VAR, 0.6)}`,
+                      background: `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})`,
+                      boxShadow: `0 0 8px ${withAlpha(colorsRGB.primaryRGB, 0.6)}`,
                     }}
                   />
                   <span className='font-medium text-foreground'>{label}</span>
@@ -228,14 +228,14 @@ export default function AIMLHero() {
               href='#'
               className='
                    group inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm text-muted-foreground
-                   transition-all duration-300 cursor-pointer hover:-translate-y-0.5 bg-[color:var(--color-primary-service)]/50 hover:bg-background/70 
+                   transition-all duration-300 cursor-pointer hover:-translate-y-0.5 hover:bg-background/70 
                  '
-       
+              style={{ backgroundColor: `${colors.primary}80` }}
             >
               See Demo
               <Play
                 className='size-4 transition-colors'
-                style={{ color: PRIMARY_COLOR }}
+                style={{ color: colors.primary }}
               />
             </Link>
           </motion.div>

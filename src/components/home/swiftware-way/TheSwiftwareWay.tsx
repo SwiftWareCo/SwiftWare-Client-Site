@@ -1,5 +1,6 @@
 'use client';
 import { useRef, useMemo, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import {
   motion,
   useScroll,
@@ -12,6 +13,7 @@ import {
 } from 'motion/react';
 import { SwiftwareWayVisuals } from './SwiftwareWayVisuals';
 import { Zap, Code, Search, LucideIcon } from 'lucide-react';
+import { getColorsFromPath } from '@/lib/colors';
 
 // New: Floating Dots Background Component
 const FloatingDotsBackground = () => {
@@ -261,6 +263,8 @@ const titleUnderlineVariants: Variants = {
 const AnimatedTitle = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
 
   return (
     <div className='relative  flex flex-col items-center'>
@@ -268,8 +272,7 @@ const AnimatedTitle = () => {
         ref={ref}
         className='text-balance text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-center tracking-tight bg-clip-text text-service-brand drop-shadow-[0_4px_24px_rgba(0,0,0,0.35)]'
         style={{
-          backgroundImage:
-            'linear-gradient(90deg, var(--color-primary-service, var(--color-service-brand)), var(--color-secondary-service, var(--color-service-ai)))',
+          backgroundImage: `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})`,
         }}
         variants={titleContainerVariants}
         initial='hidden'
@@ -289,8 +292,7 @@ const AnimatedTitle = () => {
         aria-hidden
         className='pointer-events-none absolute inset-x-12 -bottom-2 h-2 rounded-full blur-xl'
         style={{
-          background:
-            'radial-gradient(circle, var(--color-secondary-service, var(--color-service-ai)) 0%, transparent 70%)',
+          background: `radial-gradient(circle, ${colors.secondary} 0%, transparent 70%)`,
         }}
         variants={titleUnderlineVariants}
         initial='hidden'

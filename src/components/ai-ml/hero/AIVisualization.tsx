@@ -1,7 +1,9 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { motion, useReducedMotion } from 'motion/react';
 import { Brain, Search, FileText, Zap } from 'lucide-react';
+import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
 
 const AI_FEATURES = [
   { icon: Brain, label: 'RAG Engine', delay: 0 },
@@ -10,15 +12,12 @@ const AI_FEATURES = [
   { icon: Zap, label: 'AI Insights', delay: 0.6 },
 ];
 
-const PRIMARY_COLOR = 'var(--color-primary-service)';
-const SECONDARY_COLOR = 'var(--color-secondary-service)';
-const PRIMARY_RGB_VAR = '--color-primary-service-rgb' as const;
-const SECONDARY_RGB_VAR = '--color-secondary-service-rgb' as const;
-
-const withAlpha = (cssVar: string, alpha: number) =>
-  `rgba(var(${cssVar}), ${alpha})`;
+const withAlpha = (rgb: string, alpha: number) => `rgba(${rgb}, ${alpha})`;
 
 export default function AIVisualization() {
+  const pathname = usePathname();
+  const colors = getColorsFromPath(pathname);
+  const colorsRGB = getColorsRGBFromPath(pathname);
   const reduce = useReducedMotion();
 
   if (reduce) {
@@ -27,10 +26,10 @@ export default function AIVisualization() {
         className='relative mx-auto aspect-[4/3] w-full max-w-[520px] rounded-2xl p-8'
         style={{
           background: `linear-gradient(135deg, ${withAlpha(
-            PRIMARY_RGB_VAR,
+            colorsRGB.primaryRGB,
             0.12
-          )}, ${withAlpha(SECONDARY_RGB_VAR, 0.08)})`,
-          border: `1px solid ${withAlpha(PRIMARY_RGB_VAR, 0.2)}`,
+          )}, ${withAlpha(colorsRGB.secondaryRGB, 0.08)})`,
+          border: `1px solid ${withAlpha(colorsRGB.primaryRGB, 0.2)}`,
         }}
       >
         <div className='grid h-full grid-cols-2 gap-6'>
@@ -38,9 +37,9 @@ export default function AIVisualization() {
             <div
               key={label}
               className='flex flex-col items-center justify-center rounded-xl border bg-background/40 p-4'
-              style={{ borderColor: withAlpha(PRIMARY_RGB_VAR, 0.15) }}
+              style={{ borderColor: withAlpha(colorsRGB.primaryRGB, 0.15) }}
             >
-              <Icon className='mb-2 h-8 w-8' style={{ color: PRIMARY_COLOR }} />
+              <Icon className='mb-2 h-8 w-8' style={{ color: colors.primary }} />
               <span className='text-center text-xs text-muted-foreground'>
                 {label}
               </span>
@@ -61,10 +60,10 @@ export default function AIVisualization() {
         className='relative h-full w-full overflow-hidden rounded-2xl'
         style={{
           background: `linear-gradient(135deg, ${withAlpha(
-            PRIMARY_RGB_VAR,
+            colorsRGB.primaryRGB,
             0.14
-          )}, ${withAlpha(SECONDARY_RGB_VAR, 0.1)})`,
-          border: `1px solid ${withAlpha(PRIMARY_RGB_VAR, 0.24)}`,
+          )}, ${withAlpha(colorsRGB.secondaryRGB, 0.1)})`,
+          border: `1px solid ${withAlpha(colorsRGB.primaryRGB, 0.24)}`,
         }}
       >
         {/* Background glow effect */}
@@ -72,19 +71,19 @@ export default function AIVisualization() {
           animate={{
             background: [
               `radial-gradient(circle at 20% 30%, ${withAlpha(
-                PRIMARY_RGB_VAR,
+                colorsRGB.primaryRGB,
                 0.32
               )} 0%, transparent 55%)`,
               `radial-gradient(circle at 80% 70%, ${withAlpha(
-                SECONDARY_RGB_VAR,
+                colorsRGB.secondaryRGB,
                 0.32
               )} 0%, transparent 55%)`,
               `radial-gradient(circle at 40% 80%, ${withAlpha(
-                PRIMARY_RGB_VAR,
+                colorsRGB.primaryRGB,
                 0.22
               )} 0%, transparent 55%)`,
               `radial-gradient(circle at 20% 30%, ${withAlpha(
-                PRIMARY_RGB_VAR,
+                colorsRGB.primaryRGB,
                 0.32
               )} 0%, transparent 55%)`,
             ],
@@ -109,9 +108,9 @@ export default function AIVisualization() {
             <motion.div
               animate={{
                 boxShadow: [
-                  `0 0 24px ${withAlpha(PRIMARY_RGB_VAR, 0.55)}`,
-                  `0 0 36px ${withAlpha(SECONDARY_RGB_VAR, 0.55)}`,
-                  `0 0 24px ${withAlpha(PRIMARY_RGB_VAR, 0.55)}`,
+                  `0 0 24px ${withAlpha(colorsRGB.primaryRGB, 0.55)}`,
+                  `0 0 36px ${withAlpha(colorsRGB.secondaryRGB, 0.55)}`,
+                  `0 0 24px ${withAlpha(colorsRGB.primaryRGB, 0.55)}`,
                 ],
               }}
               transition={{
@@ -121,7 +120,7 @@ export default function AIVisualization() {
               }}
               className='flex h-24 w-24 items-center justify-center rounded-full'
               style={{
-                background: `linear-gradient(135deg, ${PRIMARY_COLOR}, ${SECONDARY_COLOR})`,
+                background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
               }}
             >
               <Brain className='h-12 w-12 text-primary-foreground' />
@@ -133,7 +132,7 @@ export default function AIVisualization() {
                 key={`pulse-${ringIndex}`}
                 className='absolute inset-0 rounded-full'
                 style={{
-                  border: `1px solid ${withAlpha(PRIMARY_RGB_VAR, 0.3)}`,
+                  border: `1px solid ${withAlpha(colorsRGB.primaryRGB, 0.3)}`,
                   width: `${120 + ringIndex * 40}px`,
                   height: `${120 + ringIndex * 40}px`,
                   left: '50%',
@@ -161,7 +160,7 @@ export default function AIVisualization() {
             key={`particle-${particleIndex}`}
             className='absolute h-1 w-1 rounded-full'
             style={{
-              backgroundColor: PRIMARY_COLOR,
+              backgroundColor: colors.primary,
               left: `${10 + particleIndex * 10}%`,
               top: `${20 + particleIndex * 8}%`,
             }}
