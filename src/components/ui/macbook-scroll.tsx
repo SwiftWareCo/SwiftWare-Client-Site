@@ -180,6 +180,7 @@ export const Lid = ({ scaleX, scaleY, rotate, translate, src }: LidProps) => {
           quality={100}
           className='absolute inset-0 rounded-xl object-cover object-left-top'
           priority
+          fetchPriority="high"
         />
       </motion.div>
     </div>

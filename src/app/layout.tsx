@@ -2,7 +2,8 @@ import './global.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
-import ClientApp from '@/components/ClientApp';
+import UnifiedHeader from '@/components/UnifiedHeader';
+import Footer from '@/components/Footer';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import { ColorSchemeProvider } from '@/context/ColorSchemeContext';
 import { ColorSchemeWrapper } from '@/components/ColorSchemeWrapper';
@@ -56,18 +57,12 @@ export default function RootLayout({
   return (
     <html lang='en' className='scroll-smooth' suppressHydrationWarning>
       <head>
-        <Script
-          src='https://www.googletagmanager.com/gtag/js?id=G-CDYGKBBPDC'
-          strategy='afterInteractive'
+        <link
+          rel='stylesheet'
+          href='https://assets.calendly.com/assets/external/widget.css'
         />
-        <Script id='google-analytics' strategy='afterInteractive'>
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-CDYGKBBPDC');
-          `}
-        </Script>
+        <link rel='preconnect' href='https://www.google-analytics.com' />
+        <link rel='preconnect' href='https://www.googletagmanager.com' />
       </head>
       <body
         className={`${inter.className} antialiased overflow-x-hidden transition-colors duration-200`}
@@ -93,14 +88,31 @@ export default function RootLayout({
         >
           <ColorSchemeProvider>
             <ColorSchemeWrapper>
-              <ClientApp>
-                <main id='main' tabIndex={-1} className='relative'>
-                  {children}
-                </main>
-              </ClientApp>
+              <UnifiedHeader />
+              <main id='main' tabIndex={-1} className='relative'>
+                {children}
+              </main>
+              <Footer />
             </ColorSchemeWrapper>
           </ColorSchemeProvider>
         </ThemeProvider>
+
+        <Script
+          src='https://www.googletagmanager.com/gtag/js?id=G-CDYGKBBPDC'
+          strategy='afterInteractive'
+        />
+        <Script id='google-analytics' strategy='afterInteractive'>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-CDYGKBBPDC');
+          `}
+        </Script>
+        <Script
+          src='https://assets.calendly.com/assets/external/widget.js'
+          strategy='lazyOnload'
+        />
       </body>
     </html>
   );

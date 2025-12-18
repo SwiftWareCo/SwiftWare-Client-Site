@@ -3,7 +3,7 @@
 import { useEffect, useMemo } from 'react';
 import { motion, easeOut } from 'motion/react';
 import { useColorScheme } from '@/context/ColorSchemeContext';
-import { initCalendlyScripts, openCalendlyPopup } from '@/lib/calendly';
+import { openCalendlyPopup } from '@/lib/calendly';
 import { renderCanvas } from '@/components/ui/canvas';
 import { InteractiveHoverButton } from '../ui/interactive-hover-button';
 
@@ -32,10 +32,6 @@ const itemVariants = {
 
 export function BrandDesignHero() {
   const { colors } = useColorScheme();
-
-  useEffect(() => {
-    initCalendlyScripts();
-  }, []);
 
   useEffect(() => {
     const cleanupCanvas = renderCanvas();

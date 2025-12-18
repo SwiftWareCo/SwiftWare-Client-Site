@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { ArrowRight, TrendingUp, Users, Sun, DollarSign } from 'lucide-react';
-import { openCalendlyPopup, initCalendlyScripts } from '@/lib/calendly';
+import { openCalendlyPopup } from '@/lib/calendly';
 import { TeeTimeGrid, CourseLayout, WeatherWidget } from './index';
 
 const HEADLINE = 'GolfSync Operations Dashboard';
@@ -28,11 +28,10 @@ export default function GolfCourseHero() {
     'teesheet'
   );
   const [stats] = useState<DashboardStats>(mockStats);
-  
+
 
   useEffect(() => {
     document.title = "Golf Course Tee Sheet Management | Swiftware";
-    initCalendlyScripts();
   }, []);
 
   const stripes = useMemo(

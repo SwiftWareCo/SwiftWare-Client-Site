@@ -1,9 +1,8 @@
 'use client';
-import { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ContainerTextFlip } from '@/components/ui/container-text-flip';
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
-import { openCalendlyPopup, initCalendlyScripts } from '@/lib/calendly';
+import { openCalendlyPopup } from '@/lib/calendly';
 import { ClickAnimation } from './ClickAnimation';
 
 const heroEase = [0.22, 1, 0.36, 1] as const; // Smooth ease-out curve for hero reveal.
@@ -27,10 +26,6 @@ const itemVariants = {
 };
 
 export const DigitalMarketingHero = () => {
-  useEffect(() => {
-    initCalendlyScripts();
-  }, []);
-
   return (
     <section className='relative min-h-[68vh] overflow-hidden bg-secondary py-20 text-foreground md:min-h-[74vh]'>
       <div className='absolute inset-0'>

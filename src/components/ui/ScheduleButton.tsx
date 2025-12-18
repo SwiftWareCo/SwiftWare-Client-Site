@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { openCalendlyPopup, initCalendlyScripts } from '@/lib/calendly';
+import { openCalendlyPopup } from '@/lib/calendly';
 
 interface ScheduleButtonProps {
   text?: string;
@@ -17,10 +16,6 @@ export function ScheduleButton({
   className = '',
   variant = 'primary',
 }: ScheduleButtonProps) {
-  useEffect(() => {
-    initCalendlyScripts();
-  }, []);
-
   const handleClick = () => {
     openCalendlyPopup();
   };

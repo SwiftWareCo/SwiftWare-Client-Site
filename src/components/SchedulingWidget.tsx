@@ -2,8 +2,7 @@
 
 import { motion } from 'motion/react';
 import { Calendar } from 'lucide-react';
-import { useEffect } from 'react';
-import { openCalendlyPopup, initCalendlyScripts } from '@/lib/calendly';
+import { openCalendlyPopup } from '@/lib/calendly';
 
 interface SchedulingWidgetProps {
   calendlyUrl?: string;
@@ -16,10 +15,6 @@ export default function SchedulingWidget({
   className = '',
   onEventScheduled,
 }: SchedulingWidgetProps) {
-  useEffect(() => {
-    initCalendlyScripts();
-  }, []);
-
   const handleScheduleClick = () => {
     openCalendlyPopup(calendlyUrl);
     onEventScheduled?.();

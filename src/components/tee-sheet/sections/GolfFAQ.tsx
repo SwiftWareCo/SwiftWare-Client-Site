@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { openCalendlyPopup, initCalendlyScripts } from '@/lib/calendly';
+import { openCalendlyPopup } from '@/lib/calendly';
 import {
   ChevronDown,
   HelpCircle,
@@ -77,10 +77,6 @@ export default function GolfFAQ({
   className = '',
 }: GolfFAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    initCalendlyScripts();
-  }, []);
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
