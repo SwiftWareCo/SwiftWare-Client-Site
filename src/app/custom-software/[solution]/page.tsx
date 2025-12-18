@@ -23,9 +23,9 @@ import { loadFocusContent } from '@/lib/content';
 import type { FocusContent } from '@/types/content';
 import CTASection from '@/components/CTASection';
 interface SolutionPageProps {
-  params: {
+  params: Promise<{
     solution: string;
-  };
+  }>;
 }
 
 const SUPPORTED_SOLUTIONS = ['crm', 'golf', 'web-portals'] as const;
@@ -54,7 +54,7 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: SolutionPageProps): Promise<Metadata> {
-  const { solution } = params;
+  const { solution } = await params;
 
   if (solution === 'crm') {
     const content = loadFocusContent('crm');
@@ -116,8 +116,8 @@ export async function generateMetadata({
   } satisfies Metadata;
 }
 
-export default function SolutionPage({ params }: SolutionPageProps) {
-  const { solution } = params;
+export default async function SolutionPage({ params }: SolutionPageProps) {
+  const { solution } = await params;
   const isSupported = (SUPPORTED_SOLUTIONS as readonly string[]).includes(
     solution
   );
