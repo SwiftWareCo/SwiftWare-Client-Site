@@ -21,11 +21,34 @@ import { openCalendlyPopup } from '@/lib/calendly';
 // ============================================================================
 
 const QUICK_ASK_PRESETS = [
-  { label: 'What services do you offer?', icon: Sparkles },
-  { label: 'How much does a project cost?', icon: MessageSquare },
-  { label: "What's your typical timeline?", icon: MessageSquare },
-  { label: 'Can you help with AI automation?', icon: Sparkles },
+  {
+    label: 'What services do you offer?',
+    icon: Sparkles,
+    audioKey: 'services',
+  },
+  {
+    label: 'How much does a project cost?',
+    icon: MessageSquare,
+    audioKey: 'cost',
+  },
+  {
+    label: "What's your typical timeline?",
+    icon: MessageSquare,
+    audioKey: 'timeline',
+  },
+  {
+    label: 'Can you help with AI automation?',
+    icon: Sparkles,
+    audioKey: 'automation',
+  },
 ] as const;
+
+const AUDIO_MAP: Record<string, string> = {
+  services: '/audio/swiftware-services.mp3',
+  cost: '/audio/swiftware-cost.mp3',
+  timeline: '/audio/swiftware-timeline.mp3',
+  automation: '/audio/swiftware-automation.mp3',
+};
 
 // ============================================================================
 // Types
@@ -39,34 +62,62 @@ type AgentState = 'idle' | 'connecting' | 'listening' | 'thinking' | 'speaking';
 
 export function VoiceReceptionistSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
-  // UI State (no actual API calls - just UI demonstration)
+  // UI State
   const [agentState, setAgentState] = useState<AgentState>('idle');
-  const [response, setResponse] = useState<string | null>(null);
+  const [currentQuestion, setCurrentQuestion] = useState<string | null>(null);
 
   // Handle quick-ask preset click
-  const handleQuickAsk = useCallback(async (preset: string) => {
-    setAgentState('connecting');
-    setResponse(null);
+  const handleQuickAsk = useCallback(
+    async (preset: (typeof QUICK_ASK_PRESETS)[number]) => {
+      // Stop any currently playing audio
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
 
-    // Simulate connection
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    setAgentState('thinking');
+      setAgentState('connecting');
+      setCurrentQuestion(preset.label);
 
-    // Simulate thinking
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setAgentState('speaking');
+      // Brief connection simulation
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      setAgentState('thinking');
 
-    // Simulate response
-    setResponse(
-      "Thanks for reaching out! I'm SwiftWare's AI assistant. A team member will get back to you shortly with personalized information about your inquiry."
-    );
+      // Brief thinking simulation
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      setAgentState('speaking');
 
-    // Reset after "speaking"
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setAgentState('idle');
-  }, []);
+      // Play the pre-recorded audio
+      const audioSrc = AUDIO_MAP[preset.audioKey];
+      if (audioSrc) {
+        const audio = new Audio(audioSrc);
+        audioRef.current = audio;
+
+        audio.onended = () => {
+          setAgentState('idle');
+        };
+
+        audio.onerror = () => {
+          console.error('Failed to load audio:', audioSrc);
+          setAgentState('idle');
+        };
+
+        try {
+          await audio.play();
+        } catch (error) {
+          console.error('Failed to play audio:', error);
+          setAgentState('idle');
+        }
+      } else {
+        // Fallback if no audio found
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setAgentState('idle');
+      }
+    },
+    []
+  );
 
   // Map agent state to orb state
   const getOrbState = () => {
@@ -102,11 +153,12 @@ export function VoiceReceptionistSection() {
           >
             Ask Our{' '}
             <span className='bg-gradient-to-r from-service-ai to-service-ai-dark bg-clip-text text-transparent'>
-              AI Assistant
+              AI Receptionist
             </span>
           </h2>
           <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
-            Experience one of our AI models in action. Click a question below to see how it responds.
+            Experience one of our AI models in action. Click a question below to
+            see how it responds.
           </p>
 
           {/* Sound indicator */}
@@ -154,7 +206,8 @@ export function VoiceReceptionistSection() {
                         'bg-service-ai/20 text-service-ai animate-pulse',
                       agentState === 'speaking' &&
                         'bg-green-500/20 text-green-500',
-                      agentState === 'listening' && 'bg-blue-500/20 text-blue-500'
+                      agentState === 'listening' &&
+                        'bg-blue-500/20 text-blue-500'
                     )}
                   >
                     {agentState === 'idle' && 'Ready to help'}
@@ -168,21 +221,19 @@ export function VoiceReceptionistSection() {
                 <CardTitle className='text-lg sm:text-xl mt-4'>
                   SwiftWare AI
                 </CardTitle>
-                <CardDescription>
-                  One of our AI models
-                </CardDescription>
+                <CardDescription>One of our AI models</CardDescription>
               </CardHeader>
 
               <CardContent className='pt-6 space-y-6'>
-                {/* Response area */}
-                {response && (
+                {/* Current question display */}
+                {currentQuestion && agentState !== 'idle' && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className='p-4 rounded-lg bg-muted/50 border border-border/50'
                   >
-                    <p className='text-foreground text-sm sm:text-base leading-relaxed'>
-                      {response}
+                    <p className='text-foreground text-sm sm:text-base leading-relaxed italic'>
+                      "{currentQuestion}"
                     </p>
                   </motion.div>
                 )}
@@ -196,7 +247,7 @@ export function VoiceReceptionistSection() {
                         variant='outline'
                         size='sm'
                         className='text-xs sm:text-sm cursor-pointer hover:bg-service-ai/10 hover:border-service-ai/50 hover:text-service-ai transition-all'
-                        onClick={() => handleQuickAsk(preset.label)}
+                        onClick={() => handleQuickAsk(preset)}
                         disabled={agentState !== 'idle'}
                       >
                         <preset.icon className='w-3 h-3 mr-1.5' />
@@ -217,15 +268,48 @@ export function VoiceReceptionistSection() {
             className='flex flex-col justify-between h-full'
           >
             <div className='space-y-4'>
-              <h3 className='text-2xl sm:text-3xl font-bold text-foreground'>
-                AI Receptionist
-              </h3>
-              <p className='text-base sm:text-lg text-muted-foreground leading-relaxed'>
-                This is <span className='font-semibold text-foreground'>one of our AI models</span>—an AI receptionist trained on SwiftWare&apos;s services and knowledge base. It can answer questions, handle inquiries, and provide instant responses 24/7.
-              </p>
-              <p className='text-base sm:text-lg text-muted-foreground leading-relaxed'>
-                For a <span className='font-semibold text-foreground'>full demo</span>, book a call to see your AI receptionist trained on <span className='font-semibold text-foreground'>your business</span>. We&apos;ll customize it with your company knowledge, processes, and brand voice.
-              </p>
+              <div className='p-5 rounded-xl bg-card border border-border/50'>
+                <p className='text-base sm:text-lg text-muted-foreground leading-relaxed'>
+                  This is{' '}
+                  <span className='font-semibold text-foreground'>
+                    one of our AI models
+                  </span>
+                  —an AI receptionist trained on SwiftWare&apos;s services and
+                  knowledge base. It can answer questions, handle inquiries, and
+                  provide instant responses 24/7.
+                </p>
+              </div>
+              <div className='p-5 rounded-xl bg-card border border-border/50'>
+                <p className='text-base sm:text-lg text-muted-foreground leading-relaxed'>
+                  Choose from{' '}
+                  <span className='font-semibold text-foreground'>
+                    dozens of premium voices
+                  </span>
+                  , create a{' '}
+                  <span className='font-semibold text-foreground'>
+                    custom voice
+                  </span>{' '}
+                  unique to your brand, or even{' '}
+                  <span className='font-semibold text-foreground'>
+                    clone your own voice
+                  </span>{' '}
+                  for a truly personal touch.
+                </p>
+              </div>
+              <div className='p-5 rounded-xl bg-card border border-border/50'>
+                <p className='text-base sm:text-lg text-muted-foreground leading-relaxed'>
+                  For a{' '}
+                  <span className='font-semibold text-foreground'>
+                    full demo
+                  </span>
+                  , book a call to see your AI receptionist trained on{' '}
+                  <span className='font-semibold text-foreground'>
+                    your business
+                  </span>
+                  . We&apos;ll customize it with your company knowledge,
+                  processes, and brand voice.
+                </p>
+              </div>
             </div>
 
             <div className='flex justify-center mt-6'>
