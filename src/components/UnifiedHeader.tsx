@@ -272,7 +272,7 @@ export default function UnifiedHeader() {
                         }}
                       >
                         <Image
-                          src='/images/swiftware-logo-small.webp'
+                          src='/images/swiftware-logo-small-transparent.webp'
                           alt='Swiftware software development company logo'
                           width={32}
                           height={32}
@@ -464,7 +464,7 @@ export default function UnifiedHeader() {
                         }}
                       >
                         <Image
-                          src='/images/swiftware-logo-small.webp'
+                          src='/images/swiftware-logo-small-transparent.webp'
                           alt='Swiftware software development company logo'
                           width={32}
                           height={32}

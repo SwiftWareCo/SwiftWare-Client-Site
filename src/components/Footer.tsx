@@ -31,7 +31,7 @@ export default function Footer() {
               <div className="relative">
                 <div className="size-8 md:size-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-brand-glow flex items-center justify-center p-1 md:p-1.5">
                   <Image
-                    src="/images/swiftware-logo-small.webp"
+                    src="/images/swiftware-logo-small-transparent.webp"
                     alt="SwiftWare software development company logo"
                     width={32}
                     height={32}

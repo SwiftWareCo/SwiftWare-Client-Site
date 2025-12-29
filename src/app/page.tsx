@@ -2,8 +2,9 @@ import { Metadata } from 'next';
 import { FAQSection } from '@/components/sections/FAQSection';
 import { HeroSection } from '@/components/home/HeroSection';
 import { ServicesGrid } from '@/components/home/ServicesGrid';
-import { ScrollTriggeredImpactSection } from '@/components/home/ScrollTriggeredImpactSection';
-import { PackagesGrid } from '@/components/home/PackagesGrid';
+import { IterativeProcessSection } from '@/components/home/IterativeProcessSection';
+import { VoiceReceptionistSection } from '@/components/home/VoiceReceptionistSection';
+import { ImpactSection } from '@/components/home/ImpactSection';
 import CTASection from '@/components/CTASection';
 import { WavyDivider } from '@/components/WavyDivider';
 
@@ -12,29 +13,6 @@ export const metadata: Metadata = {
   description:
     'One partner. Four services. Brand Design, Digital Marketing & SEO, AI & Process Automation, and Custom Software Development.',
 };
-
-const packages = [
-  {
-    name: 'Build & Launch',
-    services: ['Brand Design', 'Custom Website'],
-    description: 'Perfect for new businesses and rebrands',
-  },
-  {
-    name: 'Growth Engine',
-    services: ['Digital Marketing & SEO', 'Analytics Dashboard'],
-    description: 'Perfect for growing revenue and visibility',
-  },
-  {
-    name: 'Automate & Scale',
-    services: ['Custom Software', 'AI Automation'],
-    description: 'Perfect for scaling operations',
-  },
-  {
-    name: 'Complete Transformation',
-    services: ['All Four Services'],
-    description: 'Perfect for complete overhaul',
-  },
-];
 
 const faqs = [
   {
@@ -71,21 +49,23 @@ export default function Home() {
       <WavyDivider direction='up' fromColor='secondary' toColor='background' />
 
       <ServicesGrid />
+
+      <IterativeProcessSection />
+
       <WavyDivider
         direction='down'
         fromColor='secondary'
         toColor='background'
       />
+      <VoiceReceptionistSection />
 
-      <ScrollTriggeredImpactSection />
       <WavyDivider
         direction='down'
         fromColor='background'
         toColor='secondary'
       />
 
-      <PackagesGrid packages={packages} />
-
+      <ImpactSection />
       <WavyDivider
         direction='down'
         fromColor='secondary'
@@ -105,7 +85,7 @@ export default function Home() {
 
       <CTASection
         heading='Ready to Launch Your Automation Roadmap?'
-        description='Book a free strategy session and we’ll map the highest-impact workflows to automate across your team.'
+        description="Book a free strategy session and we'll map the highest-impact workflows to automate across your team."
         buttons={[{ label: 'Book Automation Audit' }]}
         backgroundClassName='bg-secondary'
       />

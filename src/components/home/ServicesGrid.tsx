@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, type Variants } from 'motion/react';
 import { AlertCircle } from 'lucide-react';
-import TheSwiftwareWay from './swiftware-way/TheSwiftwareWay';
 import BlockFallAnimation from './BlockFallAnimation';
 import { getColorsFromPath } from '@/lib/colors';
 
@@ -103,6 +102,21 @@ export function ServicesGrid() {
     [isMobile]
   );
 
+  const headingVariants = useMemo<Variants>(
+    () => ({
+      hidden: { opacity: 0, y: 16 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          duration: 0.6,
+          ease: easingCurve,
+        },
+      },
+    }),
+    []
+  );
+
   const rightColumnVariants = useMemo<Variants>(
     () => ({
       hidden: isMobile ? { opacity: 0, y: 16 } : { opacity: 0 },
@@ -160,40 +174,37 @@ export function ServicesGrid() {
             viewport={{ once: true, amount: 0.2 }}
             className='mb-8'
           >
-            {/* 2-COLUMN LAYOUT - VISUAL LEFT, TEXT+PAIN POINTS RIGHT */}
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 items-start'>
+            {/* HEADING - CENTERED SECTION TITLE */}
+            <motion.h2
+              variants={headingVariants}
+              className='text-3xl sm:text-4xl lg:text-5xl font-bold text-destructive-bright mb-8 lg:mb-12 text-center'
+            >
+              Wearing too many hats
+            </motion.h2>
+
+            {/* 2-COLUMN LAYOUT - VISUAL LEFT, PAIN POINTS RIGHT */}
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start'>
               {/* LEFT: OVERWHELM ANIMATION IN CARD */}
               <motion.div
                 variants={leftColumnVariants}
-                className='relative h-full rounded-xl border border-border bg-card/80 p-8 overflow-hidden backdrop-blur-sm'
+                className='relative h-full min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] rounded-xl border border-border bg-card/80 p-8 overflow-hidden backdrop-blur-sm'
               >
                 <BlockFallAnimation />
               </motion.div>
 
-              {/* RIGHT: TITLE + PAIN POINTS (NO BOXES) */}
-              <motion.div variants={rightColumnVariants} className='space-y-8'>
-                {/* Title Section */}
-                <div>
-                  <span className='text-xs uppercase tracking-widest text-muted-foreground'>
-                    The Problem
-                  </span>
-                  <h2 className='text-3xl sm:text-4xl font-bold text-foreground mt-2 mb-4'>
-                    The old way:
-                    <span className='block text-4xl sm:text-5xl text-destructive-bright leading-tight'>
-                      WEARING TOO MANY HATS
-                    </span>
-                  </h2>
-                  <p className='text-muted-foreground text-sm sm:text-base'>
-                    As a business owner, you&apos;re stretched thin—managing
-                    your brand, marketing, technology, and operations. When each
-                    service is disconnected, you become the bottleneck:
-                  </p>
-                </div>
+              {/* RIGHT: INTRO PARAGRAPH + PAIN POINTS */}
+              <motion.div variants={rightColumnVariants} className='space-y-6'>
+                {/* Introductory Paragraph */}
+                <p className='text-base sm:text-lg text-muted-foreground leading-relaxed'>
+                  As a business owner, you&apos;re <span className='font-bold text-foreground'>stretched thin</span>—managing
+                  your brand, marketing, technology, and operations. When each
+                  service is <span className='font-bold text-foreground'>disconnected</span>, you become the <span className='font-bold text-foreground'>bottleneck</span>:
+                </p>
 
-                {/* PAIN POINTS - SIMPLE LIST (NO BOXES) */}
+                {/* PAIN POINTS */}
                 <motion.div
                   variants={painPointListVariants}
-                  className='space-y-4'
+                  className='space-y-3'
                 >
                   {painPoints.map((point, index) => {
                     const Icon = point.icon;
@@ -201,28 +212,28 @@ export function ServicesGrid() {
                       <motion.div
                         key={point.title}
                         variants={painPointItemVariants}
-                        className='flex gap-3'
+                        className='flex gap-4 p-4 rounded-lg bg-card/50 border border-border/50 hover:border-border transition-colors'
                       >
                         <motion.div
                           animate={{
                             scale: isMobile ? [1, 1.04, 1] : [1, 1.1, 1],
                           }}
                           transition={{
-                            duration: 2, // Keeps the pulse slow and gentle
-                            repeat: Infinity, // Loops the pulse for subtle emphasis
-                            repeatType: 'loop', // Avoids pausing between pulse cycles
-                            delay: index * (isMobile ? 0.08 : 0.2), // Staggers pulses so icons do not sync
-                            ease: 'easeInOut', // Smooth ease for the pulsing motion
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatType: 'loop',
+                            delay: index * (isMobile ? 0.08 : 0.2),
+                            ease: 'easeInOut',
                           }}
-                          className='flex-shrink-0 pt-0.5'
+                          className='flex-shrink-0 mt-0.5'
                         >
                           <Icon className='w-5 h-5 text-destructive-bright' />
                         </motion.div>
-                        <div>
-                          <h3 className='font-semibold text-destructive-bright'>
+                        <div className='flex-1 min-w-0'>
+                          <h3 className='font-semibold text-foreground mb-1.5 text-base'>
                             {point.title}
                           </h3>
-                          <p className='text-sm text-muted-foreground leading-relaxed'>
+                          <p className='text-sm sm:text-base text-muted-foreground leading-relaxed'>
                             {point.description}
                           </p>
                         </div>
@@ -240,9 +251,9 @@ export function ServicesGrid() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             viewport={{ once: true, amount: 0.2 }}
-            className='rounded-xl border-2 p-6 sm:p-8 mb-24'
+            className='rounded-xl border p-6 sm:p-8 mb-24'
             style={{
-              borderColor: colors.primary,
+              borderColor: 'var(--border)',
               backgroundColor: 'var(--secondary)',
             }}
           >
@@ -272,7 +283,6 @@ export function ServicesGrid() {
           </motion.div>
         </div>
       </section>
-      <TheSwiftwareWay />
     </>
   );
 }
