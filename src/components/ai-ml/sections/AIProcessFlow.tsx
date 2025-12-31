@@ -150,8 +150,8 @@ export default function AIProcessFlow() {
             className='absolute left-0 right-0 hidden h-px -translate-y-1/2 transform lg:block'
             style={{
               background: `linear-gradient(90deg, rgba(0,0,0,0), rgba(${colorsRGB.primaryRGB}, 0.3), rgba(0,0,0,0))`,
+              top: '50%',
             }}
-            style={{ top: '50%' }}
           />
 
           <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-4'>

@@ -65,15 +65,23 @@ export const MacbookScroll = ({
   const scaleX = useTransform(
     scrollYProgress,
     [0, 0.3],
-    [1.2, isMobile ? 1 : 1.5]
+    isMobile ? [1.1, 1] : [1.2, 1.5]
   );
   const scaleY = useTransform(
     scrollYProgress,
     [0, 0.3],
-    [0.6, isMobile ? 1 : 1.5]
+    isMobile ? [0.7, 1] : [0.6, 1.5]
   );
-  const translate = useTransform(scrollYProgress, [0, 1], [0, 1200]);
-  const rotate = useTransform(scrollYProgress, [0.1, 0.12, 0.3], [-28, -28, 0]);
+  const translate = useTransform(
+    scrollYProgress,
+    [0, 1],
+    isMobile ? [0, 500] : [0, 1200]
+  );
+  const rotate = useTransform(
+    scrollYProgress,
+    [0.1, 0.12, 0.3],
+    isMobile ? [-20, -20, 0] : [-28, -28, 0]
+  );
   const textTransform = useTransform(scrollYProgress, [0, 0.3], [0, 100]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
@@ -82,14 +90,14 @@ export const MacbookScroll = ({
   return (
     <div
       ref={ref}
-      className='flex min-h-[160vh] shrink-0 scale-[0.35] flex-col items-center justify-start overflow-visible py-0 [perspective:800px] sm:scale-50 md:scale-100 md:py-32'
+      className='flex min-h-[80vh] shrink-0 scale-[0.6] flex-col items-center justify-start overflow-visible py-4 [perspective:800px] sm:scale-[0.7] sm:min-h-[100vh] md:scale-100 md:min-h-[160vh] md:py-32'
     >
       <motion.h2
         style={{
           translateY: textTransform,
           opacity: textOpacity,
         }}
-        className='mb-16 text-center text-3xl font-bold text-foreground sm:mb-20'
+        className='mb-6 text-center text-2xl font-bold text-foreground sm:mb-10 sm:text-3xl md:mb-16 md:text-3xl'
       >
         {title || (
           <span>
@@ -107,7 +115,7 @@ export const MacbookScroll = ({
         translate={translate}
       />
       <div
-        className='relative -z-10 h-[22rem] w-[32rem] overflow-hidden rounded-2xl bg-[color:var(--macbook-base)]'
+        className='relative -z-10 h-[18rem] w-[32rem] overflow-hidden rounded-2xl bg-[color:var(--macbook-base)] md:h-[22rem]'
         style={{
           boxShadow: `0 24px 70px rgba(${colorsRGB.primaryRGB}, 0.24)`,
         }}
@@ -156,7 +164,7 @@ export const Lid = ({ scaleX, scaleY, rotate, translate, src }: LidProps) => {
           transformOrigin: 'bottom',
           transformStyle: 'preserve-3d',
         }}
-        className='relative h-[12rem] w-[32rem] rounded-2xl bg-[color:var(--macbook-shell)] p-2'
+        className='relative h-[10rem] w-[32rem] rounded-2xl bg-[color:var(--macbook-shell)] p-2 md:h-[12rem]'
       >
         <div
           style={{
@@ -178,16 +186,35 @@ export const Lid = ({ scaleX, scaleY, rotate, translate, src }: LidProps) => {
           transformStyle: 'preserve-3d',
           transformOrigin: 'top',
         }}
-        className='absolute inset-0 h-96 w-[32rem] rounded-2xl bg-[color:var(--macbook-shell)] p-2'
+        className='absolute inset-0 h-80 w-[32rem] rounded-2xl bg-[color:var(--macbook-shell)] p-2 md:h-96'
       >
         <div className='absolute inset-0 rounded-xl bg-[color:var(--macbook-screen)]' />
+        {/* Mobile: Show text instead of image */}
+        <div className='md:hidden absolute inset-0 rounded-xl flex items-center justify-center p-6'>
+          <div className='text-center space-y-3'>
+            <div className='text-white text-sm font-semibold'>Organic Traffic</div>
+            <div className='text-emerald-400 text-2xl font-bold'>+163%</div>
+            <div className='text-white/70 text-xs'>vs last period</div>
+            <div className='pt-4 border-t border-white/10 mt-4'>
+              <div className='text-white text-sm font-semibold'>Conversion Rate</div>
+              <div className='text-blue-400 text-2xl font-bold'>12.4%</div>
+              <div className='text-white/70 text-xs'>+3.2% increase</div>
+            </div>
+            <div className='pt-4 border-t border-white/10 mt-4'>
+              <div className='text-white text-sm font-semibold'>Page 1 Keywords</div>
+              <div className='text-purple-400 text-2xl font-bold'>234</div>
+              <div className='text-white/70 text-xs'>+89 this month</div>
+            </div>
+          </div>
+        </div>
+        {/* Desktop: Show image */}
         <Image
           src={displaySrc}
           alt='analytics dashboard mockup'
           fill
-          sizes='(max-width: 768px) 100vw, 1152px'
+          sizes='(max-width: 768px) 0px, 1152px'
           quality={100}
-          className='absolute inset-0 rounded-xl object-cover object-left-top'
+          className='hidden md:block absolute inset-0 rounded-xl object-cover object-left-top'
           priority
           fetchPriority="high"
         />

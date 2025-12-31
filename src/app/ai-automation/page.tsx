@@ -5,7 +5,7 @@ import AIProcessFlow from '@/components/ai-ml/sections/AIProcessFlow';
 import AIDemoSection from '@/components/ai-ml/sections/AIDemoSection';
 import AIVoiceReceptionistSection from '@/components/ai-ml/sections/AIVoiceReceptionistSection';
 import AIOutcomesSection from '@/components/ai-ml/sections/AIOutcomesSection';
-import AIFAQ from '@/components/ai-ml/sections/AIFAQ';
+import { FAQSection } from '@/components/sections/FAQSection';
 import CTASection from '@/components/CTASection';
 import type { Outcome } from '@/types/content';
 
@@ -34,6 +34,29 @@ const OUTCOMES: Outcome[] = [
   },
 ];
 
+const FAQ_ITEMS = [
+  {
+    question: 'Why do you need this?',
+    answer:
+      'Most businesses have valuable insights trapped in documents, emails, and databases that are impossible to access quickly. SwiftMind transforms this scattered information into an intelligent, searchable knowledge base that provides instant answers, accelerates decision-making, and eliminates time wasted searching for information.',
+  },
+  {
+    question: 'How secure is our data?',
+    answer:
+      'Enterprise-grade encryption with multi-tenant isolation, role-based access control, and comprehensive audit logging. Your data never leaves your secure environment.',
+  },
+  {
+    question: 'What file formats are supported?',
+    answer:
+      'We support PDFs, Word docs, Excel files, CSVs, plain text, and can integrate with your existing document management systems.',
+  },
+  {
+    question: 'How does the hybrid search work?',
+    answer:
+      'Our system combines semantic vector search for contextual understanding with traditional keyword matching for precision, giving you the best of both approaches.',
+  },
+];
+
 export default function AIAutomationPage() {
   return (
     <main className='flex flex-col gap-0'>
@@ -55,8 +78,8 @@ export default function AIAutomationPage() {
         <AIOutcomesSection items={OUTCOMES} />
       </div>
 
-      <div className='bg-secondary text-secondary-foreground'>
-        <AIFAQ />
+      <div className='bg-background text-foreground px-4 sm:px-6'>
+        <FAQSection items={FAQ_ITEMS} />
       </div>
 
       <CTASection

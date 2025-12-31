@@ -28,11 +28,6 @@ const serviceLinks: NavLink[] = [
   { label: 'AI & Automation', href: '/ai-automation' },
 ];
 
-const customSoftwareLinks: NavLink[] = [
-  { label: 'CRM', href: '/custom-software/crm' },
-  { label: 'Golf Management', href: '/custom-software/golf' },
-  { label: 'Web Portals', href: '/custom-software/web-portals' },
-];
 
 const headerContainerVariants = {
   hidden: {
@@ -147,8 +142,6 @@ export default function UnifiedHeader() {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const [mobileCustomSoftwareOpen, setMobileCustomSoftwareOpen] =
-    useState(false);
   const [triggerButtonAnimation, setTriggerButtonAnimation] = useState(false);
   const [navHovered, setNavHovered] = useState(false);
 
@@ -449,72 +442,37 @@ export default function UnifiedHeader() {
                         )}
                       </AnimatePresence>
 
-                      {/* Custom Software Dropdown */}
-                      <button
-                        onClick={() =>
-                          setMobileCustomSoftwareOpen(!mobileCustomSoftwareOpen)
-                        }
-                        className='group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-accent hover:text-foreground'
+                      {/* Custom Solutions Link */}
+                      <Link
+                        href='/custom-solutions'
+                        className={`relative flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${
+                          isActiveLink('/custom-solutions')
+                            ? 'bg-accent text-foreground font-medium'
+                            : 'text-foreground/80 hover:bg-accent hover:text-foreground'
+                        }`}
+                        onClick={() => setMobileMenuOpen(false)}
                       >
-                        <span>Custom Software</span>
-                        <motion.div
-                          variants={chevronVariants}
-                          initial={mobileCustomSoftwareOpen ? 'open' : 'closed'}
-                          animate={mobileCustomSoftwareOpen ? 'open' : 'closed'}
-                        >
-                          <ChevronDown className='size-4' />
-                        </motion.div>
-                      </button>
-
-                      <AnimatePresence initial={false}>
-                        {mobileCustomSoftwareOpen && (
-                          <motion.div
-                            key='mobile-custom-software'
-                            variants={subMenuVariants}
-                            initial='hidden'
-                            animate='visible'
-                            exit='hidden'
-                            className='flex flex-col gap-2 overflow-hidden pl-4'
-                          >
-                            {customSoftwareLinks.map((link) => (
-                              <Link
-                                key={link.href}
-                                href={link.href}
-                                className={`relative cursor-pointer rounded-lg px-3 py-2 text-sm transition-colors ${
-                                  isActiveLink(link.href)
-                                    ? 'bg-accent text-foreground font-medium'
-                                    : 'text-foreground/80 hover:bg-accent hover:text-foreground'
-                                }`}
-                                onClick={() => {
-                                  setMobileMenuOpen(false);
-                                  setMobileCustomSoftwareOpen(false);
+                        <span className='relative'>
+                          Custom Solutions
+                          <AnimatePresence>
+                            {isActiveLink('/custom-solutions') && (
+                              <motion.div
+                                className='absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full'
+                                style={{
+                                  background: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
                                 }}
-                              >
-                                <span className='relative'>
-                                  {link.label}
-                                  <AnimatePresence>
-                                    {isActiveLink(link.href) && (
-                                      <motion.div
-                                        className='absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full'
-                                        style={{
-                                          background: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
-                                        }}
-                                        initial={{ scaleX: 0 }}
-                                        animate={{ scaleX: 1 }}
-                                        exit={{ scaleX: 0 }}
-                                        transition={{
-                                          duration: 0.3,
-                                          ease: 'easeOut',
-                                        }}
-                                      />
-                                    )}
-                                  </AnimatePresence>
-                                </span>
-                              </Link>
-                            ))}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                                initial={{ scaleX: 0 }}
+                                animate={{ scaleX: 1 }}
+                                exit={{ scaleX: 0 }}
+                                transition={{
+                                  duration: 0.3,
+                                  ease: 'easeOut',
+                                }}
+                              />
+                            )}
+                          </AnimatePresence>
+                        </span>
+                      </Link>
 
                       {/* Mobile CTA Button */}
                       <div className='mt-2 w-full'>
@@ -622,13 +580,38 @@ export default function UnifiedHeader() {
                       colors={colors}
                     />
 
-                    {/* Custom Software Dropdown */}
-                    <CustomDropdown
-                      trigger='Custom Software'
-                      items={customSoftwareLinks}
-                      pathname={pathname}
-                      colors={colors}
-                    />
+                    {/* Custom Solutions Link */}
+                    <Link
+                      href='/custom-solutions'
+                      className='relative flex items-center gap-2 text-sm font-medium transition-colors group'
+                    >
+                      <span
+                        className={`relative ${
+                          isActiveLink('/custom-solutions')
+                            ? 'text-foreground'
+                            : 'text-foreground/80 group-hover:text-foreground'
+                        }`}
+                      >
+                        Custom Solutions
+                        <AnimatePresence>
+                          {isActiveLink('/custom-solutions') && (
+                            <motion.div
+                              className='absolute -bottom-1 left-0 right-0 h-0.5 rounded-full'
+                              style={{
+                                background: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+                              }}
+                              initial={{ scaleX: 0 }}
+                              animate={{ scaleX: 1 }}
+                              exit={{ scaleX: 0 }}
+                              transition={{
+                                duration: 0.3,
+                                ease: 'easeOut',
+                              }}
+                            />
+                          )}
+                        </AnimatePresence>
+                      </span>
+                    </Link>
                   </nav>
 
                   {/* Theme Toggle & CTA Button */}

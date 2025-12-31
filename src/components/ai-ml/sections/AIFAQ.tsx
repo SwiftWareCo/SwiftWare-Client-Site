@@ -160,10 +160,7 @@ export default function AIFAQ() {
                           borderColor: `rgba(${colorsRGB.primaryRGB}, 0.25)`,
                         }}
                       >
-                        <IconComponent
-                          className='h-5 w-5'
-                          style={{ color: `rgba(${colorsRGB.primaryRGB}, 1)` }}
-                        />
+                        <IconComponent className='h-5 w-5 text-service-ai' />
                       </div>
                       <h3 className='text-lg font-semibold text-foreground transition-colors duration-300 group-hover:text-primary-foreground'>
                         {item.question}

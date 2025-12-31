@@ -227,7 +227,6 @@ export function renderCanvas(
       hasInteracted = true;
       resetLines();
     }
-    event.preventDefault();
   };
 
   const handleTouchStart = (event: TouchEvent) => {
@@ -238,7 +237,6 @@ export function renderCanvas(
     setPointerFromClient(touch.clientX, touch.clientY);
     hasInteracted = true;
     resetLines();
-    event.preventDefault();
   };
 
   const render = () => {
@@ -282,8 +280,8 @@ export function renderCanvas(
   };
 
   document.addEventListener('mousemove', handleMouseMove);
-  document.addEventListener('touchmove', handleTouchMove, { passive: false });
-  document.addEventListener('touchstart', handleTouchStart, { passive: false });
+  document.addEventListener('touchmove', handleTouchMove, { passive: true });
+  document.addEventListener('touchstart', handleTouchStart, { passive: true });
   window.addEventListener('resize', handleResize);
   window.addEventListener('focus', handleFocus);
   window.addEventListener('blur', handleBlur);

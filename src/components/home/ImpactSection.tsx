@@ -546,14 +546,14 @@ function LogoBox({
     return () => clearTimeout(timeoutId);
   }, [isInView, study.id, delay, onPositionReady, containerRef]);
 
-  // Mobile floating animation config
-  const floatAnimation = isMobile
+  // Mobile floating animation config - disabled on mobile for performance
+  const floatAnimation = !isMobile
     ? {
         y: [0, -4, 0], // Gentle 4px float
       }
     : {};
 
-  const floatTransition = isMobile
+  const floatTransition = !isMobile
     ? {
         y: {
           duration: 3,
@@ -725,14 +725,14 @@ function AchievementBox({
     return () => clearTimeout(timeoutId);
   }, [isInView, achievement.id, delay, onPositionReady, containerRef]);
 
-  // Mobile floating animation config
-  const floatAnimation = isMobile
+  // Mobile floating animation config - disabled on mobile for performance
+  const floatAnimation = !isMobile
     ? {
         y: [0, -4, 0], // Gentle 4px float
       }
     : {};
 
-  const floatTransition = isMobile
+  const floatTransition = !isMobile
     ? {
         y: {
           duration: 3,

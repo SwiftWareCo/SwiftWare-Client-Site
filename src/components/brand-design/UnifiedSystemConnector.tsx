@@ -255,7 +255,7 @@ export function UnifiedSystemConnector() {
               </p>
               <InteractiveHoverButton
                 onClick={() => openCalendlyPopup()}
-                text='Schedule a Brand Consultation'
+                text='Schedule Consultation'
               ></InteractiveHoverButton>
             </motion.div>
           </motion.div>

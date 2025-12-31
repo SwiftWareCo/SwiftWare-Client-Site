@@ -43,13 +43,13 @@ export const WobbleCard = ({
           ? `translate3d(${mousePosition.x}px, ${mousePosition.y}px, 0) scale3d(1, 1, 1)`
           : 'translate3d(0px, 0px, 0) scale3d(1, 1, 1)',
         transition: 'transform 0.12s ease-out',
+        backgroundColor: colors.primary,
       }}
       className={cn(
         'relative mx-auto w-full overflow-hidden rounded-3xl text-foreground',
         'shadow-[0_20px_60px_rgba(15,23,42,0.25)]',
         containerClassName
       )}
-      style={{ backgroundColor: colors.primary }}
     >
       <div
         className='relative h-full overflow-hidden sm:mx-0 sm:rounded-3xl'

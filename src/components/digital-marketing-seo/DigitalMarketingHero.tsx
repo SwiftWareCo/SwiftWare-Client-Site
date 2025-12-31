@@ -8,21 +8,81 @@ import { ClickAnimation } from './ClickAnimation';
 const heroEase = [0.22, 1, 0.36, 1] as const; // Smooth ease-out curve for hero reveal.
 
 const containerVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    y: 0,
     transition: {
       ease: heroEase,
-      duration: 0.8, // Controls how quickly the hero fades/slides in.
-      staggerChildren: 0.15, // Adds breathing room between each child animation.
+      duration: 0.4,
     },
   },
 };
 
-const itemVariants = {
+// Individual variants with distinct timings for each element
+const headingFirstLineVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 }, // Simple fade + rise for headings and body text.
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: heroEase,
+      delay: 0.1, // First line appears first
+    },
+  },
+};
+
+const headingSecondLineVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: heroEase,
+      delay: 0.35, // Second line appears after first line
+    },
+  },
+};
+
+const textFlipVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: heroEase,
+      delay: 0.6, // Text flip appears after second line
+    },
+  },
+};
+
+const descriptionVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: heroEase,
+      delay: 0.9, // Description appears after text flip
+    },
+  },
+};
+
+const buttonVariants = {
+  hidden: { opacity: 0, y: 10, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      ease: heroEase,
+      delay: 1.2, // Button appears last
+    },
+  },
 };
 
 export const DigitalMarketingHero = () => {
@@ -37,13 +97,29 @@ export const DigitalMarketingHero = () => {
         initial='hidden'
         animate='visible'
       >
-        <motion.h1
-          className='text-3xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl'
-          variants={itemVariants}
-        >
-          <span className='block'>Stop hoping for leads.</span>
-          <span className='mt-4 inline-flex flex-nowrap items-center justify-center gap-2 text-pretty sm:mt-6 sm:gap-3'>
-            <span className='whitespace-nowrap'>Start getting</span>
+        <motion.h1 className='text-3xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl'>
+          <motion.span
+            className='block'
+            variants={headingFirstLineVariants}
+            initial='hidden'
+            animate='visible'
+          >
+            Stop hoping for leads.
+          </motion.span>
+          <motion.span
+            className='mt-4 block text-center sm:mt-6'
+            variants={headingSecondLineVariants}
+            initial='hidden'
+            animate='visible'
+          >
+            <span className='block mb-2 sm:mb-3'>Start getting</span>
+          </motion.span>
+          <motion.div
+            variants={textFlipVariants}
+            initial='hidden'
+            animate='visible'
+            className='mt-2 sm:mt-3'
+          >
             <ContainerTextFlip
               words={[
                 'qualified pipeline',
@@ -51,23 +127,27 @@ export const DigitalMarketingHero = () => {
                 'executive leads',
                 'predictable growth',
               ]}
-              className='mt-0 align-middle whitespace-nowrap bg-card text-card-foreground'
-              textClassName='text-balance tracking-tight whitespace-nowrap'
+              className='mt-0 mx-auto bg-card text-card-foreground'
+              textClassName='text-balance tracking-tight'
               interval={3200}
             />
-          </span>
+          </motion.div>
         </motion.h1>
         <motion.p
           className='mx-auto mt-8 max-w-2xl text-base text-foreground opacity-80 sm:text-lg'
-          variants={itemVariants}
+          variants={descriptionVariants}
+          initial='hidden'
+          animate='visible'
         >
           We turn your website into a 24/7 lead-generation engine. Our SEO,
           social media, and ad campaigns are built to put you at the top of
           Google and in front of customers who are ready to hire.
         </motion.p>
         <motion.div
-          className='mt-10  flex justify-center'
-          variants={itemVariants}
+          className='mt-10 flex justify-center'
+          variants={buttonVariants}
+          initial='hidden'
+          animate='visible'
         >
           <InteractiveHoverButton
             onClick={() => openCalendlyPopup()}
