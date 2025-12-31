@@ -14,10 +14,26 @@ interface CustomDropdownProps {
   trigger: string;
   items: DropdownItem[];
   className?: string;
+  pathname?: string;
+  colors?: { primary: string; secondary: string };
 }
 
-export function CustomDropdown({ trigger, items, className = '' }: CustomDropdownProps) {
+export function CustomDropdown({
+  trigger,
+  items,
+  className = '',
+  pathname = '',
+  colors,
+}: CustomDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Check if any dropdown item is active
+  const hasActiveItem = items.some((item) => {
+    if (item.href === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(item.href);
+  });
 
   return (
     <div
@@ -27,11 +43,13 @@ export function CustomDropdown({ trigger, items, className = '' }: CustomDropdow
     >
       {/* Trigger Button */}
       <motion.button
-        className={`cursor-pointer flex items-center gap-1 text-sm text-foreground/80 hover:text-foreground ${className}`}
+        className={`relative cursor-pointer flex items-center gap-1 text-sm transition-colors ${
+          hasActiveItem ? 'text-foreground' : 'text-foreground/80 hover:text-foreground'
+        } ${className}`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <motion.span
-          className='inline-block'
+          className='inline-block relative'
           variants={{
             rest: { x: 0 },
             hover: { x: -2 },
@@ -41,6 +59,17 @@ export function CustomDropdown({ trigger, items, className = '' }: CustomDropdow
           transition={{ type: 'spring', stiffness: 300 }}
         >
           {trigger}
+          {hasActiveItem && colors && (
+            <motion.div
+              className='absolute -bottom-1 left-0 right-0 h-0.5 rounded-full'
+              style={{
+                background: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+              }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+            />
+          )}
         </motion.span>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -64,22 +93,32 @@ export function CustomDropdown({ trigger, items, className = '' }: CustomDropdow
               boxShadow: 'var(--header-shadow-default)',
             }}
           >
-            {items.map((item, index) => (
-              <motion.div
-                key={item.href}
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05, duration: 0.15 }}
-              >
-                <Link
-                  href={item.href}
-                  className='block px-4 py-2.5 text-sm text-foreground/80 hover:bg-accent hover:text-foreground first:rounded-t-lg last:rounded-b-lg transition-colors cursor-pointer'
-                  onClick={() => setIsOpen(false)}
+            {items.map((item, index) => {
+              const isActive =
+                item.href === '/'
+                  ? pathname === '/'
+                  : pathname.startsWith(item.href);
+              return (
+                <motion.div
+                  key={item.href}
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05, duration: 0.15 }}
                 >
-                  {item.label}
-                </Link>
-              </motion.div>
-            ))}
+                  <Link
+                    href={item.href}
+                    className={`relative block px-4 py-2.5 text-sm first:rounded-t-lg last:rounded-b-lg transition-colors cursor-pointer ${
+                      isActive
+                        ? 'bg-accent text-foreground font-medium'
+                        : 'text-foreground/80 hover:bg-accent hover:text-foreground'
+                    }`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
+              );
+            })}
           </motion.div>
         )}
       </AnimatePresence>

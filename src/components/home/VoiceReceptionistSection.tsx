@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react';
 import { motion, useInView } from 'motion/react';
-import { Volume2, MessageSquare, Sparkles } from 'lucide-react';
+import { Volume2, MessageSquare, Sparkles, Pause, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Orb } from '@/components/ui/orb';
 import {
@@ -68,6 +68,7 @@ export function VoiceReceptionistSection() {
   // UI State
   const [agentState, setAgentState] = useState<AgentState>('idle');
   const [currentQuestion, setCurrentQuestion] = useState<string | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   // Handle quick-ask preset click
   const handleQuickAsk = useCallback(
@@ -94,14 +95,25 @@ export function VoiceReceptionistSection() {
       if (audioSrc) {
         const audio = new Audio(audioSrc);
         audioRef.current = audio;
+        setIsPaused(false);
 
         audio.onended = () => {
           setAgentState('idle');
+          setIsPaused(false);
         };
 
         audio.onerror = () => {
           console.error('Failed to load audio:', audioSrc);
           setAgentState('idle');
+          setIsPaused(false);
+        };
+
+        audio.onpause = () => {
+          setIsPaused(true);
+        };
+
+        audio.onplay = () => {
+          setIsPaused(false);
         };
 
         try {
@@ -109,15 +121,30 @@ export function VoiceReceptionistSection() {
         } catch (error) {
           console.error('Failed to play audio:', error);
           setAgentState('idle');
+          setIsPaused(false);
         }
       } else {
         // Fallback if no audio found
         await new Promise((resolve) => setTimeout(resolve, 2000));
         setAgentState('idle');
+        setIsPaused(false);
       }
     },
     []
   );
+
+  // Handle pause/resume
+  const handlePauseResume = useCallback(() => {
+    if (!audioRef.current) return;
+
+    if (isPaused) {
+      audioRef.current.play().catch((error) => {
+        console.error('Failed to resume audio:', error);
+      });
+    } else {
+      audioRef.current.pause();
+    }
+  }, [isPaused]);
 
   // Map agent state to orb state
   const getOrbState = () => {
@@ -127,7 +154,7 @@ export function VoiceReceptionistSection() {
       case 'thinking':
         return 'thinking';
       case 'speaking':
-        return 'talking';
+        return isPaused ? null : 'talking';
       default:
         return null;
     }
@@ -196,25 +223,48 @@ export function VoiceReceptionistSection() {
                   </div>
 
                   {/* Status indicator - positioned below orb */}
-                  <div
-                    className={cn(
-                      'mt-4 px-3 py-1 rounded-full text-xs font-medium transition-all duration-300',
-                      agentState === 'idle' && 'bg-muted text-muted-foreground',
-                      agentState === 'connecting' &&
-                        'bg-yellow-500/20 text-yellow-500 animate-pulse',
-                      agentState === 'thinking' &&
-                        'bg-service-ai/20 text-service-ai animate-pulse',
-                      agentState === 'speaking' &&
-                        'bg-green-500/20 text-green-500',
-                      agentState === 'listening' &&
-                        'bg-blue-500/20 text-blue-500'
+                  <div className='flex flex-col items-center gap-2 mt-4'>
+                    <div
+                      className={cn(
+                        'px-3 py-1 rounded-full text-xs font-medium transition-all duration-300',
+                        agentState === 'idle' && 'bg-muted text-muted-foreground',
+                        agentState === 'connecting' &&
+                          'bg-yellow-500/20 text-yellow-500 animate-pulse',
+                        agentState === 'thinking' &&
+                          'bg-service-ai/20 text-service-ai animate-pulse',
+                        agentState === 'speaking' &&
+                          'bg-green-500/20 text-green-500',
+                        agentState === 'listening' &&
+                          'bg-blue-500/20 text-blue-500'
+                      )}
+                    >
+                      {agentState === 'idle' && 'Ready to help'}
+                      {agentState === 'connecting' && 'Connecting...'}
+                      {agentState === 'thinking' && 'Thinking...'}
+                      {agentState === 'speaking' && (isPaused ? 'Paused' : 'Speaking')}
+                      {agentState === 'listening' && 'Listening...'}
+                    </div>
+                    {/* Pause/Resume button - only show when speaking */}
+                    {agentState === 'speaking' && (
+                      <Button
+                        variant='outline'
+                        size='sm'
+                        onClick={handlePauseResume}
+                        className='h-8 px-3 text-xs hover:bg-service-ai/10 hover:border-service-ai/50 hover:text-service-ai'
+                      >
+                        {isPaused ? (
+                          <>
+                            <Play className='w-3 h-3 mr-1.5' />
+                            Resume
+                          </>
+                        ) : (
+                          <>
+                            <Pause className='w-3 h-3 mr-1.5' />
+                            Pause
+                          </>
+                        )}
+                      </Button>
                     )}
-                  >
-                    {agentState === 'idle' && 'Ready to help'}
-                    {agentState === 'connecting' && 'Connecting...'}
-                    {agentState === 'thinking' && 'Thinking...'}
-                    {agentState === 'speaking' && 'Speaking'}
-                    {agentState === 'listening' && 'Listening...'}
                   </div>
                 </div>
 

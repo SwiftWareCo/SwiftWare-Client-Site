@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import AIMLHero from '@/components/ai-ml/AIMLHero';
 import AIProcessFlow from '@/components/ai-ml/sections/AIProcessFlow';
 import AIDemoSection from '@/components/ai-ml/sections/AIDemoSection';
+import AIVoiceReceptionistSection from '@/components/ai-ml/sections/AIVoiceReceptionistSection';
 import AIOutcomesSection from '@/components/ai-ml/sections/AIOutcomesSection';
 import AIFAQ from '@/components/ai-ml/sections/AIFAQ';
 import CTASection from '@/components/CTASection';
@@ -47,6 +48,10 @@ export default function AIAutomationPage() {
       </div>
 
       <div className='bg-background text-foreground'>
+        <AIVoiceReceptionistSection />
+      </div>
+
+      <div className='bg-secondary text-secondary-foreground'>
         <AIOutcomesSection items={OUTCOMES} />
       </div>
 

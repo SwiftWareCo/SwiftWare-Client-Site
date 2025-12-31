@@ -10,7 +10,7 @@ import {
   useTransform,
   useSpring,
 } from 'motion/react';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, Home } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { RoundedSlideButton } from '@/components/ui/rounded-slide-button';
 import { CustomDropdown } from '@/components/ui/custom-dropdown';
@@ -198,6 +198,14 @@ export default function UnifiedHeader() {
     });
   };
 
+  // Check if a link is active
+  const isActiveLink = (href: string) => {
+    if (href === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(href);
+  };
+
   return (
     <motion.header
       className='fixed left-0 right-0 z-50'
@@ -266,7 +274,7 @@ export default function UnifiedHeader() {
                           stiffness: 400,
                           damping: 25,
                         }}
-                        className='size-7 rounded-lg shadow-brand-glow group-hover/logo:shadow-brand-intense transition-all duration-300 flex items-center justify-center p-1'
+                        className='size-7 rounded-lg shadow-brand-glow group-hover/logo:shadow-brand-intense transition-all duration-300 flex items-center justify-center p-0.5 bg-white/10 backdrop-blur-sm border border-white/20'
                         style={{
                           backgroundImage: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
                         }}
@@ -276,7 +284,7 @@ export default function UnifiedHeader() {
                           alt='Swiftware software development company logo'
                           width={32}
                           height={32}
-                          className='w-5 h-5 mix-blend-screen'
+                          className='w-6 h-6 brightness-110 contrast-110'
                         />
                       </motion.div>
                     </div>
@@ -341,6 +349,39 @@ export default function UnifiedHeader() {
                       className='mt-4 flex flex-col gap-2 border-t border-border pt-4'
                       style={{ transformOrigin: 'top center' }}
                     >
+                      {/* Home Link */}
+                      <Link
+                        href='/'
+                        className={`relative flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${
+                          isActiveLink('/')
+                            ? 'bg-accent text-foreground font-medium'
+                            : 'text-foreground/80 hover:bg-accent hover:text-foreground'
+                        }`}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <Home className='size-4' />
+                        <span className='relative'>
+                          Home
+                          <AnimatePresence>
+                            {isActiveLink('/') && (
+                              <motion.div
+                                className='absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full'
+                                style={{
+                                  background: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+                                }}
+                                initial={{ scaleX: 0 }}
+                                animate={{ scaleX: 1 }}
+                                exit={{ scaleX: 0 }}
+                                transition={{
+                                  duration: 0.3,
+                                  ease: 'easeOut',
+                                }}
+                              />
+                            )}
+                          </AnimatePresence>
+                        </span>
+                      </Link>
+
                       {/* Services Dropdown */}
                       <button
                         onClick={() =>
@@ -372,13 +413,36 @@ export default function UnifiedHeader() {
                               <Link
                                 key={link.href}
                                 href={link.href}
-                                className='cursor-pointer rounded-lg px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-accent hover:text-foreground'
+                                className={`relative cursor-pointer rounded-lg px-3 py-2 text-sm transition-colors ${
+                                  isActiveLink(link.href)
+                                    ? 'bg-accent text-foreground font-medium'
+                                    : 'text-foreground/80 hover:bg-accent hover:text-foreground'
+                                }`}
                                 onClick={() => {
                                   setMobileMenuOpen(false);
                                   setMobileServicesOpen(false);
                                 }}
                               >
-                                {link.label}
+                                <span className='relative'>
+                                  {link.label}
+                                  <AnimatePresence>
+                                    {isActiveLink(link.href) && (
+                                      <motion.div
+                                        className='absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full'
+                                        style={{
+                                          background: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+                                        }}
+                                        initial={{ scaleX: 0 }}
+                                        animate={{ scaleX: 1 }}
+                                        exit={{ scaleX: 0 }}
+                                        transition={{
+                                          duration: 0.3,
+                                          ease: 'easeOut',
+                                        }}
+                                      />
+                                    )}
+                                  </AnimatePresence>
+                                </span>
                               </Link>
                             ))}
                           </motion.div>
@@ -416,13 +480,36 @@ export default function UnifiedHeader() {
                               <Link
                                 key={link.href}
                                 href={link.href}
-                                className='cursor-pointer rounded-lg px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-accent hover:text-foreground'
+                                className={`relative cursor-pointer rounded-lg px-3 py-2 text-sm transition-colors ${
+                                  isActiveLink(link.href)
+                                    ? 'bg-accent text-foreground font-medium'
+                                    : 'text-foreground/80 hover:bg-accent hover:text-foreground'
+                                }`}
                                 onClick={() => {
                                   setMobileMenuOpen(false);
                                   setMobileCustomSoftwareOpen(false);
                                 }}
                               >
-                                {link.label}
+                                <span className='relative'>
+                                  {link.label}
+                                  <AnimatePresence>
+                                    {isActiveLink(link.href) && (
+                                      <motion.div
+                                        className='absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full'
+                                        style={{
+                                          background: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+                                        }}
+                                        initial={{ scaleX: 0 }}
+                                        animate={{ scaleX: 1 }}
+                                        exit={{ scaleX: 0 }}
+                                        transition={{
+                                          duration: 0.3,
+                                          ease: 'easeOut',
+                                        }}
+                                      />
+                                    )}
+                                  </AnimatePresence>
+                                </span>
                               </Link>
                             ))}
                           </motion.div>
@@ -458,7 +545,7 @@ export default function UnifiedHeader() {
                           stiffness: 400,
                           damping: 25,
                         }}
-                        className='size-8 rounded-lg shadow-brand-glow group-hover/logo:shadow-brand-intense transition-all duration-300 flex items-center justify-center p-1'
+                        className='size-8 rounded-lg shadow-brand-glow group-hover/logo:shadow-brand-intense transition-all duration-300 flex items-center justify-center p-0.5 bg-white/10 backdrop-blur-sm border border-white/20'
                         style={{
                           backgroundImage: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
                         }}
@@ -468,7 +555,7 @@ export default function UnifiedHeader() {
                           alt='Swiftware software development company logo'
                           width={32}
                           height={32}
-                          className='w-5 h-5 mix-blend-screen'
+                          className='w-6 h-6 brightness-110 contrast-110'
                         />
                       </motion.div>
                     </div>
@@ -493,13 +580,54 @@ export default function UnifiedHeader() {
 
                   {/* Navigation Links */}
                   <nav className='hidden lg:flex items-center gap-8 overflow-visible'>
+                    {/* Home Link */}
+                    <Link
+                      href='/'
+                      className='relative flex items-center gap-2 text-sm font-medium transition-colors group'
+                    >
+                      <Home className='size-4' />
+                      <span
+                        className={`relative ${
+                          isActiveLink('/')
+                            ? 'text-foreground'
+                            : 'text-foreground/80 group-hover:text-foreground'
+                        }`}
+                      >
+                        Home
+                        <AnimatePresence>
+                          {isActiveLink('/') && (
+                            <motion.div
+                              className='absolute -bottom-1 left-0 right-0 h-0.5 rounded-full'
+                              style={{
+                                background: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
+                              }}
+                              initial={{ scaleX: 0 }}
+                              animate={{ scaleX: 1 }}
+                              exit={{ scaleX: 0 }}
+                              transition={{
+                                duration: 0.3,
+                                ease: 'easeOut',
+                              }}
+                            />
+                          )}
+                        </AnimatePresence>
+                      </span>
+                    </Link>
+
                     {/* Services Dropdown */}
-                    <CustomDropdown trigger='Services' items={serviceLinks} />
+                    <CustomDropdown
+                      trigger='Services'
+                      items={serviceLinks}
+                      pathname={pathname}
+                      colors={colors}
+                    />
 
                     {/* Custom Software Dropdown */}
                     <CustomDropdown
                       trigger='Custom Software'
                       items={customSoftwareLinks}
+                      pathname={pathname}
+                      colors={colors}
                     />
                   </nav>
 
