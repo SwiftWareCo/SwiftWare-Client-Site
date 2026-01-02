@@ -208,27 +208,35 @@
 
 /* Styled Scrollbar for Webkit Browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--muted-foreground);
-  border-radius: 5px;
-  transition: background 0.2s ease;
+  background: linear-gradient(
+    180deg,
+    var(--color-primary-service),
+    var(--color-secondary-service)
+  );
+  border-radius: 999px;
+  border: 2px solid var(--background);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--muted);
+  background: linear-gradient(
+    180deg,
+    var(--color-secondary-service),
+    var(--color-primary-service)
+  );
 }
 
 /* Styled Scrollbar for Firefox */
 html {
   scrollbar-width: thin;
-  scrollbar-color: var(--muted-foreground) transparent;
+  scrollbar-color: var(--color-primary-service) var(--background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -6,7 +6,7 @@ import { motion } from 'motion/react';
 
 export default function Footer() {
   return (
-    <footer className='relative bg-gray-50 dark:bg-zinc-900'>
+    <footer className='relative bg-background'>
       {/* Gradient separator */}
       <div className='mx-auto max-w-7xl px-6'>
         <div className='relative h-px w-full'>

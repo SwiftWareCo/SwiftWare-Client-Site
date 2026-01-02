@@ -53,7 +53,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' className='scroll-smooth' suppressHydrationWarning>
+    <html lang='en' className='dark' suppressHydrationWarning>
       <head>
         <link
           rel='stylesheet'
@@ -78,15 +78,16 @@ export default async function RootLayout({
         </a>
         <ThemeProvider
           attribute='class'
-          defaultTheme='system'
-          enableSystem
+          defaultTheme='dark'
+          forcedTheme='dark'
+          enableSystem={false}
           disableTransitionOnChange
         >
-            <main id='main' tabIndex={-1} className='relative'>
-              <UnifiedHeader />
-              {children}
-              <Footer />
-            </main>
+          <main id='main' tabIndex={-1} className='relative'>
+            <UnifiedHeader />
+            {children}
+            <Footer />
+          </main>
         </ThemeProvider>
 
         <Script

@@ -1,44 +1,24 @@
 import type { Metadata } from 'next';
 
-import AIMLHero from '@/components/ai-ml/AIMLHero';
+import AIHeroWithDemo from '@/components/ai-ml/AIHeroWithDemo';
+import AIServicesGrid from '@/components/ai-ml/sections/AIServicesGrid';
 import AIProcessFlow from '@/components/ai-ml/sections/AIProcessFlow';
 import AIDemoSection from '@/components/ai-ml/sections/AIDemoSection';
-import AIVoiceReceptionistSection from '@/components/ai-ml/sections/AIVoiceReceptionistSection';
-import AIOutcomesSection from '@/components/ai-ml/sections/AIOutcomesSection';
+import AICaseStudySection from '@/components/ai-ml/sections/AICaseStudySection';
 import { FAQSection } from '@/components/sections/FAQSection';
 import CTASection from '@/components/CTASection';
-import type { Outcome } from '@/types/content';
 
 export const metadata: Metadata = {
   title: 'AI & Process Automation Platform | SwiftWare',
   description:
-    'Deploy AI agents, automate processes, and unlock real-time insight with SwiftMind—SwiftWare’s automation stack built for operations teams.',
+    "Deploy AI agents, automate processes, and unlock real-time insight with SwiftMind - SwiftWare's automation stack built for operations teams.",
 };
-
-const OUTCOMES: Outcome[] = [
-  {
-    metric: '-75%',
-    unit: 'search time',
-    blurb: 'Instant answers from enterprise knowledge bases and workflows.',
-  },
-  {
-    metric: '+3.2×',
-    unit: 'data insights',
-    blurb:
-      'AI-powered analytics that surface actionable patterns automatically.',
-  },
-  {
-    metric: '-60%',
-    unit: 'manual processing',
-    blurb: 'Automated document ingestion, classification, and alerting.',
-  },
-];
 
 const FAQ_ITEMS = [
   {
-    question: 'Why do you need this?',
+    question: 'What AI services do you offer?',
     answer:
-      'Most businesses have valuable insights trapped in documents, emails, and databases that are impossible to access quickly. SwiftMind transforms this scattered information into an intelligent, searchable knowledge base that provides instant answers, accelerates decision-making, and eliminates time wasted searching for information.',
+      'We offer AI Receptionist (voice agents), Document Intelligence (RAG search), Process Automation, AI Chatbots, Predictive Analytics, and Custom AI Solutions tailored to your business needs.',
   },
   {
     question: 'How secure is our data?',
@@ -46,45 +26,50 @@ const FAQ_ITEMS = [
       'Enterprise-grade encryption with multi-tenant isolation, role-based access control, and comprehensive audit logging. Your data never leaves your secure environment.',
   },
   {
-    question: 'What file formats are supported?',
+    question: 'How long does implementation take?',
     answer:
-      'We support PDFs, Word docs, Excel files, CSVs, plain text, and can integrate with your existing document management systems.',
+      'Most AI solutions can be deployed within 4-8 weeks. Simple automations like chatbots can launch in 1-2 weeks. Complex integrations may take longer depending on your systems.',
   },
   {
-    question: 'How does the hybrid search work?',
+    question: 'Do I need technical expertise to use this?',
     answer:
-      'Our system combines semantic vector search for contextual understanding with traditional keyword matching for precision, giving you the best of both approaches.',
+      'No. Our AI solutions are designed for business users. We handle all the technical implementation and provide training so your team can use the tools confidently.',
+  },
+  {
+    question: 'What kind of ROI can I expect?',
+    answer:
+      'Clients typically see 40-75% reduction in time spent on manual tasks, 2-3x improvement in lead capture, and significant cost savings from automation within the first 6 months.',
   },
 ];
 
 export default function AIAutomationPage() {
   return (
-    <main className='flex flex-col gap-0'>
-      <AIMLHero />
+    <main className='flex flex-col'>
+      {/* Hero with AI Demo */}
+      <AIHeroWithDemo />
 
-      <div className='bg-background text-foreground'>
+      {/* Services We Offer */}
+      <AIServicesGrid />
+
+      {/* How It Works (simplified) */}
+      <div className='bg-background'>
         <AIProcessFlow />
       </div>
 
-      <div className='bg-secondary text-secondary-foreground'>
+      {/* AI Search Demo */}
+      <div className='bg-secondary'>
         <AIDemoSection />
       </div>
 
-      <div className='bg-background text-foreground'>
-        <AIVoiceReceptionistSection />
-      </div>
+      {/* Case Study - VHD */}
+      <AICaseStudySection />
 
-      <div className='bg-secondary text-secondary-foreground'>
-        <AIOutcomesSection items={OUTCOMES} />
-      </div>
+      <FAQSection items={FAQ_ITEMS} />
 
-      <div className='bg-background text-foreground px-4 sm:px-6'>
-        <FAQSection items={FAQ_ITEMS} />
-      </div>
-
+      {/* CTA */}
       <CTASection
-        heading='Ready to Launch Your Automation Roadmap?'
-        description='Book a free strategy session and we’ll map the highest-impact workflows to automate across your team.'
+        heading='Ready to Automate Your Business?'
+        description="Book a free strategy session and we'll show you exactly how AI can transform your operations."
         buttons={[{ label: 'Book Automation Audit' }]}
       />
     </main>

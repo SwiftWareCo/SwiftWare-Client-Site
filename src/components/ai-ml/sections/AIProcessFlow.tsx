@@ -1,344 +1,301 @@
 'use client';
 
+import { useRef, useEffect, useState, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
-import { motion } from 'motion/react';
-import { Upload, Brain, Search, BarChart3, CheckCircle } from 'lucide-react';
-import { openCalendlyPopup } from '@/lib/calendly';
-import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
+import { motion, useInView } from 'motion/react';
+import { Upload, Brain, Search, BarChart3 } from 'lucide-react';
 import { getColorsFromPath, getColorsRGBFromPath } from '@/lib/colors';
-
-const withAlpha = (rgb: string, alpha: number) => `rgba(${rgb}, ${alpha})`;
 
 const PROCESS_STEPS = [
   {
-    id: 'ingest',
+    id: 'connect',
     icon: Upload,
-    title: 'Data Ingestion',
-    description:
-      'Upload documents, connect databases, or integrate with your existing systems',
-    details: [
-      'PDFs, Word docs, spreadsheets',
-      'Database connections',
-      'API integrations',
-      'Real-time sync',
-    ],
-    highlightAlpha: 0.22,
+    title: 'Connect Your Data',
+    description: 'Upload documents or plug into your existing systems',
+    side: 'left',
   },
   {
-    id: 'process',
+    id: 'learn',
     icon: Brain,
-    title: 'AI Processing',
-    description:
-      'Intelligent chunking, embedding generation, and metadata extraction',
-    details: [
-      'Smart document chunking',
-      'Vector embeddings',
-      'Metadata extraction',
-      'Content classification',
-    ],
-    highlightAlpha: 0.26,
+    title: 'AI Learns Your Business',
+    description: 'Our AI understands context, not just keywords',
+    side: 'right',
   },
   {
     id: 'search',
     icon: Search,
-    title: 'Hybrid Search',
-    description:
-      'Semantic understanding combined with keyword precision for accurate results',
-    details: [
-      'Vector similarity search',
-      'Keyword matching',
-      'Context ranking',
-      'Real-time results',
-    ],
-    highlightAlpha: 0.2,
+    title: 'Get Answers Instantly',
+    description: 'Natural language queries with precise results',
+    side: 'left',
   },
   {
-    id: 'insights',
+    id: 'automate',
     icon: BarChart3,
-    title: 'AI Insights',
-    description:
-      'Generate actionable insights and automated analysis from your data',
-    details: [
-      'Pattern recognition',
-      'Trend analysis',
-      'Predictive insights',
-      'Automated reports',
-    ],
-    highlightAlpha: 0.24,
+    title: 'Automate & Scale',
+    description: 'Build workflows that run on autopilot',
+    side: 'right',
   },
-];
+] as const;
 
-const fadeInVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6 },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6 },
-  },
-};
-
-const detailVariants = {
-  hidden: { opacity: 0, x: -10 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.4 },
-  },
-};
+interface FlowPath {
+  lineD: string;
+  arrowD: string;
+}
 
 export default function AIProcessFlow() {
   const pathname = usePathname();
   const colors = getColorsFromPath(pathname);
   const colorsRGB = getColorsRGBFromPath(pathname);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [paths, setPaths] = useState<FlowPath[]>([]);
+  const [animationStep, setAnimationStep] = useState(-1);
+
+  const isInView = useInView(containerRef, { once: true, amount: 0.3 });
+
+  const calculatePaths = useCallback(() => {
+    if (!containerRef.current) return;
+
+    const container = containerRef.current;
+    const containerRect = container.getBoundingClientRect();
+    const newPaths: FlowPath[] = [];
+
+    for (let i = 0; i < cardRefs.current.length - 1; i++) {
+      const startCard = cardRefs.current[i];
+      const endCard = cardRefs.current[i + 1];
+
+      if (!startCard || !endCard) continue;
+
+      const startRect = startCard.getBoundingClientRect();
+      const endRect = endCard.getBoundingClientRect();
+
+      // Coords relative to container (Exact match 0,0)
+      const startRelTop = startRect.top - containerRect.top;
+      const startRelLeft = startRect.left - containerRect.left;
+      const endRelTop = endRect.top - containerRect.top;
+      const endRelLeft = endRect.left - containerRect.left;
+
+      const isStartLeft = i % 2 === 0;
+
+      let startPoint: { x: number; y: number };
+      let endPoint: { x: number; y: number };
+      let controlPoint1: { x: number; y: number };
+      let controlPoint2: { x: number; y: number };
+
+      const gap = 30; // 30px gap from card edge
+
+      if (isStartLeft) {
+        // Flow: Left Card (Right Edge) -> Right Card (Left Edge)
+        startPoint = {
+          x: startRelLeft + startRect.width + gap,
+          y: startRelTop + startRect.height / 2,
+        };
+        endPoint = { x: endRelLeft - gap, y: endRelTop + endRect.height / 2 };
+
+        // Midpoint control
+        const midX = (startPoint.x + endPoint.x) / 2;
+        controlPoint1 = { x: midX, y: startPoint.y };
+        controlPoint2 = { x: midX, y: endPoint.y };
+      } else {
+        // Flow: Right Card (Left Edge) -> Next Left Card (Right Edge)
+        startPoint = {
+          x: startRelLeft - gap,
+          y: startRelTop + startRect.height / 2,
+        };
+        endPoint = {
+          x: endRelLeft + endRect.width + gap,
+          y: endRelTop + endRect.height / 2,
+        };
+
+        // S-curve back across
+        controlPoint1 = { x: startPoint.x - 150, y: startPoint.y + 50 };
+        controlPoint2 = { x: endPoint.x + 150, y: endPoint.y - 50 };
+      }
+
+      // 1. Line Path
+      const lineD = `M ${startPoint.x} ${startPoint.y} C ${controlPoint1.x} ${controlPoint1.y}, ${controlPoint2.x} ${controlPoint2.y}, ${endPoint.x} ${endPoint.y}`;
+
+      // 2. Arrow Head Path
+      const dx = endPoint.x - controlPoint2.x;
+      const dy = endPoint.y - controlPoint2.y;
+      const angle = Math.atan2(dy, dx);
+      const arrowLength = 16;
+      const arrowAngle = Math.PI / 6;
+
+      const wing1X = endPoint.x - arrowLength * Math.cos(angle - arrowAngle);
+      const wing1Y = endPoint.y - arrowLength * Math.sin(angle - arrowAngle);
+      const wing2X = endPoint.x - arrowLength * Math.cos(angle + arrowAngle);
+      const wing2Y = endPoint.y - arrowLength * Math.sin(angle + arrowAngle);
+
+      // Arrow path: Wing1 -> Tip -> Wing2
+      // Drawing it as M wing1 L tip L wing2
+      const arrowD = `M ${wing1X} ${wing1Y} L ${endPoint.x} ${endPoint.y} L ${wing2X} ${wing2Y}`;
+
+      newPaths.push({ lineD, arrowD });
+    }
+
+    setPaths(newPaths);
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(calculatePaths, 100);
+    window.addEventListener('resize', calculatePaths);
+    return () => {
+      window.removeEventListener('resize', calculatePaths);
+      clearTimeout(timer);
+    };
+  }, [calculatePaths]);
+
+  useEffect(() => {
+    if (!isInView) return;
+    setAnimationStep(-1);
+
+    // Total steps = cards (4) + paths (3) = 7 steps (0 to 6)
+    const totalSteps = PROCESS_STEPS.length * 2;
+    let step = 0;
+
+    const interval = setInterval(() => {
+      setAnimationStep(step);
+      step++;
+      if (step >= totalSteps) clearInterval(interval);
+    }, 600);
+
+    return () => clearInterval(interval);
+  }, [isInView]);
+
   return (
-    <section
-      className='py-20'
-      style={{
-        background: `linear-gradient(180deg, transparent 0%, ${withAlpha(
-          colorsRGB.primaryRGB,
-          0.08
-        )} 45%, transparent 100%)`,
-      }}
-    >
+    <section className='py-24 overflow-hidden'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6'>
-        <div className='mb-16 text-center'>
+        <div className='mb-20 text-center'>
           <motion.h2
-            variants={fadeInVariants}
-            initial='hidden'
-            whileInView='visible'
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className='mb-6 text-4xl font-bold text-transparent'
-            style={{
-              backgroundImage: `linear-gradient(90deg, rgba(255,255,255,1) 0%, ${withAlpha(
-                colorsRGB.primaryRGB,
-                0.75
-              )} 50%, ${withAlpha(colorsRGB.secondaryRGB, 0.6)} 100%)`,
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-            }}
+            className='mb-6 text-3xl font-bold text-foreground sm:text-4xl'
           >
-            How SwiftMind Transforms Your Data
+            How It Works
           </motion.h2>
           <motion.p
-            variants={fadeInVariants}
-            initial='hidden'
-            whileInView='visible'
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className='mx-auto max-w-3xl text-xl text-muted-foreground'
+            className='mx-auto max-w-2xl text-lg text-muted-foreground'
           >
-            From raw documents to intelligent insights, our AI pipeline
-            automates the entire process of turning your data into actionable
-            business intelligence.
+            From raw data to intelligent automation in four simple steps
           </motion.p>
         </div>
 
-        {/* Process Flow */}
-        <div className='relative mx-auto max-w-6xl'>
-          {/* Connection lines */}
-          <div
-            className='absolute left-0 right-0 hidden h-px -translate-y-1/2 transform lg:block'
-            style={{
-              background: `linear-gradient(90deg, rgba(0,0,0,0), rgba(${colorsRGB.primaryRGB}, 0.3), rgba(0,0,0,0))`,
-              top: '50%',
-            }}
-          />
-
-          <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-4'>
-            {PROCESS_STEPS.map((step, index) => {
-              const Icon = step.icon;
-
+        {/* Container for Cards + SVG */}
+        <div ref={containerRef} className='relative mx-auto max-w-6xl'>
+          {/* SVG Layer */}
+          <svg
+            className='pointer-events-none absolute inset-0 h-full w-full overflow-visible'
+            style={{ zIndex: 0 }}
+          >
+            <defs>
+              <linearGradient id='line-gradient' gradientUnits='userSpaceOnUse'>
+                <stop offset='0%' stopColor={colors.primary} />
+                <stop offset='100%' stopColor={colors.secondary} />
+              </linearGradient>
+            </defs>
+            {paths.map((path, i) => {
+              const isActive = animationStep >= i * 2 + 1;
               return (
-                <motion.div
-                  key={step.id}
-                  variants={cardVariants}
-                  initial='hidden'
-                  whileInView='visible'
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className='group relative'
-                >
-                  {/* Step number */}
-                  <div
-                    className='absolute -left-4 -top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-primary-foreground'
-                    style={{
-                      background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
-                    }}
-                  >
-                    {index + 1}
-                  </div>
+                <g key={i}>
+                  {/* Main Line */}
+                  <motion.path
+                    d={path.lineD}
+                    fill='none'
+                    stroke={`url(#line-gradient)`}
+                    strokeWidth='4'
+                    strokeLinecap='round'
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={
+                      isActive
+                        ? { pathLength: 1, opacity: 1 }
+                        : { pathLength: 0, opacity: 0 }
+                    }
+                    transition={{ duration: 0.6, ease: 'easeInOut' }}
+                  />
+                  {/* Arrow Head - Delayed */}
+                  <motion.path
+                    d={path.arrowD}
+                    fill='none'
+                    stroke={`url(#line-gradient)`}
+                    strokeWidth='4'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={
+                      isActive
+                        ? { pathLength: 1, opacity: 1 }
+                        : { pathLength: 0, opacity: 0 }
+                    }
+                    transition={{ duration: 0.3, ease: 'circOut', delay: 0.6 }} // Start after line finishes
+                  />
+                </g>
+              );
+            })}
+          </svg>
 
-                  {/* Main card */}
-                  <div
-                    className='relative rounded-2xl border p-6 transition-all duration-500 group'
+          {/* Cards Grid */}
+          <div className='grid grid-cols-1 gap-y-24 md:grid-cols-2 md:gap-x-64 relative z-10'>
+            {PROCESS_STEPS.map((step, i) => {
+              const isEven = i % 2 === 0;
+              return (
+                <div
+                  key={step.id}
+                  className={`${isEven ? 'md:col-start-1 md:pr-12' : 'md:col-start-2 md:mt-24 md:pl-12'}`}
+                >
+                  <motion.div
+                    ref={(el) => {
+                      cardRefs.current[i] = el;
+                    }}
+                    initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                    animate={
+                      animationStep >= i * 2
+                        ? { opacity: 1, y: 0, scale: 1 }
+                        : { opacity: 0, y: 30, scale: 0.95 }
+                    }
+                    transition={{ duration: 0.5, ease: 'backOut' }}
+                    className='relative rounded-2xl border bg-card/50 p-8 backdrop-blur-sm shadow-xl'
                     style={{
-                      borderColor: `rgba(${colorsRGB.primaryRGB}, 0.24)`,
-                      background: `linear-gradient(135deg, rgba(${colorsRGB.primaryRGB}, 0.08), rgba(${colorsRGB.secondaryRGB}, 0.05))`,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = `rgba(${colorsRGB.primaryRGB}, 0.4)`;
-                      e.currentTarget.style.boxShadow = `0 0 30px rgba(${colorsRGB.primaryRGB}, 0.14)`;
-                      e.currentTarget.style.transform = 'scale(1.02)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = `rgba(${colorsRGB.primaryRGB}, 0.24)`;
-                      e.currentTarget.style.boxShadow = '';
-                      e.currentTarget.style.transform = '';
+                      borderColor: `rgba(${colorsRGB.primaryRGB}, 0.2)`,
                     }}
                   >
-                    {/* Icon */}
                     <div
-                      className='mb-6 flex h-16 w-16 items-center justify-center rounded-2xl text-primary-foreground transition-all duration-300'
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.boxShadow = `0 16px 32px rgba(${colorsRGB.primaryRGB}, 0.2)`;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.boxShadow = '';
-                      }}
+                      className='absolute -top-5 -left-5 flex h-10 w-10 items-center justify-center rounded-full text-base font-bold text-white shadow-lg'
                       style={{
-                        background: `linear-gradient(135deg, ${withAlpha(
-                          colorsRGB.primaryRGB,
-                          step.highlightAlpha
-                        )}, ${withAlpha(colorsRGB.secondaryRGB, step.highlightAlpha - 0.05)})`,
+                        background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
                       }}
                     >
-                      <Icon className='h-8 w-8' />
+                      {i + 1}
                     </div>
 
-                    {/* Content */}
-                    <h3 className='mb-3 text-xl font-semibold text-foreground transition-colors group-hover:text-primary-foreground'>
-                      {step.title}
-                    </h3>
-
-                    <p className='mb-4 text-sm leading-relaxed text-muted-foreground transition-colors group-hover:text-foreground'>
-                      {step.description}
-                    </p>
-
-                    {/* Details list */}
-                    <ul className='space-y-2'>
-                      {step.details.map((detail, detailIndex) => (
-                        <motion.li
-                          key={`${step.id}-${detail}`}
-                          variants={detailVariants}
-                          initial='hidden'
-                          whileInView='visible'
-                          viewport={{ once: true }}
-                          transition={{
-                            delay: index * 0.1 + detailIndex * 0.05 + 0.3,
-                          }}
-                          className='flex items-center gap-2 text-xs text-muted-foreground transition-colors group-hover:text-foreground'
-                        >
-                          <CheckCircle
-                            className='h-3 w-3 flex-shrink-0'
-                            style={{ color: colors.primary }}
-                          />
-                          {detail}
-                        </motion.li>
-                      ))}
-                    </ul>
-
-                    {/* Hover effect */}
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      whileHover={{ opacity: 1 }}
-                      className='pointer-events-none absolute inset-0 rounded-2xl'
-                      transition={{ duration: 0.3 }}
+                    <div
+                      className='mb-6 inline-flex rounded-xl p-3'
                       style={{
-                        background: `linear-gradient(135deg, ${withAlpha(
-                          colorsRGB.primaryRGB,
-                          0.12
-                        )}, ${withAlpha(colorsRGB.secondaryRGB, 0.1)})`,
+                        background: `rgba(${colorsRGB.primaryRGB}, 0.1)`,
                       }}
-                    />
-
-                    {/* Processing indicator */}
-                    <div className='absolute right-4 top-4'>
-                      <motion.div
-                        animate={{
-                          scale: [1, 1.2, 1],
-                          opacity: [0.3, 0.8, 0.3],
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          delay: index * 0.5,
-                        }}
-                        className='h-2 w-2 rounded-full'
-                        style={{ backgroundColor: colors.primary }}
+                    >
+                      <step.icon
+                        className='h-8 w-8'
+                        style={{ color: colors.primary }}
                       />
                     </div>
-                  </div>
 
-                  {/* Arrow connector (hidden on mobile) */}
-                  {index < PROCESS_STEPS.length - 1 && (
-                    <div className='absolute -right-4 top-1/2 hidden -translate-y-1/2 transform lg:block'>
-                      <motion.div
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: index * 0.1 + 0.5 }}
-                        className='flex h-8 w-8 items-center justify-center rounded-full text-primary-foreground'
-                        style={{
-                          background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
-                        }}
-                      >
-                        <motion.span
-                          animate={{ x: [0, 2, 0] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
-                        >
-                          →
-                        </motion.span>
-                      </motion.div>
-                    </div>
-                  )}
-                </motion.div>
+                    <h3 className='mb-3 text-xl font-bold'>{step.title}</h3>
+                    <p className='text-muted-foreground leading-relaxed'>
+                      {step.description}
+                    </p>
+                  </motion.div>
+                </div>
               );
             })}
           </div>
         </div>
-
-        {/* Bottom section */}
-        <motion.div
-          variants={fadeInVariants}
-          initial='hidden'
-          whileInView='visible'
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-          className='mt-16 text-center'
-        >
-          <div
-            className='mx-auto max-w-3xl rounded-2xl border p-8'
-            style={{
-              borderColor: `rgba(${colorsRGB.primaryRGB}, 0.24)`,
-              background: `linear-gradient(135deg, rgba(${colorsRGB.primaryRGB}, 0.12), rgba(${colorsRGB.secondaryRGB}, 0.08))`,
-            }}
-          >
-            <h3 className='mb-4 text-2xl font-semibold text-foreground'>
-              Ready to See Your Data Come Alive?
-            </h3>
-            <p className='mb-6 text-muted-foreground'>
-              Experience the full AI pipeline with your own data in a
-              personalized demo.
-            </p>
-            <InteractiveHoverButton
-              text='Schedule Live Demo'
-              onClick={() =>
-                openCalendlyPopup('https://calendly.com/swiftwareco/30min')
-              }
-              className='mx-auto w-64'
-            />
-          </div>
-        </motion.div>
       </div>
     </section>
   );

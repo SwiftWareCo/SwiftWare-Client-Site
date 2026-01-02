@@ -6,7 +6,6 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "lint:types": "tsc --noEmit",
     "lint:eslint": "eslint ."
   },
@@ -22,6 +21,7 @@
     "@react-three/fiber": "^9.3.0",
     "@tabler/icons-react": "^3.35.0",
     "@types/three": "^0.182.0",
+    "@vapi-ai/web": "^2.5.2",
     "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

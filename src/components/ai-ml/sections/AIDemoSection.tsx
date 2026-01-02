@@ -67,23 +67,66 @@ export default function AIDemoSection() {
           </motion.p>
         </div>
 
-        {/* Demo Content */}
+        {/* Conversational AI Visualizer */}
         <motion.div
           initial='hidden'
           whileInView='visible'
           viewport={{ once: true }}
           variants={sectionVariants}
           transition={{ delay: 0.2 }}
-          className='overflow-hidden rounded-2xl'
+          className='relative overflow-hidden rounded-2xl p-8 md:p-12'
           style={{
             border: `1px solid ${withAlpha(colorsRGB.primaryRGB, 0.18)}`,
-            background: `linear-gradient(135deg, rgba(255,255,255,0.04), ${withAlpha(
+            background: `linear-gradient(135deg, rgba(255,255,255,0.02), ${withAlpha(
               colorsRGB.primaryRGB,
-              0.08
+              0.05
             )})`,
           }}
         >
-          <AISearchDemo />
+          <div className='flex flex-col items-center justify-center gap-8 text-center'>
+            <div
+              className='relative flex h-32 w-32 items-center justify-center rounded-full border-2 border-dashed'
+              style={{ borderColor: withAlpha(colorsRGB.primaryRGB, 0.3) }}
+            >
+              <div
+                className='absolute inset-0 animate-pulse rounded-full opacity-20'
+                style={{
+                  background: `radial-gradient(circle, ${withAlpha(colorsRGB.primaryRGB, 0.5)} 0%, transparent 70%)`,
+                }}
+              />
+              <span className='text-4xl'>🎙️</span>
+            </div>
+
+            <div className='max-w-2xl space-y-4'>
+              <h3 className='text-2xl font-bold'>
+                Try the Voice Agent Demo Above
+              </h3>
+              <p className='text-muted-foreground'>
+                We've integrated a live Bland AI persona in the Hero section at
+                the top of this page. Click "Start Conversation" to experience
+                our human-like voice AI capabilities firsthand.
+              </p>
+            </div>
+
+            <div className='grid gap-4 sm:grid-cols-2'>
+              <div className='rounded-xl border bg-background/50 p-4 text-left backdrop-blur'>
+                <h4 className='mb-2 font-semibold text-foreground'>
+                  Natural Conversation
+                </h4>
+                <p className='text-sm text-muted-foreground'>
+                  Interruptible, low-latency responses that feel human.
+                </p>
+              </div>
+              <div className='rounded-xl border bg-background/50 p-4 text-left backdrop-blur'>
+                <h4 className='mb-2 font-semibold text-foreground'>
+                  Custom Knowledge
+                </h4>
+                <p className='text-sm text-muted-foreground'>
+                  Trained on your specific business data and guidelines.
+                </p>
+              </div>
+            </div>
+          </div>
         </motion.div>
 
         {/* Bottom CTA */}
