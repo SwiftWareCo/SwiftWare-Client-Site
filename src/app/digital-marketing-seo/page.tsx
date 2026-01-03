@@ -1,4 +1,3 @@
-
 import { DigitalMarketingHero } from '@/components/digital-marketing-seo/DigitalMarketingHero';
 import { ProblemSolutionSection } from '@/components/digital-marketing-seo/ProblemSolutionSection';
 import { WhatsIncludedSection } from '@/components/digital-marketing-seo/WhatsIncludedSection';
@@ -6,7 +5,7 @@ import { UnifiedSystemConnector } from '@/components/digital-marketing-seo/Unifi
 import { ServiceSpecificFAQ } from '@/components/digital-marketing-seo/ServiceSpecificFAQ';
 import CTASection from '@/components/CTASection';
 import { SpikeDivider } from '@/components/sections/SpikeDivider';
-import { MacbookScroll } from '@/components/ui/macbook-scroll';
+import ChartAssembly from '@/components/home/hero/ChartAssembly';
 
 export default function DigitalMarketingPage() {
   return (
@@ -28,38 +27,29 @@ export default function DigitalMarketingPage() {
         </SpikeDivider>
       </section>
 
-      <section className='bg-background text-secondary-foreground'>
-        <MacbookScroll
-          src='/images/SEOResults.png'
-          showGradient={false}
-          title={
-            <span className='text-secondary-foreground'>
-              Track the leads you earn—and the revenue you close.
-            </span>
-          }
-        />
+      <section className='bg-background text-secondary-foreground py-16 sm:py-24'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6'>
+          <div className='text-center mb-10'>
+            <h2 className='text-2xl sm:text-3xl font-bold text-foreground mb-3'>
+              Track the leads you earn and the revenue you close
+            </h2>
+            <p className='text-muted-foreground max-w-2xl mx-auto'>
+              Real-time analytics that show exactly how your marketing
+              investment translates to business growth.
+            </p>
+          </div>
+          <div className='flex justify-center'>
+            <ChartAssembly />
+          </div>
+        </div>
       </section>
 
       <section className='bg-background'>
-        <SpikeDivider
-          top
-          bottom
-          spikeColor='bg-background'
-          paddingClassName='py-0'
-        >
-          <UnifiedSystemConnector className='bg-secondary' />
-        </SpikeDivider>
+        <UnifiedSystemConnector className='bg-secondary' />
       </section>
 
       <section className='bg-secondary text-secondary-foreground'>
-        <SpikeDivider
-          top
-          bottom
-          spikeColor='bg-background'
-          paddingClassName='py-0'
-        >
-          <ServiceSpecificFAQ className='bg-background' />
-        </SpikeDivider>
+        <ServiceSpecificFAQ className='bg-background' />
       </section>
 
       <CTASection

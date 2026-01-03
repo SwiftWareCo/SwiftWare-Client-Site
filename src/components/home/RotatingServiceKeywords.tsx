@@ -1,20 +1,16 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { usePathname } from 'next/navigation';
-import { getColorsFromPath } from '@/lib/colors';
 import { useEffect, useState } from 'react';
 
+// Service keywords with their specific colors
 const SERVICES = [
-  'Brand Design',
-  'Digital Marketing',
-  'AI Automation',
-  'Custom Software',
+  { text: 'Automation', colorClass: 'text-service-ai' },
+  { text: 'Marketing', colorClass: 'text-service-marketing' },
+  { text: 'Processes', colorClass: 'text-service-software' },
 ];
 
 export function RotatingServiceKeywords() {
-  const pathname = usePathname();
-  const colors = getColorsFromPath(pathname);
   const [displayedText, setDisplayedText] = useState('');
   const [currentServiceIndex, setCurrentServiceIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -26,8 +22,10 @@ export function RotatingServiceKeywords() {
 
     const timer = setTimeout(() => {
       if (!isDeleting) {
-        if (displayedText.length < currentService.length) {
-          setDisplayedText(currentService.slice(0, displayedText.length + 1));
+        if (displayedText.length < currentService.text.length) {
+          setDisplayedText(
+            currentService.text.slice(0, displayedText.length + 1)
+          );
         } else {
           setTimeout(() => setIsDeleting(true), delayBeforeDelete);
         }
@@ -44,13 +42,10 @@ export function RotatingServiceKeywords() {
     return () => clearTimeout(timer);
   }, [displayedText, isDeleting, currentServiceIndex]);
 
+  const currentService = SERVICES[currentServiceIndex];
+
   return (
-    <span
-      style={{
-        color: colors.primary,
-      }}
-      className='font-semibold inline-block'
-    >
+    <span className={`${currentService.colorClass} font-semibold inline-block`}>
       {displayedText}
       <motion.span
         animate={{ opacity: [1, 0] }}

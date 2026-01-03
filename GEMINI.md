@@ -177,13 +177,10 @@ Target 40-50% text content on each page for SEO optimization
 ## Development Guidelines
 
 ### Running the Project
-- `npm run dev` - Start development server with Turbopack
-- `npm run lint` - Check for linting errors
-- `npm run lint:types` - Check TypeScript errors
-- `npm run start` - Start production server
+- `pnpm run lint:types` - Check TypeScript errors
+- `pnpm run lint:eslint` - Check ESLint errors
 
 ### Code Quality
-- Run `npm run lint` and `npm run lint:types` before building
 - Fix all linting and type errors before deployment
 - Use TypeScript for type safety
 - Follow established component patterns (ServicePageTemplate, sections)
@@ -228,8 +225,11 @@ Target 40-50% text content on each page for SEO optimization
 - Animations use Motion/Framer Motion (optimized)
 - Lazy loading of below-fold content
 
+
 ---
 
 **Last Updated**: November 2025
 **Architecture Version**: 2.0 (Multi-Service Agency Site)
 **Status**: Phase 2 Complete - Homepage & Core Services Built
+
+

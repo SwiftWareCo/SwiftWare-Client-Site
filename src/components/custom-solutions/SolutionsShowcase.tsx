@@ -4,7 +4,6 @@ import { motion } from 'motion/react';
 import {
   Database,
   Brain,
-  Zap,
   Users,
   Calendar,
   FileText,
@@ -13,8 +12,10 @@ import {
   Globe,
   Lock,
   Workflow,
-  MessageSquare
+  MessageSquare,
 } from 'lucide-react';
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
+import { openCalendlyPopup } from '@/lib/calendly';
 
 interface Solution {
   icon: React.ComponentType<{ className?: string }>;
@@ -28,7 +29,8 @@ const SOLUTIONS: Solution[] = [
   {
     icon: Brain,
     title: 'AI & Machine Learning Integration',
-    description: 'Embed intelligent automation and insights directly into your operations.',
+    description:
+      'Embed intelligent automation and insights directly into your operations.',
     examples: [
       'RAG systems for instant document search',
       'AI chatbots trained on your business data',
@@ -40,7 +42,8 @@ const SOLUTIONS: Solution[] = [
   {
     icon: Database,
     title: 'Customer Relationship Management',
-    description: 'Custom CRM systems that match your sales process, not the other way around.',
+    description:
+      'Custom CRM systems that match your sales process, not the other way around.',
     examples: [
       'Contact management & interaction tracking',
       'Sales pipeline visualization',
@@ -52,7 +55,8 @@ const SOLUTIONS: Solution[] = [
   {
     icon: Calendar,
     title: 'Booking & Scheduling Systems',
-    description: 'Tailored reservation platforms for any service-based business.',
+    description:
+      'Tailored reservation platforms for any service-based business.',
     examples: [
       'Golf tee sheet management',
       'Restaurant reservation systems',
@@ -64,7 +68,8 @@ const SOLUTIONS: Solution[] = [
   {
     icon: Globe,
     title: 'Client Portals & Dashboards',
-    description: 'Secure, branded portals where clients access data and track progress.',
+    description:
+      'Secure, branded portals where clients access data and track progress.',
     examples: [
       'Real-time project tracking',
       'Document sharing & e-signatures',
@@ -76,7 +81,8 @@ const SOLUTIONS: Solution[] = [
   {
     icon: Workflow,
     title: 'Process Automation',
-    description: 'Eliminate manual work with intelligent workflows and integrations.',
+    description:
+      'Eliminate manual work with intelligent workflows and integrations.',
     examples: [
       'Automated invoice generation',
       'Email & SMS notification systems',
@@ -88,7 +94,8 @@ const SOLUTIONS: Solution[] = [
   {
     icon: ShoppingCart,
     title: 'E-Commerce & Payments',
-    description: 'Custom online stores and payment systems tailored to your products.',
+    description:
+      'Custom online stores and payment systems tailored to your products.',
     examples: [
       'Custom product catalogs',
       'Subscription management',
@@ -100,7 +107,8 @@ const SOLUTIONS: Solution[] = [
   {
     icon: BarChart3,
     title: 'Analytics & Reporting',
-    description: 'Turn your data into actionable insights with custom dashboards.',
+    description:
+      'Turn your data into actionable insights with custom dashboards.',
     examples: [
       'Real-time performance metrics',
       'Custom KPI tracking',
@@ -124,7 +132,8 @@ const SOLUTIONS: Solution[] = [
   {
     icon: FileText,
     title: 'Document Management',
-    description: 'Organize, search, and collaborate on documents with intelligent systems.',
+    description:
+      'Organize, search, and collaborate on documents with intelligent systems.',
     examples: [
       'Version control & tracking',
       'Automated document generation',
@@ -136,7 +145,8 @@ const SOLUTIONS: Solution[] = [
   {
     icon: Lock,
     title: 'Custom Security Solutions',
-    description: 'Role-based access, authentication, and compliance for sensitive data.',
+    description:
+      'Role-based access, authentication, and compliance for sensitive data.',
     examples: [
       'Multi-factor authentication',
       'Role-based permissions',
@@ -176,7 +186,7 @@ const itemVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: [0.22, 1, 0.36, 1] as any,
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
     },
   },
 };
@@ -185,8 +195,8 @@ export function SolutionsShowcase() {
   return (
     <section className='relative bg-background py-16 sm:py-20 md:py-24 overflow-hidden'>
       {/* Background Elements */}
-      <div className='absolute inset-0 bg-gradient-to-b from-secondary/50 via-background to-background' />
-      <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(79,70,229,0.1),transparent_50%)]' />
+      <div className='absolute inset-0 bg-gradient-to-b from-background via-background to-background' />
+      <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(79,70,229,0.08),transparent_50%)]' />
 
       <div className='relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         {/* Header */}
@@ -194,7 +204,10 @@ export function SolutionsShowcase() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as any }}
+          transition={{
+            duration: 0.6,
+            ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+          }}
           className='text-center mb-12 sm:mb-16'
         >
           <h2 className='text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 sm:mb-6'>
@@ -203,52 +216,62 @@ export function SolutionsShowcase() {
             </span>
           </h2>
           <p className='mx-auto max-w-3xl text-base sm:text-lg text-muted-foreground'>
-            From AI-powered automation to custom CRMs, we've built software solutions across every industry.
-            Here's what's possible when you work with SwiftWare.
+            From AI-powered automation to custom CRMs, we&apos;ve built software
+            solutions across every industry. Here&apos;s what&apos;s possible
+            when you work with SwiftWare.
           </p>
         </motion.div>
 
-        {/* Solutions Grid */}
+        {/* Solutions Grid - Flexbox with centered last row */}
         <motion.div
           variants={containerVariants}
           initial='hidden'
           whileInView='visible'
           viewport={{ once: true, margin: '-100px' }}
-          className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8'
+          className='flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6'
         >
-          {SOLUTIONS.map((solution, index) => (
+          {SOLUTIONS.map((solution) => (
             <motion.div
               key={solution.title}
               variants={itemVariants}
-              className='group relative bg-card/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-border hover:-translate-y-1'
+              className='group relative bg-card/50 backdrop-blur-sm rounded-xl p-3 sm:p-5 md:p-6 border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-border hover:-translate-y-1 basis-[calc(50%-6px)] md:basis-[calc(50%-12px)] xl:basis-[calc(33.333%-16px)] text-center sm:text-left'
             >
               {/* Icon */}
-              <div className={`relative inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 mb-4 sm:mb-5 rounded-xl bg-gradient-to-br ${solution.gradient} p-3 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+              <div
+                className={`relative inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 mb-3 sm:mb-4 rounded-lg sm:rounded-xl bg-gradient-to-br ${solution.gradient} p-2 sm:p-3 shadow-lg group-hover:scale-110 transition-transform duration-300`}
+              >
                 <solution.icon className='w-full h-full text-white' />
               </div>
 
               {/* Title */}
-              <h3 className='text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-foreground group-hover:to-muted-foreground transition-all duration-300'>
+              <h3 className='text-sm sm:text-lg md:text-xl font-bold mb-1 sm:mb-2 text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-foreground group-hover:to-muted-foreground transition-all duration-300'>
                 {solution.title}
               </h3>
 
-              {/* Description */}
-              <p className='text-sm sm:text-base text-muted-foreground mb-4 sm:mb-5 leading-relaxed'>
+              {/* Description - hidden on mobile */}
+              <p className='hidden sm:block text-sm md:text-base text-muted-foreground mb-3 md:mb-4 leading-relaxed'>
                 {solution.description}
               </p>
 
-              {/* Examples */}
-              <ul className='space-y-2'>
+              {/* Examples - hidden on mobile */}
+              <ul className='hidden sm:block space-y-1.5 md:space-y-2'>
                 {solution.examples.map((example, i) => (
-                  <li key={i} className='flex items-start gap-2 text-xs sm:text-sm text-muted-foreground'>
-                    <span className={`mt-1.5 w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-gradient-to-br ${solution.gradient} flex-shrink-0`} />
+                  <li
+                    key={i}
+                    className='flex items-start gap-2 text-xs md:text-sm text-muted-foreground'
+                  >
+                    <span
+                      className={`mt-1.5 w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-gradient-to-br ${solution.gradient} flex-shrink-0`}
+                    />
                     <span className='leading-relaxed'>{example}</span>
                   </li>
                 ))}
               </ul>
 
               {/* Hover Gradient Effect */}
-              <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${solution.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none`} />
+              <div
+                className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${solution.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none`}
+              />
             </motion.div>
           ))}
         </motion.div>
@@ -259,18 +282,17 @@ export function SolutionsShowcase() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-          className='mt-12 sm:mt-16 text-center'
+          className='mt-12 sm:mt-16 flex flex-col items-center text-center'
         >
           <p className='text-base sm:text-lg text-muted-foreground mb-6'>
-            Don't see your use case? We've likely built something similar.
+            Don&apos;t see your use case? We&apos;ve likely built something
+            similar.
           </p>
-          <a
-            href='#contact'
-            className='inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-service-software to-service-software-dark text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer'
-          >
-            Tell Us What You Need
-            <Zap className='w-4 h-4 sm:w-5 sm:h-5' />
-          </a>
+          <InteractiveHoverButton
+            onClick={() => openCalendlyPopup()}
+            text='Tell Us What You Need'
+            className='w-auto px-10 py-4 text-base'
+          />
         </motion.div>
       </div>
     </section>

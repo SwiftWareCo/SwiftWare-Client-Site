@@ -5,6 +5,7 @@ import { FAQSection } from '@/components/sections/FAQSection';
 import { HeroGeometric } from '@/components/ui/shadcn-io/shape-landing-hero';
 import { SolutionsCards } from '@/components/custom-solutions/SolutionsCards';
 import { SolutionsShowcase } from '@/components/custom-solutions/SolutionsShowcase';
+import { WavyDivider } from '@/components/WavyDivider';
 
 const FAQ_ITEMS = [
   {
@@ -37,20 +38,38 @@ const FAQ_ITEMS = [
 export default function CustomSolutionsPage() {
   return (
     <main className='relative min-h-screen'>
-      {/* Hero Section */}
-      <HeroGeometric
-        badge='SwiftWare Custom Solutions'
-        title1='Software Built for'
-        title2='Your Unique Workflow'
-        description='From CRM systems to golf course management to secure web portals—we build custom software tailored to your industry. Whatever your challenge, we create the tools your team needs to thrive.'
-        className='min-h-screen'
+      {/* Hero Section with secondary background and gradient */}
+      <div className='relative bg-secondary'>
+        <div
+          className='absolute inset-0 pointer-events-none'
+          style={{
+            background:
+              'radial-gradient(ellipse 80% 50% at 50% 30%, rgba(99,102,241,0.15), transparent 70%)',
+          }}
+        />
+        <HeroGeometric
+          badge='SwiftWare Custom Solutions'
+          title1='Software Built for'
+          title2='Your Unique Workflow'
+          description='From CRM systems to golf course management to secure web portals—we build custom software tailored to your industry. Whatever your challenge, we create the tools your team needs to thrive.'
+          className='min-h-screen'
+        />
+      </div>
+
+
+
+      {/* Comprehensive Solutions Showcase - bg-background */}
+      <SolutionsShowcase />
+
+      {/* Wavy transition from showcase (background) to cards (secondary) */}
+      <WavyDivider
+        direction='down'
+        fromColor='background'
+        toColor='secondary'
       />
 
       {/* Solutions Cards */}
       <SolutionsCards />
-
-      {/* Comprehensive Solutions Showcase */}
-      <SolutionsShowcase />
 
       {/* FAQ Section */}
       <div className='bg-secondary'>

@@ -2,78 +2,69 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import {
-  X,
-  TrendingUp,
-  Smartphone,
-  Users,
-  Star,
-  ArrowRight,
-} from 'lucide-react';
-import Image from 'next/image';
+import { X, TrendingUp, Calendar, Star, ArrowRight, Clock } from 'lucide-react';
 
-interface CaseStudyModalProps {
+interface GolfCaseStudyModalProps {
   isOpen: boolean;
   onClose: () => void;
   onContactClick?: () => void;
 }
 
-export default function CaseStudyModal({
+export default function GolfCaseStudyModal({
   isOpen,
   onClose,
   onContactClick,
-}: CaseStudyModalProps) {
+}: GolfCaseStudyModalProps) {
   const achievements = [
     {
       icon: TrendingUp,
-      metric: '2x Revenue Growth',
+      metric: '45% Revenue Increase',
       description:
-        'Doubled their annual revenue through improved operational efficiency',
+        'Increased course utilization and captured more prime-time bookings',
     },
     {
-      icon: Smartphone,
-      metric: 'Mobile Service App',
-      description:
-        'Custom mobile app for field technicians with offline capabilities',
+      icon: Calendar,
+      metric: 'Online Booking',
+      description: '24/7 self-service booking with real-time availability',
     },
     {
-      icon: Users,
-      metric: 'Client Portal',
+      icon: Clock,
+      metric: '60% Fewer No-Shows',
       description:
-        'Self-service portal for clients to schedule, track, and pay for services',
+        'Automated reminders and easy rescheduling reduced missed tee times',
     },
     {
       icon: Star,
-      metric: '95% Client Satisfaction',
+      metric: '4.9/5 Member Rating',
       description:
-        'Increased client satisfaction through better communication and transparency',
+        'Members love the streamlined booking and communication experience',
     },
   ];
 
   const challenges = [
-    'Manual scheduling and dispatching',
-    'No real-time job tracking',
-    'Paper-based invoicing and payment collection',
-    'Limited client communication',
-    'Inefficient field technician management',
+    'Manual tee sheet management with phone-only bookings',
+    'No visibility into real-time availability for members',
+    'High no-show rates costing thousands monthly',
+    'Staff overwhelmed with booking calls during peak hours',
+    'Limited member communication and engagement tools',
   ];
 
   const solutions = [
-    'Automated scheduling and dispatch system',
-    'Real-time job tracking and updates',
-    'Digital invoicing with automated payment processing',
-    'Client portal for self-service booking and tracking',
-    'Mobile app for field technicians with GPS tracking',
+    'Digital tee sheet with real-time availability sync',
+    'Online booking portal for members and guests',
+    'Automated confirmation and reminder system',
+    'Member management with handicap tracking',
+    'Weather integration and course condition updates',
   ];
 
   return (
     <AnimatePresence mode='wait' initial={false}>
       {isOpen && (
         <motion.div
-          key='case-study-modal'
+          key='golf-case-study-modal'
           role='dialog'
           aria-modal='true'
-          aria-label='Vancouver Hood Doctors Case Study'
+          aria-label='Golf Course Management Case Study'
           className='fixed inset-0 z-50 grid place-items-center p-4'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -83,7 +74,7 @@ export default function CaseStudyModal({
           {/* Backdrop */}
           <motion.button
             aria-hidden
-            className='fixed inset-0 bg-black/70'
+            className='fixed inset-0 bg-black/70 cursor-pointer'
             onClick={onClose}
             initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
             animate={{ opacity: 1, backdropFilter: 'blur(12px)' }}
@@ -104,9 +95,9 @@ export default function CaseStudyModal({
             }}
             className='relative w-[min(1000px,95vw)] max-h-[90vh] overflow-hidden rounded-2xl border border-zinc-800/60 bg-zinc-950/95 backdrop-blur-xl shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)]'
           >
-            {/* Top accent */}
+            {/* Top accent - emerald for golf theme */}
             <motion.div
-              className='h-1 w-full bg-gradient-to-r from-transparent via-blue-500 to-transparent'
+              className='h-1 w-full bg-gradient-to-r from-transparent via-emerald-500 to-transparent'
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 0.8, delay: 0.3 }}
@@ -119,24 +110,13 @@ export default function CaseStudyModal({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
             >
-              <div className='flex items-center gap-4'>
-                <div className='relative w-14 h-14 rounded-xl overflow-hidden border border-zinc-800/50 bg-zinc-900 flex-shrink-0'>
-                  <Image
-                    src='/images/vvc-logo.png'
-                    alt='Vancouver Hood Doctors logo'
-                    fill
-                    className='object-contain p-2'
-                    sizes='56px'
-                  />
-                </div>
-                <div>
-                  <h2 className='text-2xl font-bold bg-gradient-to-r from-white to-zinc-300 bg-clip-text text-transparent'>
-                    Vancouver Hood Doctors
-                  </h2>
-                  <p className='mt-1 text-sm text-zinc-400'>
-                    Commercial Kitchen Exhaust & Ventilation Services
-                  </p>
-                </div>
+              <div>
+                <h2 className='text-2xl font-bold bg-gradient-to-r from-white to-zinc-300 bg-clip-text text-transparent'>
+                  GolfSync Case Study
+                </h2>
+                <p className='mt-1 text-sm text-zinc-400'>
+                  Modern Tee Sheet Management for Golf Courses
+                </p>
               </div>
               <motion.button
                 onClick={onClose}
@@ -159,14 +139,13 @@ export default function CaseStudyModal({
                   transition={{ duration: 0.4, delay: 0.3 }}
                 >
                   <h3 className='text-xl font-bold text-white mb-4'>
-                    About Vancouver Hood Doctors
+                    See How We Helped This Course
                   </h3>
                   <p className='text-zinc-300 mb-6 leading-relaxed'>
-                    Vancouver Hood Doctors is a leading provider of commercial
-                    kitchen exhaust cleaning, maintenance, and repair services
-                    in the Greater Vancouver area. They serve restaurants,
-                    hotels, and commercial kitchens with critical ventilation
-                    system maintenance.
+                    A private golf club struggled with outdated booking systems
+                    that frustrated members and left revenue on the table. We
+                    built a complete digital tee sheet solution that transformed
+                    their operations and member experience.
                   </p>
 
                   <div className='mb-6'>
@@ -184,7 +163,7 @@ export default function CaseStudyModal({
                   </div>
                 </motion.div>
 
-                {/* Right Column - Achievements */}
+                {/* Right Column - Solutions */}
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -194,9 +173,9 @@ export default function CaseStudyModal({
                     Our Solution
                   </h3>
                   <p className='text-zinc-300 mb-6 leading-relaxed'>
-                    We built a comprehensive CRM system with mobile app and
-                    client portal that transformed their operations and doubled
-                    their revenue within 12 months.
+                    We delivered a comprehensive golf course management platform
+                    with online booking, automated communications, and real-time
+                    course management tools.
                   </p>
 
                   <div className='mb-6'>
@@ -206,7 +185,7 @@ export default function CaseStudyModal({
                     <ul className='space-y-2 text-zinc-400'>
                       {solutions.map((solution, index) => (
                         <li key={index} className='flex items-start gap-2'>
-                          <div className='w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0' />
+                          <div className='w-1.5 h-1.5 bg-emerald-400 rounded-full mt-2 flex-shrink-0' />
                           <span className='text-sm'>{solution}</span>
                         </li>
                       ))}
@@ -234,10 +213,10 @@ export default function CaseStudyModal({
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
-                        className='p-6 rounded-2xl border border-zinc-800/50 bg-gradient-to-br from-blue-500/5 via-purple-500/3 to-zinc-900/40 backdrop-blur-sm'
+                        className='p-6 rounded-2xl border border-zinc-800/50 bg-gradient-to-br from-emerald-500/5 via-teal-500/3 to-zinc-900/40 backdrop-blur-sm'
                       >
-                        <div className='w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center mb-4'>
-                          <IconComponent className='w-6 h-6 text-blue-300' />
+                        <div className='w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 rounded-xl flex items-center justify-center mb-4'>
+                          <IconComponent className='w-6 h-6 text-emerald-300' />
                         </div>
                         <h4 className='text-lg font-semibold text-white mb-2'>
                           {achievement.metric}
@@ -256,23 +235,25 @@ export default function CaseStudyModal({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.8 }}
-                className='mt-8 p-6 rounded-2xl border border-zinc-800/50 bg-gradient-to-br from-green-500/5 to-blue-500/5 backdrop-blur-sm'
+                className='mt-8 p-6 rounded-2xl border border-zinc-800/50 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 backdrop-blur-sm'
               >
                 <div className='flex items-start gap-4'>
-                  <div className='w-12 h-12 bg-gradient-to-br from-green-500/20 to-blue-500/20 border border-green-500/30 rounded-full flex items-center justify-center'>
-                    <span className='text-green-300 font-bold text-lg'>JD</span>
+                  <div className='w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 rounded-full flex items-center justify-center'>
+                    <span className='text-emerald-300 font-bold text-lg'>
+                      MC
+                    </span>
                   </div>
                   <div className='flex-1'>
                     <p className='text-zinc-300 italic mb-3'>
-                      &quot;The CRM system transformed our business. We&apos;ve
-                      doubled our revenue, our clients are happier, and our
-                      technicians are more efficient than ever. The mobile app
-                      and client portal have been game-changers for our
-                      operations.&quot;
+                      &quot;The new tee sheet system has completely transformed
+                      how we operate. Members can book anytime, no-shows have
+                      dropped dramatically, and our staff can finally focus on
+                      delivering a great experience instead of answering phones
+                      all day.&quot;
                     </p>
                     <div className='text-sm text-zinc-400'>
-                      <strong className='text-white'>Adam</strong> - Operations
-                      Manager, Vancouver Hood Doctors
+                      <strong className='text-white'>Anonymous</strong> -
+                      General Manager
                     </div>
                   </div>
                 </div>
@@ -290,7 +271,7 @@ export default function CaseStudyModal({
                     onClose();
                     onContactClick?.();
                   }}
-                  className='inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300'
+                  className='inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300 cursor-pointer'
                 >
                   Get Similar Results
                   <ArrowRight className='w-4 h-4' />
@@ -303,7 +284,7 @@ export default function CaseStudyModal({
               {[...Array(8)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className='absolute size-1 bg-blue-400/30 rounded-full'
+                  className='absolute size-1 bg-emerald-400/30 rounded-full'
                   initial={{
                     x: Math.random() * 1000,
                     y: Math.random() * 800,

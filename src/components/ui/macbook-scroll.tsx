@@ -1,14 +1,9 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import {
-  motion,
-  useScroll,
-  useTransform,
-  type MotionValue,
-} from 'motion/react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { getColorsRGBFromPath } from '@/lib/colors';
 import {
@@ -32,6 +27,33 @@ import {
   IconVolume3,
   IconWorld,
 } from '@tabler/icons-react';
+import {
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  Tooltip,
+} from 'recharts';
+
+// Chart data for mobile/tablet view
+const trafficData = [
+  { month: 'Jan', organic: 1200, paid: 400 },
+  { month: 'Feb', organic: 1400, paid: 380 },
+  { month: 'Mar', organic: 1800, paid: 420 },
+  { month: 'Apr', organic: 2200, paid: 450 },
+  { month: 'May', organic: 2800, paid: 480 },
+  { month: 'Jun', organic: 3100, paid: 500 },
+];
+
+const keywordData = [
+  { position: 'Top 3', count: 45 },
+  { position: 'Top 10', count: 89 },
+  { position: 'Top 20', count: 156 },
+  { position: 'Page 1', count: 234 },
+];
 
 export interface MacbookScrollProps {
   src?: string;
@@ -48,74 +70,208 @@ export const MacbookScroll = ({
 }: MacbookScrollProps) => {
   const pathname = usePathname();
   const colorsRGB = getColorsRGBFromPath(pathname);
-  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end start'],
+    target: containerRef,
+    offset: ['start start', 'end end'],
   });
 
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      setIsMobile(true);
-    }
-  }, []);
-
-  const scaleX = useTransform(
-    scrollYProgress,
-    [0, 0.3],
-    isMobile ? [1.1, 1] : [1.2, 1.5]
-  );
-  const scaleY = useTransform(
-    scrollYProgress,
-    [0, 0.3],
-    isMobile ? [0.7, 1] : [0.6, 1.5]
-  );
-  const translate = useTransform(
-    scrollYProgress,
-    [0, 1],
-    isMobile ? [0, 500] : [0, 1200]
-  );
-  const rotate = useTransform(
-    scrollYProgress,
-    [0.1, 0.12, 0.3],
-    isMobile ? [-20, -20, 0] : [-28, -28, 0]
-  );
-  const textTransform = useTransform(scrollYProgress, [0, 0.3], [0, 100]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  // Lid opening animation
+  const lidRotate = useTransform(scrollYProgress, [0, 0.5], [-90, 0]);
+  const lidOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
 
   const screenSrc = src ?? '/images/SEOResults.png';
 
   return (
-    <div
-      ref={ref}
-      className='flex min-h-[80vh] shrink-0 scale-[0.6] flex-col items-center justify-start overflow-visible py-4 [perspective:800px] sm:scale-[0.7] sm:min-h-[100vh] md:scale-100 md:min-h-[160vh] md:py-32'
-    >
-      <motion.h2
-        style={{
-          translateY: textTransform,
-          opacity: textOpacity,
-        }}
-        className='mb-6 text-center text-2xl font-bold text-foreground sm:mb-10 sm:text-3xl md:mb-16 md:text-3xl'
-      >
-        {title || (
-          <span>
-            This Macbook is built with Tailwindcss.
-            <br />
-            No kidding.
+    <div ref={containerRef} className='relative min-h-[200vh]'>
+      {/* Sticky container */}
+      <div className='sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden py-8 md:py-16'>
+        {/* Title */}
+        <motion.h2
+          style={{ opacity: lidOpacity }}
+          className='mb-6 text-center text-xl font-bold text-foreground sm:text-2xl md:mb-10 md:text-3xl max-w-3xl px-4'
+        >
+          {title || (
+            <span>Track the leads you earn—and the revenue you close.</span>
+          )}
+        </motion.h2>
+
+        {/* MacBook container - scales based on screen */}
+        <div className='relative w-full max-w-[90vw] md:max-w-[700px] lg:max-w-[900px] px-4'>
+          {/* Desktop/Large screens: Full MacBook with image */}
+          <div className='hidden md:block'>
+            <MacbookWithLid
+              screenSrc={screenSrc}
+              lidRotate={lidRotate}
+              colorsRGB={colorsRGB}
+              showGradient={showGradient}
+              badge={badge}
+            />
+          </div>
+
+          {/* Tablet/Mobile: Charts instead of MacBook */}
+          <motion.div className='md:hidden' style={{ opacity: lidOpacity }}>
+            <SEODashboardCharts />
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// SEO Dashboard Charts for mobile/tablet
+function SEODashboardCharts() {
+  return (
+    <div className='space-y-6 p-4'>
+      {/* Traffic Growth Chart */}
+      <div className='rounded-2xl border border-border bg-card/80 backdrop-blur-sm p-4 shadow-lg'>
+        <div className='flex items-center justify-between mb-4'>
+          <h3 className='text-sm font-semibold text-foreground'>
+            Organic Traffic Growth
+          </h3>
+          <span className='text-xs px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-medium'>
+            +163%
           </span>
-        )}
-      </motion.h2>
-      <Lid
-        src={screenSrc}
-        scaleX={scaleX}
-        scaleY={scaleY}
-        rotate={rotate}
-        translate={translate}
-      />
+        </div>
+        <div className='h-40'>
+          <ResponsiveContainer width='100%' height='100%'>
+            <AreaChart data={trafficData}>
+              <defs>
+                <linearGradient
+                  id='organicGradient'
+                  x1='0'
+                  y1='0'
+                  x2='0'
+                  y2='1'
+                >
+                  <stop offset='5%' stopColor='#10b981' stopOpacity={0.3} />
+                  <stop offset='95%' stopColor='#10b981' stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <XAxis
+                dataKey='month'
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: '#71717a', fontSize: 10 }}
+              />
+              <YAxis hide />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: 'hsl(var(--card))',
+                  border: '1px solid hsl(var(--border))',
+                  borderRadius: '8px',
+                  fontSize: '12px',
+                }}
+                labelStyle={{ color: 'hsl(var(--foreground))' }}
+              />
+              <Area
+                type='monotone'
+                dataKey='organic'
+                stroke='#10b981'
+                strokeWidth={2}
+                fill='url(#organicGradient)'
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Keyword Rankings Chart */}
+      <div className='rounded-2xl border border-border bg-card/80 backdrop-blur-sm p-4 shadow-lg'>
+        <div className='flex items-center justify-between mb-4'>
+          <h3 className='text-sm font-semibold text-foreground'>
+            Keyword Rankings
+          </h3>
+          <span className='text-xs px-2 py-1 rounded-full bg-blue-500/20 text-blue-400 font-medium'>
+            234 on Page 1
+          </span>
+        </div>
+        <div className='h-32'>
+          <ResponsiveContainer width='100%' height='100%'>
+            <BarChart data={keywordData} layout='vertical'>
+              <XAxis type='number' hide />
+              <YAxis
+                type='category'
+                dataKey='position'
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: '#71717a', fontSize: 10 }}
+                width={50}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: 'hsl(var(--card))',
+                  border: '1px solid hsl(var(--border))',
+                  borderRadius: '8px',
+                  fontSize: '12px',
+                }}
+              />
+              <Bar dataKey='count' fill='#3b82f6' radius={[0, 4, 4, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Key Metrics Grid */}
+      <div className='grid grid-cols-2 gap-3'>
+        <div className='rounded-xl border border-border bg-card/80 backdrop-blur-sm p-3 text-center'>
+          <div className='text-2xl font-bold text-foreground'>12.4%</div>
+          <div className='text-xs text-muted-foreground'>Conversion Rate</div>
+          <div className='text-xs text-emerald-400 mt-1'>+3.2%</div>
+        </div>
+        <div className='rounded-xl border border-border bg-card/80 backdrop-blur-sm p-3 text-center'>
+          <div className='text-2xl font-bold text-foreground'>$47K</div>
+          <div className='text-xs text-muted-foreground'>Monthly Revenue</div>
+          <div className='text-xs text-emerald-400 mt-1'>+28%</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// MacBook with animated lid
+interface MacbookWithLidProps {
+  screenSrc: string;
+  lidRotate: ReturnType<typeof useTransform<number, number>>;
+  colorsRGB: { primaryRGB: string; secondaryRGB: string };
+  showGradient?: boolean;
+  badge?: React.ReactNode;
+}
+
+function MacbookWithLid({
+  screenSrc,
+  lidRotate,
+  colorsRGB,
+  showGradient,
+  badge,
+}: MacbookWithLidProps) {
+  return (
+    <div className='flex flex-col items-center'>
+      {/* Lid (screen) */}
+      <motion.div
+        style={{
+          rotateX: lidRotate,
+          transformStyle: 'preserve-3d',
+          transformOrigin: 'bottom',
+        }}
+        className='relative w-[32rem] h-80 md:h-96 rounded-2xl bg-[color:var(--macbook-shell)] p-2'
+      >
+        <div className='absolute inset-0 rounded-xl bg-[color:var(--macbook-screen)]' />
+        <Image
+          src={screenSrc}
+          alt='analytics dashboard mockup'
+          fill
+          sizes='(max-width: 768px) 0px, 1152px'
+          quality={100}
+          className='absolute inset-0 rounded-xl object-cover object-left-top'
+          priority
+          fetchPriority='high'
+        />
+      </motion.div>
+
+      {/* Base */}
       <div
-        className='relative -z-10 h-[18rem] w-[32rem] overflow-hidden rounded-2xl bg-[color:var(--macbook-base)] md:h-[22rem]'
+        className='relative -mt-1 h-[18rem] w-[32rem] overflow-hidden rounded-2xl bg-[color:var(--macbook-base)] md:h-[22rem]'
         style={{
           boxShadow: `0 24px 70px rgba(${colorsRGB.primaryRGB}, 0.24)`,
         }}
@@ -143,85 +299,7 @@ export const MacbookScroll = ({
       </div>
     </div>
   );
-};
-
-interface LidProps {
-  scaleX: MotionValue<number>;
-  scaleY: MotionValue<number>;
-  rotate: MotionValue<number>;
-  translate: MotionValue<number>;
-  src?: string;
 }
-
-export const Lid = ({ scaleX, scaleY, rotate, translate, src }: LidProps) => {
-  const displaySrc = src ?? '/images/SEOResults.png';
-
-  return (
-    <div className='relative [perspective:800px]'>
-      <div
-        style={{
-          transform: 'perspective(800px) rotateX(-25deg) translateZ(0px)',
-          transformOrigin: 'bottom',
-          transformStyle: 'preserve-3d',
-        }}
-        className='relative h-[10rem] w-[32rem] rounded-2xl bg-[color:var(--macbook-shell)] p-2 md:h-[12rem]'
-      >
-        <div
-          style={{
-            boxShadow: '0px 2px 0px 2px var(--macbook-shell-highlight) inset',
-          }}
-          className='absolute inset-0 flex items-center justify-center rounded-xl bg-[color:var(--macbook-shell)]'
-        >
-          <span className='text-secondary-foreground'>
-            <AceternityLogo />
-          </span>
-        </div>
-      </div>
-      <motion.div
-        style={{
-          scaleX,
-          scaleY,
-          rotateX: rotate,
-          translateY: translate,
-          transformStyle: 'preserve-3d',
-          transformOrigin: 'top',
-        }}
-        className='absolute inset-0 h-80 w-[32rem] rounded-2xl bg-[color:var(--macbook-shell)] p-2 md:h-96'
-      >
-        <div className='absolute inset-0 rounded-xl bg-[color:var(--macbook-screen)]' />
-        {/* Mobile: Show text instead of image */}
-        <div className='md:hidden absolute inset-0 rounded-xl flex items-center justify-center p-6'>
-          <div className='text-center space-y-3'>
-            <div className='text-white text-sm font-semibold'>Organic Traffic</div>
-            <div className='text-emerald-400 text-2xl font-bold'>+163%</div>
-            <div className='text-white/70 text-xs'>vs last period</div>
-            <div className='pt-4 border-t border-white/10 mt-4'>
-              <div className='text-white text-sm font-semibold'>Conversion Rate</div>
-              <div className='text-blue-400 text-2xl font-bold'>12.4%</div>
-              <div className='text-white/70 text-xs'>+3.2% increase</div>
-            </div>
-            <div className='pt-4 border-t border-white/10 mt-4'>
-              <div className='text-white text-sm font-semibold'>Page 1 Keywords</div>
-              <div className='text-purple-400 text-2xl font-bold'>234</div>
-              <div className='text-white/70 text-xs'>+89 this month</div>
-            </div>
-          </div>
-        </div>
-        {/* Desktop: Show image */}
-        <Image
-          src={displaySrc}
-          alt='analytics dashboard mockup'
-          fill
-          sizes='(max-width: 768px) 0px, 1152px'
-          quality={100}
-          className='hidden md:block absolute inset-0 rounded-xl object-cover object-left-top'
-          priority
-          fetchPriority="high"
-        />
-      </motion.div>
-    </div>
-  );
-};
 
 export const Trackpad = () => {
   return (
@@ -621,27 +699,6 @@ export const OptionKey = ({ className }: { className: string }) => {
         points='10.6,5 4,5 4,7 9.4,7 18.4,27 28,27 28,25 19.6,25 '
       />
       <rect id='_Transparent_Rectangle_' width='32' height='32' stroke='none' />
-    </svg>
-  );
-};
-
-const AceternityLogo = () => {
-  return (
-    <svg
-      width='66'
-      height='65'
-      viewBox='0 0 66 65'
-      fill='none'
-      xmlns='http://www.w3.org/2000/svg'
-      className='h-3 w-3 text-secondary-foreground'
-    >
-      <path
-        d='M8 8.05571C8 8.05571 54.9009 18.1782 57.8687 30.062C60.8365 41.9458 9.05432 57.4696 9.05432 57.4696'
-        stroke='currentColor'
-        strokeWidth='15'
-        strokeMiterlimit='3.86874'
-        strokeLinecap='round'
-      />
     </svg>
   );
 };

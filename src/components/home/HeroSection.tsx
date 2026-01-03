@@ -100,13 +100,12 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 1.2 }}
             className='mb-8 max-w-3xl mx-auto'
           >
-            <p className='text-lg sm:text-xl mb-3 text-foreground/80'>
+            <p className='text-lg sm:text-xl mb-4 text-foreground/80'>
               We specialize in <RotatingServiceKeywords />
             </p>
 
-            <p className='text-xl sm:text-2xl text-foreground/75'>
-              Stop juggling multiple agencies. We deliver it all working
-              together as one unified strategy.
+            <p className='text-xl sm:text-2xl md:text-3xl text-foreground/70 leading-relaxed'>
+              Marketing that ranks. Automation that saves hours. Processes that scale.
             </p>
           </motion.div>
 
