@@ -11,7 +11,7 @@ const FAQ_ITEMS = [
   {
     question: 'Do you only build these three types of solutions?',
     answer:
-      "Not at all! CRM, Golf Management, and Web Portals are examples of solutions we've built. We work with businesses across all industries to build custom software tailored to their unique needs - from property management to healthcare to e-commerce.",
+      "Not at all! Clinic Management, CRM, and Golf Management are examples of solutions we've built. We work with businesses across all industries to build custom software tailored to their unique needs - from healthcare and medical practices to property management to e-commerce.",
   },
   {
     question: 'How long does a custom software project take?',
@@ -51,7 +51,7 @@ export default function CustomSolutionsPage() {
           badge='SwiftWare Custom Solutions'
           title1='Software Built for'
           title2='Your Unique Workflow'
-          description='From CRM systems to golf course management to secure web portals—we build custom software tailored to your industry. Whatever your challenge, we create the tools your team needs to thrive.'
+          description='From clinic management systems to CRM platforms to golf course scheduling—we build custom software tailored to your industry. Whatever your challenge, we create the tools your team needs to thrive.'
           className='min-h-screen'
         />
       </div>

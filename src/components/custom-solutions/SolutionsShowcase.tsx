@@ -58,10 +58,10 @@ const SOLUTIONS: Solution[] = [
     description:
       'Tailored reservation platforms for any service-based business.',
     examples: [
+      'Patient scheduling & clinic management',
       'Golf tee sheet management',
-      'Restaurant reservation systems',
-      'Appointment booking for healthcare',
-      'Event registration & ticketing',
+      'Healthcare appointment automation',
+      'Restaurant & event booking systems',
     ],
     gradient: 'from-emerald-500 to-teal-600',
   },
