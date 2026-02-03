@@ -1,377 +1,392 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useRef } from 'react';
-import { motion, useInView } from 'motion/react';
-import { Volume2, MessageSquare, Sparkles, Pause, Play } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Orb } from '@/components/ui/orb';
+import { useState, useCallback, useRef } from "react";
+import { motion, useInView } from "motion/react";
+import { Volume2, MessageSquare, Sparkles, Pause, Play } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Orb } from "@/components/ui/orb";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
-import { openCalendlyPopup } from '@/lib/calendly';
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import { openCalendlyPopup } from "@/lib/calendly";
 
 // ============================================================================
 // Constants
 // ============================================================================
 
 const QUICK_ASK_PRESETS = [
-  {
-    label: 'What services do you offer?',
-    icon: Sparkles,
-    audioKey: 'services',
-  },
-  {
-    label: 'How much does a project cost?',
-    icon: MessageSquare,
-    audioKey: 'cost',
-  },
-  {
-    label: "What's your typical timeline?",
-    icon: MessageSquare,
-    audioKey: 'timeline',
-  },
-  {
-    label: 'Can you help with AI automation?',
-    icon: Sparkles,
-    audioKey: 'automation',
-  },
+    {
+        label: "What services do you offer?",
+        icon: Sparkles,
+        audioKey: "services",
+    },
+    {
+        label: "How much does a project cost?",
+        icon: MessageSquare,
+        audioKey: "cost",
+    },
+    {
+        label: "What's your typical timeline?",
+        icon: MessageSquare,
+        audioKey: "timeline",
+    },
+    {
+        label: "Can you help with AI automation?",
+        icon: Sparkles,
+        audioKey: "automation",
+    },
 ] as const;
 
 const AUDIO_MAP: Record<string, string> = {
-  services: '/audio/swiftware-services.mp3',
-  cost: '/audio/swiftware-cost.mp3',
-  timeline: '/audio/swiftware-timeline.mp3',
-  automation: '/audio/swiftware-automation.mp3',
+    services: "/audio/swiftware-services.mp3",
+    cost: "/audio/swiftware-cost.mp3",
+    timeline: "/audio/swiftware-timeline.mp3",
+    automation: "/audio/swiftware-automation.mp3",
 };
 
 // ============================================================================
 // Types
 // ============================================================================
 
-type AgentState = 'idle' | 'connecting' | 'listening' | 'thinking' | 'speaking';
+type AgentState = "idle" | "connecting" | "listening" | "thinking" | "speaking";
 
 // ============================================================================
 // Component
 // ============================================================================
 
 export function VoiceReceptionistSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
+    const sectionRef = useRef<HTMLElement>(null);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
-  // UI State
-  const [agentState, setAgentState] = useState<AgentState>('idle');
-  const [currentQuestion, setCurrentQuestion] = useState<string | null>(null);
-  const [isPaused, setIsPaused] = useState(false);
+    // UI State
+    const [agentState, setAgentState] = useState<AgentState>("idle");
+    const [currentQuestion, setCurrentQuestion] = useState<string | null>(null);
+    const [isPaused, setIsPaused] = useState(false);
 
-  // Handle quick-ask preset click
-  const handleQuickAsk = useCallback(
-    async (preset: (typeof QUICK_ASK_PRESETS)[number]) => {
-      // Stop any currently playing audio
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
+    // Handle quick-ask preset click
+    const handleQuickAsk = useCallback(
+        async (preset: (typeof QUICK_ASK_PRESETS)[number]) => {
+            // Stop any currently playing audio
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+            }
 
-      setAgentState('connecting');
-      setCurrentQuestion(preset.label);
+            setAgentState("connecting");
+            setCurrentQuestion(preset.label);
 
-      // Brief connection simulation
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      setAgentState('thinking');
+            // Brief connection simulation
+            await new Promise((resolve) => setTimeout(resolve, 300));
+            setAgentState("thinking");
 
-      // Brief thinking simulation
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      setAgentState('speaking');
+            // Brief thinking simulation
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            setAgentState("speaking");
 
-      // Play the pre-recorded audio
-      const audioSrc = AUDIO_MAP[preset.audioKey];
-      if (audioSrc) {
-        const audio = new Audio(audioSrc);
-        audioRef.current = audio;
-        setIsPaused(false);
+            // Play the pre-recorded audio
+            const audioSrc = AUDIO_MAP[preset.audioKey];
+            if (audioSrc) {
+                const audio = new Audio(audioSrc);
+                audioRef.current = audio;
+                setIsPaused(false);
 
-        audio.onended = () => {
-          setAgentState('idle');
-          setIsPaused(false);
-        };
+                audio.onended = () => {
+                    setAgentState("idle");
+                    setIsPaused(false);
+                };
 
-        audio.onerror = () => {
-          console.error('Failed to load audio:', audioSrc);
-          setAgentState('idle');
-          setIsPaused(false);
-        };
+                audio.onerror = () => {
+                    console.error("Failed to load audio:", audioSrc);
+                    setAgentState("idle");
+                    setIsPaused(false);
+                };
 
-        audio.onpause = () => {
-          setIsPaused(true);
-        };
+                audio.onpause = () => {
+                    setIsPaused(true);
+                };
 
-        audio.onplay = () => {
-          setIsPaused(false);
-        };
+                audio.onplay = () => {
+                    setIsPaused(false);
+                };
 
-        try {
-          await audio.play();
-        } catch (error) {
-          console.error('Failed to play audio:', error);
-          setAgentState('idle');
-          setIsPaused(false);
+                try {
+                    await audio.play();
+                } catch (error) {
+                    console.error("Failed to play audio:", error);
+                    setAgentState("idle");
+                    setIsPaused(false);
+                }
+            } else {
+                // Fallback if no audio found
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+                setAgentState("idle");
+                setIsPaused(false);
+            }
+        },
+        [],
+    );
+
+    // Handle pause/resume
+    const handlePauseResume = useCallback(() => {
+        if (!audioRef.current) return;
+
+        if (isPaused) {
+            audioRef.current.play().catch((error) => {
+                console.error("Failed to resume audio:", error);
+            });
+        } else {
+            audioRef.current.pause();
         }
-      } else {
-        // Fallback if no audio found
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        setAgentState('idle');
-        setIsPaused(false);
-      }
-    },
-    []
-  );
+    }, [isPaused]);
 
-  // Handle pause/resume
-  const handlePauseResume = useCallback(() => {
-    if (!audioRef.current) return;
+    // Map agent state to orb state
+    const getOrbState = () => {
+        switch (agentState) {
+            case "listening":
+                return "listening";
+            case "thinking":
+                return "thinking";
+            case "speaking":
+                return isPaused ? null : "talking";
+            default:
+                return null;
+        }
+    };
 
-    if (isPaused) {
-      audioRef.current.play().catch((error) => {
-        console.error('Failed to resume audio:', error);
-      });
-    } else {
-      audioRef.current.pause();
-    }
-  }, [isPaused]);
-
-  // Map agent state to orb state
-  const getOrbState = () => {
-    switch (agentState) {
-      case 'listening':
-        return 'listening';
-      case 'thinking':
-        return 'thinking';
-      case 'speaking':
-        return isPaused ? null : 'talking';
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <section
-      ref={sectionRef}
-      className='relative py-16 sm:py-24 bg-background overflow-hidden'
-      aria-labelledby='voice-receptionist-heading'
-    >
-      <div className='max-w-7xl mx-auto px-4 sm:px-6'>
-        {/* Header */}
-        <motion.div
-          className='text-center mb-10 sm:mb-14'
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+    return (
+        <section
+            ref={sectionRef}
+            className="relative py-16 sm:py-24 bg-background overflow-hidden"
+            aria-labelledby="voice-receptionist-heading"
         >
-          <h2
-            id='voice-receptionist-heading'
-            className='text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-foreground'
-          >
-            Ask Our{' '}
-            <span className='bg-gradient-to-r from-service-ai to-service-ai-dark bg-clip-text text-transparent'>
-              AI Receptionist
-            </span>
-          </h2>
-          <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
-            Experience one of our AI models in action. Click a question below to
-            see how it responds.
-          </p>
-
-          {/* Sound indicator */}
-          <motion.div
-            className='inline-flex items-center gap-2 mt-6 px-4 py-2 rounded-full bg-card border border-border'
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ delay: 0.3, duration: 0.4 }}
-          >
-            <Volume2 className='w-4 h-4 text-service-ai' />
-            <span className='text-sm text-muted-foreground'>
-              Turn on your sound for the full experience
-            </span>
-          </motion.div>
-        </motion.div>
-
-        {/* Two Column Layout */}
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start'>
-          {/* Left Column: Orb and Quick Ask */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.6 }}
-          >
-            <Card className='overflow-hidden border-border/50 shadow-xl'>
-              <CardHeader className='text-center border-b border-border/50 pb-6'>
-                {/* Orb Container */}
-                <div className='flex flex-col items-center'>
-                  <div className='w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden ring-2 ring-border/50 shadow-lg'>
-                    <Orb
-                      className='w-full h-full'
-                      colors={['#A855F7', '#7C3AED']}
-                      agentState={getOrbState()}
-                    />
-                  </div>
-
-                  {/* Status indicator - positioned below orb */}
-                  <div className='flex flex-col items-center gap-2 mt-4'>
-                    <div
-                      className={cn(
-                        'px-3 py-1 rounded-full text-xs font-medium transition-all duration-300',
-                        agentState === 'idle' && 'bg-muted text-muted-foreground',
-                        agentState === 'connecting' &&
-                          'bg-yellow-500/20 text-yellow-500 animate-pulse',
-                        agentState === 'thinking' &&
-                          'bg-service-ai/20 text-service-ai animate-pulse',
-                        agentState === 'speaking' &&
-                          'bg-green-500/20 text-green-500',
-                        agentState === 'listening' &&
-                          'bg-blue-500/20 text-blue-500'
-                      )}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                {/* Header */}
+                <motion.div
+                    className="text-center mb-10 sm:mb-14"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6 }}
+                >
+                    <h2
+                        id="voice-receptionist-heading"
+                        className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-foreground"
                     >
-                      {agentState === 'idle' && 'Ready to help'}
-                      {agentState === 'connecting' && 'Connecting...'}
-                      {agentState === 'thinking' && 'Thinking...'}
-                      {agentState === 'speaking' && (isPaused ? 'Paused' : 'Speaking')}
-                      {agentState === 'listening' && 'Listening...'}
-                    </div>
-                    {/* Pause/Resume button - only show when speaking */}
-                    {agentState === 'speaking' && (
-                      <Button
-                        variant='outline'
-                        size='sm'
-                        onClick={handlePauseResume}
-                        className='h-8 px-3 text-xs hover:bg-service-ai/10 hover:border-service-ai/50 hover:text-service-ai'
-                      >
-                        {isPaused ? (
-                          <>
-                            <Play className='w-3 h-3 mr-1.5' />
-                            Resume
-                          </>
-                        ) : (
-                          <>
-                            <Pause className='w-3 h-3 mr-1.5' />
-                            Pause
-                          </>
-                        )}
-                      </Button>
-                    )}
-                  </div>
-                </div>
-
-                <CardTitle className='text-lg sm:text-xl mt-4'>
-                  SwiftWare AI
-                </CardTitle>
-                <CardDescription>One of our AI models</CardDescription>
-              </CardHeader>
-
-              <CardContent className='pt-6 space-y-6'>
-                {/* Current question display */}
-                {currentQuestion && agentState !== 'idle' && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className='p-4 rounded-lg bg-muted/50 border border-border/50'
-                  >
-                    <p className='text-foreground text-sm sm:text-base leading-relaxed italic'>
-                      "{currentQuestion}"
+                        Ask Our{" "}
+                        <span className="bg-gradient-to-r from-service-ai to-service-ai-dark bg-clip-text text-transparent">
+                            AI Receptionist
+                        </span>
+                    </h2>
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                        Experience one of our AI models in action. Click a
+                        question below to see how it responds.
                     </p>
-                  </motion.div>
-                )}
 
-                {/* Quick Ask Presets - Centered */}
-                <div className='space-y-3'>
-                  <div className='flex flex-wrap justify-center gap-2'>
-                    {QUICK_ASK_PRESETS.map((preset) => (
-                      <Button
-                        key={preset.label}
-                        variant='outline'
-                        size='sm'
-                        className='text-xs sm:text-sm cursor-pointer hover:bg-service-ai/10 hover:border-service-ai/50 hover:text-service-ai transition-all'
-                        onClick={() => handleQuickAsk(preset)}
-                        disabled={agentState !== 'idle'}
-                      >
-                        <preset.icon className='w-3 h-3 mr-1.5' />
-                        {preset.label}
-                      </Button>
-                    ))}
-                  </div>
+                    {/* Sound indicator */}
+                    <motion.div
+                        className="inline-flex items-center gap-2 mt-6 px-4 py-2 rounded-full bg-card border border-border"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                        transition={{ delay: 0.3, duration: 0.4 }}
+                    >
+                        <Volume2 className="w-4 h-4 text-service-ai" />
+                        <span className="text-sm text-muted-foreground">
+                            Turn on your sound for the full experience
+                        </span>
+                    </motion.div>
+                </motion.div>
+
+                {/* Two Column Layout */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+                    {/* Left Column: Orb and Quick Ask */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ delay: 0.2, duration: 0.6 }}
+                    >
+                        <Card className="overflow-hidden border-border/50 shadow-xl">
+                            <CardHeader className="text-center border-b border-border/50 pb-6">
+                                {/* Orb Container */}
+                                <div className="flex flex-col items-center">
+                                    <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden ring-2 ring-border/50 shadow-lg">
+                                        <Orb
+                                            className="w-full h-full"
+                                            colors={["#A855F7", "#7C3AED"]}
+                                            agentState={getOrbState()}
+                                        />
+                                    </div>
+
+                                    {/* Status indicator - positioned below orb */}
+                                    <div className="flex flex-col items-center gap-2 mt-4">
+                                        <div
+                                            className={cn(
+                                                "px-3 py-1 rounded-full text-xs font-medium transition-all duration-300",
+                                                agentState === "idle" &&
+                                                    "bg-muted text-muted-foreground",
+                                                agentState === "connecting" &&
+                                                    "bg-yellow-500/20 text-yellow-500 animate-pulse",
+                                                agentState === "thinking" &&
+                                                    "bg-service-ai/20 text-service-ai animate-pulse",
+                                                agentState === "speaking" &&
+                                                    "bg-green-500/20 text-green-500",
+                                                agentState === "listening" &&
+                                                    "bg-blue-500/20 text-blue-500",
+                                            )}
+                                        >
+                                            {agentState === "idle" &&
+                                                "Ready to help"}
+                                            {agentState === "connecting" &&
+                                                "Connecting..."}
+                                            {agentState === "thinking" &&
+                                                "Thinking..."}
+                                            {agentState === "speaking" &&
+                                                (isPaused
+                                                    ? "Paused"
+                                                    : "Speaking")}
+                                            {agentState === "listening" &&
+                                                "Listening..."}
+                                        </div>
+                                        {/* Pause/Resume button - only show when speaking */}
+                                        {agentState === "speaking" && (
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={handlePauseResume}
+                                                className="h-8 px-3 text-xs hover:bg-service-ai/10 hover:border-service-ai/50 hover:text-service-ai"
+                                            >
+                                                {isPaused ? (
+                                                    <>
+                                                        <Play className="w-3 h-3 mr-1.5" />
+                                                        Resume
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Pause className="w-3 h-3 mr-1.5" />
+                                                        Pause
+                                                    </>
+                                                )}
+                                            </Button>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <CardTitle className="text-lg sm:text-xl mt-4">
+                                    SwiftWare AI
+                                </CardTitle>
+                                <CardDescription>
+                                    One of our AI models
+                                </CardDescription>
+                            </CardHeader>
+
+                            <CardContent className="pt-6 space-y-6">
+                                {/* Current question display */}
+                                {currentQuestion && agentState !== "idle" && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="p-4 rounded-lg bg-muted/50 border border-border/50"
+                                    >
+                                        <p className="text-foreground text-sm sm:text-base leading-relaxed italic">
+                                            &quot;{currentQuestion}&quot;
+                                        </p>
+                                    </motion.div>
+                                )}
+
+                                {/* Quick Ask Presets - Centered */}
+                                <div className="space-y-3">
+                                    <div className="flex flex-wrap justify-center gap-2">
+                                        {QUICK_ASK_PRESETS.map((preset) => (
+                                            <Button
+                                                key={preset.label}
+                                                variant="outline"
+                                                size="sm"
+                                                className="text-xs sm:text-sm cursor-pointer hover:bg-service-ai/10 hover:border-service-ai/50 hover:text-service-ai transition-all"
+                                                onClick={() =>
+                                                    handleQuickAsk(preset)
+                                                }
+                                                disabled={agentState !== "idle"}
+                                            >
+                                                <preset.icon className="w-3 h-3 mr-1.5" />
+                                                {preset.label}
+                                            </Button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+
+                    {/* Right Column: Explanation */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ delay: 0.4, duration: 0.6 }}
+                        className="flex flex-col justify-between h-full"
+                    >
+                        <div className="space-y-4">
+                            <div className="p-5 rounded-xl bg-card border border-border/50">
+                                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+                                    This is{" "}
+                                    <span className="font-semibold text-foreground">
+                                        one of our AI models
+                                    </span>
+                                    —an AI receptionist trained on
+                                    SwiftWare&apos;s services and knowledge
+                                    base. It can answer questions, handle
+                                    inquiries, and provide instant responses
+                                    24/7.
+                                </p>
+                            </div>
+                            <div className="p-5 rounded-xl bg-card border border-border/50">
+                                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+                                    Choose from{" "}
+                                    <span className="font-semibold text-foreground">
+                                        dozens of premium voices
+                                    </span>
+                                    , create a{" "}
+                                    <span className="font-semibold text-foreground">
+                                        custom voice
+                                    </span>{" "}
+                                    unique to your brand, or even{" "}
+                                    <span className="font-semibold text-foreground">
+                                        clone your own voice
+                                    </span>{" "}
+                                    for a truly personal touch.
+                                </p>
+                            </div>
+                            <div className="p-5 rounded-xl bg-card border border-border/50">
+                                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+                                    For a{" "}
+                                    <span className="font-semibold text-foreground">
+                                        full demo
+                                    </span>
+                                    , book a call to see your AI receptionist
+                                    trained on{" "}
+                                    <span className="font-semibold text-foreground">
+                                        your business
+                                    </span>
+                                    . We&apos;ll customize it with your company
+                                    knowledge, processes, and brand voice.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-center mt-6">
+                            <InteractiveHoverButton
+                                onClick={() => openCalendlyPopup()}
+                                text="Book a Call for Full Demo"
+                                className="w-auto px-10 py-4 text-base"
+                            />
+                        </div>
+                    </motion.div>
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Right Column: Explanation */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className='flex flex-col justify-between h-full'
-          >
-            <div className='space-y-4'>
-              <div className='p-5 rounded-xl bg-card border border-border/50'>
-                <p className='text-base sm:text-lg text-muted-foreground leading-relaxed'>
-                  This is{' '}
-                  <span className='font-semibold text-foreground'>
-                    one of our AI models
-                  </span>
-                  —an AI receptionist trained on SwiftWare&apos;s services and
-                  knowledge base. It can answer questions, handle inquiries, and
-                  provide instant responses 24/7.
-                </p>
-              </div>
-              <div className='p-5 rounded-xl bg-card border border-border/50'>
-                <p className='text-base sm:text-lg text-muted-foreground leading-relaxed'>
-                  Choose from{' '}
-                  <span className='font-semibold text-foreground'>
-                    dozens of premium voices
-                  </span>
-                  , create a{' '}
-                  <span className='font-semibold text-foreground'>
-                    custom voice
-                  </span>{' '}
-                  unique to your brand, or even{' '}
-                  <span className='font-semibold text-foreground'>
-                    clone your own voice
-                  </span>{' '}
-                  for a truly personal touch.
-                </p>
-              </div>
-              <div className='p-5 rounded-xl bg-card border border-border/50'>
-                <p className='text-base sm:text-lg text-muted-foreground leading-relaxed'>
-                  For a{' '}
-                  <span className='font-semibold text-foreground'>
-                    full demo
-                  </span>
-                  , book a call to see your AI receptionist trained on{' '}
-                  <span className='font-semibold text-foreground'>
-                    your business
-                  </span>
-                  . We&apos;ll customize it with your company knowledge,
-                  processes, and brand voice.
-                </p>
-              </div>
             </div>
-
-            <div className='flex justify-center mt-6'>
-              <InteractiveHoverButton
-                onClick={() => openCalendlyPopup()}
-                text='Book a Call for Full Demo'
-                className='w-auto px-10 py-4 text-base'
-              />
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
+        </section>
+    );
 }

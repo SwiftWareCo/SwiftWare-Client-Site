@@ -11,7 +11,6 @@ import {
     Target,
     Megaphone,
     Rocket,
-    Zap,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { BackgroundLines } from "@/components/ui/background-lines";
@@ -803,6 +802,7 @@ export function HeroSection() {
             return <HeroPatientGrowth />;
         default:
             // TypeScript exhaustive check - ensures all variants are handled
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const _exhaustiveCheck: never = ACTIVE_VARIANT;
             return <HeroOriginal />;
     }
