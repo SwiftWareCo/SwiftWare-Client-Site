@@ -13,6 +13,10 @@ import {
     TrendingUp,
     Sparkles,
     CheckCircle2,
+    Smile,
+    Sparkle,
+    Shield,
+    Moon,
 } from "lucide-react";
 import { openCalendlyPopup } from "@/lib/calendly";
 import { DentistHoverButton } from "./DentistHoverButton";
@@ -87,15 +91,25 @@ const socialPosts = [
         postClassName: "bg-gradient-to-br from-pink-50 to-purple-50",
         textClassName: "text-slate-600",
         subTextClassName: "text-slate-400",
-        emoji: "😁",
         title: "Before & After",
-        subtitle: "Teeth Whitening",
+        subtitle: "Professional Whitening",
         views: "4.2K views",
         handle: "dentalsmile",
         caption: "Transform your smile! Book your free consultation today ✨",
         initialLikes: 247,
         mediaLabel: "Reel",
         isVideo: false,
+        // Visual content for before/after
+        visualContent: {
+            type: "before-after" as const,
+            imageSrc: "/images/dentist/instagram-photo.png",
+            beforeLabel: "Before",
+            afterLabel: "After",
+            beforeGradient: "from-slate-200 to-slate-300",
+            afterGradient: "from-pink-200 to-purple-200",
+            beforeIcon: Smile,
+            afterIcon: Sparkle,
+        },
     },
     {
         platform: "TikTok",
@@ -104,9 +118,8 @@ const socialPosts = [
         postClassName: "bg-gradient-to-br from-slate-900 to-slate-700",
         textClassName: "text-white/90",
         subTextClassName: "text-white/70",
-        emoji: "🦷",
         title: "30-Second Tip",
-        subtitle: "Night Guards",
+        subtitle: "Protect Your Teeth",
         views: "12.8K views",
         handle: "brightsmiledental",
         caption:
@@ -114,6 +127,17 @@ const socialPosts = [
         initialLikes: 512,
         mediaLabel: "Video",
         isVideo: true,
+        // Visual content for tip
+        visualContent: {
+            type: "tip" as const,
+            imageSrc: "/images/dentist/tiktok-photo.png",
+            tipNumber: "Tip #1",
+            tipTitle: "Night Guards",
+            tipDesc: "Prevent grinding",
+            gradient: "from-slate-700 via-slate-800 to-slate-900",
+            icon: Shield,
+            accentIcon: Moon,
+        },
     },
 ];
 
@@ -148,21 +172,14 @@ function SocialPostCard({
             >
                 {/* TikTok Video Container */}
                 <div className="relative aspect-[9/16] bg-gradient-to-br from-slate-800 to-slate-900">
+                    <div
+                        className="absolute inset-0 bg-cover bg-center"
+                        style={{
+                            backgroundImage: `url(${post.visualContent.imageSrc})`,
+                        }}
+                    />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-
-                    {/* Center content */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center">
-                            <div className="text-6xl mb-3">{post.emoji}</div>
-                            <div className="text-white font-semibold text-lg">
-                                {post.title}
-                            </div>
-                            <div className="text-white/70 text-sm">
-                                {post.subtitle}
-                            </div>
-                        </div>
-                    </div>
 
                     {/* Right side action buttons - TikTok style */}
                     <div className="absolute right-2 bottom-20 flex flex-col items-center gap-4">
@@ -195,7 +212,7 @@ function SocialPostCard({
                             onClick={() => {
                                 setIsLiked(!isLiked);
                                 setLikes((prev) =>
-                                    isLiked ? prev - 1 : prev + 1
+                                    isLiked ? prev - 1 : prev + 1,
                                 );
                             }}
                             className="flex flex-col items-center gap-0.5 cursor-pointer"
@@ -318,21 +335,17 @@ function SocialPostCard({
                 </div>
             </div>
 
-            {/* Post image placeholder */}
-            <div className={`relative aspect-square ${post.postClassName}`}>
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                        <div className="text-4xl mb-2">{post.emoji}</div>
-                        <div
-                            className={`text-sm font-medium ${post.textClassName}`}
-                        >
-                            {post.title}
-                        </div>
-                        <div className={`text-xs ${post.subTextClassName}`}>
-                            {post.subtitle}
-                        </div>
-                    </div>
-                </div>
+            {/* Post Visual Content - Before/After */}
+            <div
+                className={`relative aspect-square ${post.postClassName} overflow-hidden`}
+            >
+                <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{
+                        backgroundImage: `url(${post.visualContent.imageSrc})`,
+                    }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10" />
                 {/* Engagement overlay */}
                 <motion.div
                     initial={{ opacity: 0 }}
@@ -450,6 +463,7 @@ export function SocialMediaSection() {
     return (
         <section
             ref={ref}
+            id="social-media"
             className="relative py-24 overflow-hidden bg-gradient-to-b from-pink-200 via-pink-50 to-pink-200"
         >
             {/* Background elements */}

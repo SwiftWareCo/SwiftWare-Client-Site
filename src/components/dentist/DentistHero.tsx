@@ -13,7 +13,7 @@ import {
 import { openCalendlyPopup } from "@/lib/calendly";
 import { DentistHoverButton } from "./DentistHoverButton";
 
-// Floating metric cards that orbit around - positioned closer to center
+// Floating metric cards - positioned relative to center content for consistent spacing
 const floatingMetrics = [
     {
         icon: TrendingUp,
@@ -21,7 +21,9 @@ const floatingMetrics = [
         label: "Patient Growth",
         color: "from-emerald-400 to-teal-500",
         delay: 0,
-        position: "top-24 left-[12%] xl:left-[15%]",
+        positionClassName: "top-20 lg:top-24",
+        jitterClassName: "translate-x-2",
+        align: "left" as const,
     },
     {
         icon: Calendar,
@@ -29,7 +31,9 @@ const floatingMetrics = [
         label: "Auto-Booking",
         color: "from-sky-400 to-blue-500",
         delay: 0.2,
-        position: "top-36 right-[12%] xl:right-[15%]",
+        positionClassName: "top-32 lg:top-36",
+        jitterClassName: "-translate-x-1",
+        align: "right" as const,
     },
     {
         icon: Users,
@@ -37,7 +41,9 @@ const floatingMetrics = [
         label: "New Patients/Mo",
         color: "from-violet-400 to-purple-500",
         delay: 0.4,
-        position: "bottom-44 left-[15%] xl:left-[18%]",
+        positionClassName: "top-[45%] lg:top-[40%]",
+        jitterClassName: "-translate-x-3",
+        align: "left" as const,
     },
     {
         icon: Star,
@@ -45,39 +51,58 @@ const floatingMetrics = [
         label: "Avg Rating",
         color: "from-amber-400 to-orange-500",
         delay: 0.6,
-        position: "bottom-36 right-[12%] xl:right-[15%]",
+        positionClassName: "top-[55%] lg:top-[50%]",
+        jitterClassName: "translate-x-1",
+        align: "right" as const,
     },
 ];
 
-// Floating metric card component
+// Floating metric card component - positioned relative to center content
 function FloatingCard({
     icon: Icon,
     value,
     label,
     color,
     delay,
-    position,
+    positionClassName,
+    jitterClassName,
+    align,
 }: (typeof floatingMetrics)[0]) {
+    const alignClass =
+        align === "left"
+            ? "right-1/2 mr-[min(26rem,40%)] xl:mr-[min(30rem,38%)] 2xl:mr-[34rem]"
+            : "left-1/2 ml-[min(26rem,40%)] xl:ml-[min(30rem,38%)] 2xl:ml-[34rem]";
+
     return (
         <motion.div
-            className={`absolute ${position} hidden lg:block`}
+            className={`absolute ${positionClassName} ${alignClass} ${jitterClassName} hidden 2xl:block z-20`}
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, delay: delay + 0.8 }}
         >
-            <motion.div
-                className="relative"
-                animate={{ y: [0, -10, 0] }}
-                transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    delay: delay,
-                    ease: "easeInOut",
-                }}
-            >
-                <div className="flex items-center gap-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/60 shadow-xl shadow-slate-200/50 px-4 py-3">
+            <motion.div className="relative">
+                <motion.div
+                    className="absolute inset-0 rounded-2xl -z-10 hidden 2xl:block"
+                    animate={{
+                        opacity: [0.25, 0.85, 0.25],
+                        scale: [0.96, 1.08, 0.96],
+                    }}
+                    transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        delay,
+                        ease: "easeInOut",
+                    }}
+                    style={{
+                        background:
+                            "radial-gradient(circle at 50% 50%, rgba(255, 40, 143, 0.85) 0%, rgba(255, 40, 143, 0.4) 45%, transparent 70%)",
+                        boxShadow:
+                            "0 0 40px rgba(255, 40, 143, 0.75), 0 0 120px rgba(255, 40, 143, 0.55)",
+                    }}
+                />
+                <div className="flex items-center gap-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/60 shadow-xl shadow-slate-200/50 px-4 py-3 whitespace-nowrap">
                     <div
-                        className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${color}`}
+                        className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${color} shrink-0`}
                     >
                         <Icon className="h-5 w-5 text-white" />
                     </div>
@@ -88,10 +113,6 @@ function FloatingCard({
                         <div className="text-xs text-slate-500">{label}</div>
                     </div>
                 </div>
-                {/* Glow effect */}
-                <div
-                    className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${color} opacity-20 blur-xl -z-10`}
-                />
             </motion.div>
         </motion.div>
     );
@@ -120,130 +141,146 @@ export function DentistHero() {
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,_rgba(239,68,68,0.18)_0%,_transparent_55%)]" />
             </div>
 
-            {/* Floating Metric Cards */}
-            {floatingMetrics.map((metric) => (
-                <FloatingCard key={metric.label} {...metric} />
-            ))}
-
-            {/* Main Content */}
-            <motion.div
-                style={{ y, opacity }}
-                className="relative z-10 mx-auto max-w-7xl px-6"
-            >
-                <div className="text-center max-w-4xl mx-auto">
-                    {/* Badge */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="inline-flex items-center gap-2 rounded-full bg-white border border-sky-200 px-4 py-2 mb-8 shadow-lg shadow-sky-100/50"
-                    >
+            {/* Main Content with Floating Cards Container */}
+            <div className="relative max-w-7xl mx-auto">
+                {/* Main Content */}
+                <motion.div
+                    style={{ y, opacity }}
+                    className="relative z-10 mx-auto max-w-7xl px-6"
+                >
+                    <div className="text-center max-w-4xl mx-auto">
+                        {/* Badge */}
                         <motion.div
-                            animate={{ rotate: [0, 15, -15, 0] }}
-                            transition={{ duration: 3, repeat: Infinity }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            className="inline-flex items-center gap-2 rounded-full bg-white border border-sky-200 px-4 py-2 mb-8 shadow-lg shadow-sky-100/50"
                         >
-                            <Sparkles className="h-4 w-4 text-sky-500" />
+                            <motion.div
+                                animate={{ rotate: [0, 15, -15, 0] }}
+                                transition={{ duration: 3, repeat: Infinity }}
+                            >
+                                <Sparkles className="h-4 w-4 text-sky-500" />
+                            </motion.div>
+                            <span className="text-sm font-medium text-sky-700">
+                                Marketing Built for Dental Practices
+                            </span>
                         </motion.div>
-                        <span className="text-sm font-medium text-sky-700">
-                            Marketing Built for Dental Practices
-                        </span>
-                    </motion.div>
 
-                    {/* Main Headline */}
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="font-outfit text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 mb-6"
-                    >
-                        Fill Your Schedule
-                        <br />
-                        <span className="bg-gradient-to-r from-sky-500 via-teal-500 to-emerald-500 bg-clip-text text-transparent">
-                            While You Sleep
-                        </span>
-                    </motion.h1>
+                        {/* Main Headline */}
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            className="font-outfit text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 mb-6"
+                        >
+                            Fill Your Schedule
+                            <br />
+                            <span className="bg-gradient-to-r from-sky-500 via-teal-500 to-emerald-500 bg-clip-text text-transparent">
+                                While You Sleep
+                            </span>
+                        </motion.h1>
 
-                    {/* Subheadline */}
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="font-lora text-xl sm:text-2xl text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed"
-                    >
-                        Our automated marketing system brings new patients to
-                        your door, keeps them loyal, and grows your practice—
-                        <span className="text-sky-600 font-semibold">
-                            all on autopilot.
-                        </span>
-                    </motion.p>
+                        {/* Subheadline */}
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                            className="font-lora text-xl sm:text-2xl text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed"
+                        >
+                            Our automated marketing system brings new patients
+                            to your door, keeps them loyal, and grows your
+                            practice—
+                            <span className="text-sky-600 font-semibold">
+                                all on autopilot.
+                            </span>
+                        </motion.p>
 
-                    {/* Trust indicators */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6 }}
-                        className="flex flex-wrap justify-center gap-6 mb-10"
-                    >
-                        {[
-                            "SEO That Ranks #1",
-                            "Multi-Platform Social",
-                            "Automated Booking",
-                        ].map((item) => (
-                            <div key={item} className="flex items-center gap-2">
-                                <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                                <span className="text-sm font-medium text-slate-600">
-                                    {item}
-                                </span>
-                            </div>
-                        ))}
-                    </motion.div>
-
-                    {/* CTA Buttons */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.8 }}
-                        className="flex flex-col sm:flex-row justify-center gap-4"
-                    >
-                        <DentistHoverButton
-                            text="Get Your Free Marketing Audit"
-                            onClick={() => openCalendlyPopup()}
-                            variant="primary"
-                            className="px-8 py-4 text-lg"
-                        />
-                        <DentistHoverButton
-                            text="Watch How It Works"
-                            variant="secondary"
-                            className="px-8 py-4 text-lg"
-                        />
-                    </motion.div>
-
-                    {/* Social proof */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 1 }}
-                        className="mt-12 flex flex-col items-center gap-4"
-                    >
-                        <div className="flex -space-x-3">
-                            {[...Array(5)].map((_, i) => (
+                        {/* Trust indicators */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.6 }}
+                            className="flex flex-wrap justify-center gap-6 mb-10"
+                        >
+                            {[
+                                "SEO That Ranks #1",
+                                "Multi-Platform Social",
+                                "Automated Booking",
+                            ].map((item) => (
                                 <div
-                                    key={i}
-                                    className="h-10 w-10 rounded-full bg-gradient-to-br from-sky-100 to-teal-100 border-2 border-white flex items-center justify-center text-xs font-medium text-sky-700 shadow-md"
+                                    key={item}
+                                    className="flex items-center gap-2"
                                 >
-                                    {["JD", "SK", "MR", "AL", "TW"][i]}
+                                    <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                                    <span className="text-sm font-medium text-slate-600">
+                                        {item}
+                                    </span>
                                 </div>
                             ))}
-                        </div>
-                        <p className="text-sm text-slate-500">
-                            <span className="font-semibold text-slate-700">
-                                50+ dental practices
-                            </span>{" "}
-                            trust SwiftWare to grow their patient base
-                        </p>
-                    </motion.div>
-                </div>
-            </motion.div>
+                        </motion.div>
+
+                        {/* CTA Buttons */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.8 }}
+                            className="flex flex-col sm:flex-row justify-center gap-4"
+                        >
+                            <DentistHoverButton
+                                text="Get Your Free Marketing Audit"
+                                onClick={() => openCalendlyPopup()}
+                                variant="primary"
+                                className="px-8 py-4 text-lg"
+                            />
+                            <DentistHoverButton
+                                text="Watch How It Works"
+                                onClick={() => {
+                                    const element =
+                                        document.querySelector("#how-it-works");
+                                    if (element) {
+                                        element.scrollIntoView({
+                                            behavior: "smooth",
+                                        });
+                                    }
+                                }}
+                                variant="secondary"
+                                className="px-8 py-4 text-lg"
+                            />
+                        </motion.div>
+
+                        {/* Social proof */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.8, delay: 1 }}
+                            className="mt-8 lg:mt-12 flex flex-col items-center gap-4"
+                        >
+                            <div className="flex -space-x-3">
+                                {[...Array(5)].map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className="h-10 w-10 rounded-full bg-gradient-to-br from-sky-100 to-teal-100 border-2 border-white flex items-center justify-center text-xs font-medium text-sky-700 shadow-md"
+                                    >
+                                        {["JD", "SK", "MR", "AL", "TW"][i]}
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-sm text-slate-500">
+                                <span className="font-semibold text-slate-700">
+                                    50+ dental practices
+                                </span>{" "}
+                                trust SwiftWare to grow their patient base
+                            </p>
+                        </motion.div>
+                    </div>
+                </motion.div>
+
+                {/* Floating Metric Cards - positioned relative to content */}
+                {floatingMetrics.map((metric) => (
+                    <FloatingCard key={metric.label} {...metric} />
+                ))}
+            </div>
 
             {/* Scroll indicator */}
             <motion.div

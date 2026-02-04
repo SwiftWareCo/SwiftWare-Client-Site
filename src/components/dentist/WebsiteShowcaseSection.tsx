@@ -219,6 +219,7 @@ export function WebsiteShowcaseSection() {
     return (
         <section
             ref={ref}
+            id="website"
             className="relative py-24 overflow-hidden bg-gradient-to-b from-sky-300 via-teal-100 to-sky-300"
         >
             {/* Background elements */}

@@ -10,7 +10,7 @@ import {
     useTransform,
     useSpring,
 } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Home } from "lucide-react";
 import { openCalendlyPopup } from "@/lib/calendly";
 import { RoundedSlideButton } from "./RoundedSlideButton";
 
@@ -26,9 +26,9 @@ const colorsRGB = {
 };
 
 const navLinks = [
+    { label: "Home", href: "#", icon: Home },
     { label: "Services", href: "#services" },
     { label: "How It Works", href: "#how-it-works" },
-    { label: "Results", href: "#results" },
     { label: "FAQ", href: "#faq" },
 ];
 
@@ -144,9 +144,13 @@ export function DentistHeader() {
     };
 
     const scrollToSection = (href: string) => {
-        const element = document.querySelector(href);
-        if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
+        if (href === "#") {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+            const element = document.querySelector(href);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+            }
         }
         setMobileMenuOpen(false);
     };
@@ -357,6 +361,9 @@ export function DentistHeader() {
                                                     }
                                                     className="cursor-pointer relative flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-600 transition-colors hover:bg-sky-50 hover:text-sky-600"
                                                 >
+                                                    {link.icon && (
+                                                        <link.icon className="h-4 w-4" />
+                                                    )}
                                                     {link.label}
                                                 </button>
                                             ))}
@@ -414,15 +421,9 @@ export function DentistHeader() {
 
                                         <div className="leading-tight">
                                             <span
-                                                className={`text-base font-bold ${
-                                                    scrolled
-                                                        ? "bg-clip-text text-transparent"
-                                                        : "text-white"
-                                                }`}
+                                                className="text-base font-bold bg-clip-text text-transparent"
                                                 style={{
-                                                    backgroundImage: scrolled
-                                                        ? `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`
-                                                        : "none",
+                                                    backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.secondary})`,
                                                 }}
                                             >
                                                 SwiftWare
@@ -452,12 +453,11 @@ export function DentistHeader() {
                                                 onClick={() =>
                                                     scrollToSection(link.href)
                                                 }
-                                                className={`cursor-pointer relative text-base font-semibold transition-colors ${
-                                                    scrolled
-                                                        ? "text-slate-700 hover:text-sky-700"
-                                                        : "text-white/80 hover:text-white"
-                                                }`}
+                                                className="cursor-pointer relative text-base font-semibold transition-colors flex items-center gap-1.5 text-slate-900 hover:text-sky-700"
                                             >
+                                                {link.icon && (
+                                                    <link.icon className="h-4 w-4" />
+                                                )}
                                                 {link.label}
                                             </button>
                                         ))}
