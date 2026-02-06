@@ -119,7 +119,7 @@ export function DentistCTASection() {
                             >
                                 <motion.button
                                     onClick={() => openCalendlyPopup()}
-                                    className="group relative flex cursor-pointer items-center gap-3 overflow-hidden rounded-2xl bg-white px-8 py-4 text-lg font-semibold text-sky-700 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-0.5 border border-sky-100"
+                                    className="group relative flex cursor-pointer items-center gap-3 overflow-hidden rounded-2xl bg-white px-8 py-4 text-lg font-semibold text-sky-700 shadow-xl duration-300 hover:shadow-2xl hover:-translate-y-0.5 border border-sky-100"
                                     whileTap={{ scale: 0.98 }}
                                 >
                                     {/* Background fill on hover */}

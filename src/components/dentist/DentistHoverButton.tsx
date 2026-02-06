@@ -48,7 +48,7 @@ const DentistHoverButton = React.forwardRef<
         <button
             ref={ref}
             className={cn(
-                "group hover:-translate-y-0.5 relative cursor-pointer flex w-full whitespace-nowrap items-center justify-center overflow-hidden rounded-2xl px-8 py-4 text-center font-semibold transition-all duration-300",
+                "group hover:-translate-y-0.5 relative cursor-pointer flex w-full whitespace-nowrap items-center justify-center overflow-hidden rounded-2xl px-8 py-4 text-center font-semibold duration-300",
                 // Primary: Gradient background with white text, reverses to white bg with gradient text
                 isPrimary &&
                     "bg-gradient-to-r from-sky-500 to-teal-500 text-white border-0",
@@ -89,7 +89,7 @@ const DentistHoverButton = React.forwardRef<
             {/* Default text - slides out on hover */}
             <span
                 className={cn(
-                    "inline-block translate-x-1 transition-all duration-300 group-hover:translate-x-12 group-hover:opacity-0",
+                    "inline-block translate-x-1 duration-300 group-hover:translate-x-12 group-hover:opacity-0",
                     isPrimary && "text-white",
                     isPink && "text-white",
                     isSecondary && "text-slate-700",
@@ -102,7 +102,7 @@ const DentistHoverButton = React.forwardRef<
             {/* Hover text with arrow - slides in on hover */}
             <div
                 className={cn(
-                    "absolute top-0 z-10 flex h-full w-full translate-x-10 items-center justify-center gap-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100",
+                    "absolute top-0 z-10 flex h-full w-full translate-x-10 items-center justify-center gap-2 opacity-0 duration-300 group-hover:translate-x-0 group-hover:opacity-100",
                     // Reverse colors on hover
                     isPrimary && "text-sky-600",
                     isPink && "text-pink-600",
@@ -117,7 +117,7 @@ const DentistHoverButton = React.forwardRef<
             {/* Background fill that slides in on hover */}
             <div
                 className={cn(
-                    "absolute left-[7%] top-[42%] h-2 w-2 rounded-full transition-all duration-300 group-hover:left-0 group-hover:top-0 group-hover:h-full group-hover:w-full group-hover:rounded-none",
+                    "absolute left-[7%] top-[42%] h-2 w-2 rounded-full duration-300 group-hover:left-0 group-hover:top-0 group-hover:h-full group-hover:w-full group-hover:rounded-none",
                     isPrimary
                         ? "bg-white" // Primary: white fill on hover (reverses to white bg)
                         : isPink

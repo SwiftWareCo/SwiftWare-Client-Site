@@ -68,16 +68,16 @@ const platforms = [
         engagement: "4.8%",
     },
     {
-        name: "Pinterest",
+        name: "X",
         icon: () => (
             <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
-                <path d="M12 0a12 12 0 00-4.37 23.17c-.1-.94-.2-2.4.04-3.43l1.37-5.84s-.35-.7-.35-1.74c0-1.63.94-2.84 2.12-2.84.99 0 1.48.75 1.48 1.65 0 1-.64 2.5-.97 3.9-.28 1.16.58 2.1 1.73 2.1 2.08 0 3.67-2.19 3.67-5.34 0-2.8-2-4.75-4.87-4.75-3.32 0-5.27 2.49-5.27 5.06 0 1 .38 2.07.87 2.66a.35.35 0 01.08.33l-.32 1.32c-.05.21-.17.26-.39.16-1.45-.68-2.36-2.8-2.36-4.51 0-3.67 2.67-7.04 7.7-7.04 4.04 0 7.19 2.88 7.19 6.73 0 4.02-2.53 7.25-6.04 7.25-1.18 0-2.29-.61-2.67-1.33l-.72 2.77c-.26 1-.97 2.26-1.45 3.02A12 12 0 1012 0z" />
+                <path d="M18.244 2H21l-6.402 7.327L22 22h-6.172l-4.83-6.302L5.44 22H2.68l6.85-7.84L2 2h6.326l4.368 5.686L18.244 2zm-1.082 18h1.716L7.01 4H5.148l12.014 16z" />
             </svg>
         ),
-        color: "from-red-500 to-red-600",
-        bgColor: "bg-gradient-to-br from-red-50 to-pink-50",
-        borderColor: "border-red-200",
-        textColor: "text-red-600",
+        color: "from-slate-900 to-slate-700",
+        bgColor: "bg-gradient-to-br from-slate-50 to-slate-100",
+        borderColor: "border-slate-200",
+        textColor: "text-slate-900",
         reach: "1.2M",
         engagement: "6.3%",
     },
@@ -502,7 +502,7 @@ export function SocialMediaSection() {
                     <p className="font-lora text-xl text-slate-600 leading-relaxed">
                         Why limit yourself to one platform? We create
                         scroll-stopping content for Instagram, TikTok, Facebook,
-                        LinkedIn, and even Pinterest—
+                        LinkedIn, and even X—
                         <span className="text-purple-600 font-semibold">
                             leaving no stone unturned
                         </span>

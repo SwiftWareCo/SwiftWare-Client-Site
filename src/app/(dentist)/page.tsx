@@ -1,19 +1,18 @@
 import type { Metadata } from "next";
-import { DentistHeader } from "@/components/dentist/DentistHeader";
-import { DentistFooter } from "@/components/dentist/DentistFooter";
+import { DentistPageContent } from "@/components/dentist/DentistPageContent";
 
 export const metadata: Metadata = {
     title: "SwiftWare Dental Marketing — Fill Your Schedule While You Sleep",
     description:
         "Automated dental marketing that brings patients to your door. SEO, multi-platform social media, automated booking, and patient retention systems designed exclusively for dental practices.",
     alternates: {
-        canonical: "https://swiftware.ca/dentist",
+        canonical: "https://swiftware.ca",
     },
     openGraph: {
         title: "SwiftWare Dental Marketing — Fill Your Schedule While You Sleep",
         description:
             "Automated dental marketing that brings patients to your door. SEO, multi-platform social media, automated booking, and patient retention systems.",
-        url: "https://swiftware.ca/dentist",
+        url: "https://swiftware.ca",
         siteName: "SwiftWare Dental",
         locale: "en_CA",
         images: [
@@ -35,19 +34,6 @@ export const metadata: Metadata = {
     },
 };
 
-export default function DentistLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
-    return (
-        <div className=" text-slate-900 font-[family-name:var(--font-outfit)]">
-         
-            <DentistHeader />
-            <main id="main" tabIndex={-1} className="relative">
-                {children}
-            </main>
-            <DentistFooter />
-        </div>
-    );
+export default function DentistHomePage() {
+    return <DentistPageContent />;
 }

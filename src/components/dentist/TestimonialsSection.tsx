@@ -78,7 +78,7 @@ function TestimonialCard({
                 scale: isActive ? 1 : 0.95,
             }}
             transition={{ duration: 0.4 }}
-            className={`bg-white rounded-3xl border shadow-xl p-8 transition-all ${
+            className={`bg-white rounded-3xl border shadow-xl p-8 ${
                 isActive
                     ? "border-sky-200 shadow-sky-200/50"
                     : "border-slate-200 shadow-slate-200/50"
@@ -299,7 +299,7 @@ export function TestimonialsSection() {
                                     setIsAutoPlaying(false);
                                     setCurrentIndex(index);
                                 }}
-                                className={`cursor-pointer w-3 h-3 rounded-full transition-all ${
+                                className={`cursor-pointer w-3 h-3 rounded-full ${
                                     index === currentIndex
                                         ? "bg-gradient-to-r from-sky-500 to-teal-500 w-8"
                                         : "bg-slate-200 hover:bg-slate-300"

@@ -135,7 +135,7 @@ export function DentistFooter() {
                                 </div>
                                 <button
                                     onClick={() => openCalendlyPopup()}
-                                    className="cursor-pointer rounded-xl px-4 py-2 text-xs text-center font-semibold text-white transition-all hover:shadow-lg"
+                                    className="cursor-pointer rounded-xl px-4 py-2 text-xs text-center font-semibold text-white hover:shadow-lg"
                                     style={{
                                         backgroundImage:
                                             "linear-gradient(to right, #0ea5e9, #14b8a6)",

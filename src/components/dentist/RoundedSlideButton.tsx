@@ -29,7 +29,7 @@ export function RoundedSlideButton({
             className={`
                 group/button relative z-0 flex items-center gap-2 overflow-hidden rounded-xl border-[1.5px]
                 border-sky-500 px-5 py-2.5 font-semibold text-sm
-                uppercase tracking-wider transition-all duration-500
+                uppercase tracking-wider duration-500
                 bg-white text-sky-600
 
                 before:absolute before:inset-0

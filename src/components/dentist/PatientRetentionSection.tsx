@@ -250,7 +250,7 @@ function BookingInterface() {
                     {/* Book button */}
                     <div
                         ref={confirmRef}
-                        className={`w-full py-3 rounded-xl text-white font-semibold text-center transition-all ${
+                        className={`w-full py-3 rounded-xl text-white font-semibold text-center ${
                             selectedDate && selectedTime
                                 ? "bg-gradient-to-r from-sky-500 to-teal-500 shadow-lg shadow-sky-200/50"
                                 : "bg-slate-200 text-slate-400"

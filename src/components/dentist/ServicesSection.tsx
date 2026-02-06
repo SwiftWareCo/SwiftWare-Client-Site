@@ -127,7 +127,7 @@ function ServiceCard({
             className="group relative"
         >
             <div
-                className={`relative h-full rounded-3xl border ${service.borderColor} bg-white p-6 lg:p-8 shadow-lg shadow-slate-100/50 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 overflow-hidden`}
+                className={`relative h-full rounded-3xl border ${service.borderColor} bg-white p-6 lg:p-8 shadow-lg shadow-slate-100/50 hover:shadow-xl hover:shadow-slate-200/50 duration-300 overflow-hidden`}
             >
                 <motion.div
                     className="absolute inset-0 rounded-3xl -z-10"

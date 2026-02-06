@@ -131,7 +131,7 @@ export function DentistHero() {
     return (
         <section
             ref={containerRef}
-            className="relative min-h-screen overflow-hidden pt-32 pb-20 bg-gradient-to-b from-sky-300 via-teal-100 to-sky-300"
+            className="relative min-h-screen overflow-hidden pt-52 pb-24 bg-gradient-to-b from-sky-300 via-teal-100 to-sky-300"
         >
             {/* Background Elements */}
             <div className="absolute inset-0 -z-10">
@@ -142,15 +142,15 @@ export function DentistHero() {
             </div>
 
             {/* Main Content with Floating Cards Container */}
-            <div className="relative max-w-7xl mx-auto">
+            <div className="relative max-w-[90rem] mx-auto">
                 {/* Main Content */}
                 <motion.div
                     style={{ y, opacity }}
-                    className="relative z-10 mx-auto max-w-7xl px-6"
+                    className="relative z-10 mx-auto max-w-[90rem] px-4 sm:px-5 lg:px-6"
                 >
-                    <div className="text-center max-w-4xl mx-auto">
+                    <div className="text-center max-w-5xl mx-auto">
                         {/* Badge */}
-                        <motion.div
+                        {/*<motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
@@ -165,14 +165,14 @@ export function DentistHero() {
                             <span className="text-sm font-medium text-sky-700">
                                 Marketing Built for Dental Practices
                             </span>
-                        </motion.div>
+                        </motion.div>*/}
 
                         {/* Main Headline */}
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
-                            className="font-outfit text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 mb-6"
+                            className="font-outfit text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-slate-900 mb-8"
                         >
                             Fill Your Schedule
                             <br />
@@ -186,7 +186,7 @@ export function DentistHero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.4 }}
-                            className="font-lora text-xl sm:text-2xl text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed"
+                            className="font-lora text-2xl sm:text-3xl text-slate-600 max-w-3xl mx-auto mb-10 leading-relaxed"
                         >
                             Our automated marketing system brings new patients
                             to your door, keeps them loyal, and grows your
@@ -201,7 +201,7 @@ export function DentistHero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.6 }}
-                            className="flex flex-wrap justify-center gap-6 mb-10"
+                            className="flex flex-wrap justify-center gap-8 mb-12"
                         >
                             {[
                                 "SEO That Ranks #1",
@@ -213,7 +213,7 @@ export function DentistHero() {
                                     className="flex items-center gap-2"
                                 >
                                     <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                                    <span className="text-sm font-medium text-slate-600">
+                                    <span className="text-base font-medium text-slate-600">
                                         {item}
                                     </span>
                                 </div>
@@ -225,13 +225,13 @@ export function DentistHero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.8 }}
-                            className="flex flex-col sm:flex-row justify-center gap-4"
+                            className="flex flex-col sm:flex-row justify-center gap-5"
                         >
                             <DentistHoverButton
                                 text="Get Your Free Marketing Audit"
                                 onClick={() => openCalendlyPopup()}
                                 variant="primary"
-                                className="px-8 py-4 text-lg"
+                                className="px-10 py-5 text-xl"
                             />
                             <DentistHoverButton
                                 text="Watch How It Works"
@@ -245,7 +245,7 @@ export function DentistHero() {
                                     }
                                 }}
                                 variant="secondary"
-                                className="px-8 py-4 text-lg"
+                                className="px-10 py-5 text-xl"
                             />
                         </motion.div>
 
@@ -254,19 +254,19 @@ export function DentistHero() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.8, delay: 1 }}
-                            className="mt-8 lg:mt-12 flex flex-col items-center gap-4"
+                            className="mt-10 lg:mt-14 flex flex-col items-center gap-5"
                         >
                             <div className="flex -space-x-3">
                                 {[...Array(5)].map((_, i) => (
                                     <div
                                         key={i}
-                                        className="h-10 w-10 rounded-full bg-gradient-to-br from-sky-100 to-teal-100 border-2 border-white flex items-center justify-center text-xs font-medium text-sky-700 shadow-md"
+                                        className="h-12 w-12 rounded-full bg-gradient-to-br from-sky-100 to-teal-100 border-2 border-white flex items-center justify-center text-sm font-medium text-sky-700 shadow-md"
                                     >
                                         {["JD", "SK", "MR", "AL", "TW"][i]}
                                     </div>
                                 ))}
                             </div>
-                            <p className="text-sm text-slate-500">
+                            <p className="text-base text-slate-500">
                                 <span className="font-semibold text-slate-700">
                                     50+ dental practices
                                 </span>{" "}
@@ -277,9 +277,9 @@ export function DentistHero() {
                 </motion.div>
 
                 {/* Floating Metric Cards - positioned relative to content */}
-                {floatingMetrics.map((metric) => (
+                {/*{floatingMetrics.map((metric) => (
                     <FloatingCard key={metric.label} {...metric} />
-                ))}
+                ))}*/}
             </div>
 
             {/* Scroll indicator */}
@@ -294,14 +294,14 @@ export function DentistHero() {
                     transition={{ duration: 2, repeat: Infinity }}
                     className="flex flex-col items-center gap-2 text-slate-400"
                 >
-                    <span className="text-xs font-medium">
+                    <span className="text-sm font-medium">
                         Scroll to explore
                     </span>
-                    <div className="w-6 h-10 rounded-full border-2 border-slate-300 flex justify-center pt-2 bg-white/50">
+                    <div className="w-7 h-11 rounded-full border-2 border-slate-300 flex justify-center pt-2 bg-white/50">
                         <motion.div
                             animate={{ y: [0, 12, 0], opacity: [1, 0.3, 1] }}
                             transition={{ duration: 2, repeat: Infinity }}
-                            className="w-1.5 h-3 rounded-full bg-gradient-to-b from-sky-400 to-teal-400"
+                            className="w-2 h-3.5 rounded-full bg-gradient-to-b from-sky-400 to-teal-400"
                         />
                     </div>
                 </motion.div>
